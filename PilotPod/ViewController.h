@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreBluetooth/CoreBluetooth.h>
+#import <CoreMotion/CoreMotion.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <CBPeripheralManagerDelegate>
+{
+    CBPeripheralManager *myPeripheralManager;
+    CBMutableCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
+    CMMotionManager *motionManager;
+}
+@property UIButton *theButton;
+@property UITextField *uuid;
 
 @end

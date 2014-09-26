@@ -9,9 +9,24 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>PilotPodOSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D552051C19D5C769006CF417</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D552053B19D5C769006CF417</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D568D37818CBFC4D00ED987D</key>
 		<dict>
 			<key>primary</key>

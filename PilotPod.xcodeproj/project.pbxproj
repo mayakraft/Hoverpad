@@ -7,34 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
+		D552052919D5C769006CF417 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D552052719D5C769006CF417 /* InfoPlist.strings */; };
+		D552052B19D5C769006CF417 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D552052A19D5C769006CF417 /* main.m */; };
+		D552052F19D5C769006CF417 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D552052D19D5C769006CF417 /* Credits.rtf */; };
+		D552053219D5C769006CF417 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D552053119D5C769006CF417 /* AppDelegate.m */; };
+		D552053519D5C769006CF417 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D552053319D5C769006CF417 /* MainMenu.xib */; };
+		D552053719D5C769006CF417 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D552053619D5C769006CF417 /* Images.xcassets */; };
+		D552055119D5C98D006CF417 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = D552055019D5C98D006CF417 /* View.m */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
 		D568D38118CBFC4D00ED987D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D38018CBFC4D00ED987D /* UIKit.framework */; };
 		D568D38718CBFC4D00ED987D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D568D38518CBFC4D00ED987D /* InfoPlist.strings */; };
 		D568D38918CBFC4D00ED987D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D38818CBFC4D00ED987D /* main.m */; };
 		D568D38D18CBFC4D00ED987D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D38C18CBFC4D00ED987D /* AppDelegate.m */; };
-		D568D39018CBFC4D00ED987D /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D568D38E18CBFC4D00ED987D /* Main_iPhone.storyboard */; };
-		D568D39318CBFC4D00ED987D /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D568D39118CBFC4D00ED987D /* Main_iPad.storyboard */; };
 		D568D39618CBFC4D00ED987D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D39518CBFC4D00ED987D /* ViewController.m */; };
 		D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D568D39718CBFC4D00ED987D /* Images.xcassets */; };
-		D568D39F18CBFC4D00ED987D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D39E18CBFC4D00ED987D /* XCTest.framework */; };
-		D568D3A018CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
-		D568D3A118CBFC4D00ED987D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D38018CBFC4D00ED987D /* UIKit.framework */; };
-		D568D3A918CBFC4D00ED987D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D568D3A718CBFC4D00ED987D /* InfoPlist.strings */; };
-		D568D3AB18CBFC4D00ED987D /* PilotPodTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D3AA18CBFC4D00ED987D /* PilotPodTests.m */; };
+		D568D3B818CC012300ED987D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B718CC012300ED987D /* CoreBluetooth.framework */; };
+		D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B918CC014F00ED987D /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		D568D3A218CBFC4D00ED987D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D568D37118CBFC4D00ED987D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D568D37818CBFC4D00ED987D;
-			remoteInfo = PilotPod;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		D552051D19D5C769006CF417 /* PilotPodOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotPodOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D552052219D5C769006CF417 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D552052319D5C769006CF417 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D552052619D5C769006CF417 /* PilotPodOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PilotPodOSX-Info.plist"; sourceTree = "<group>"; };
+		D552052819D5C769006CF417 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D552052A19D5C769006CF417 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D552052C19D5C769006CF417 /* PilotPodOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PilotPodOSX-Prefix.pch"; sourceTree = "<group>"; };
+		D552052E19D5C769006CF417 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		D552053019D5C769006CF417 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D552053119D5C769006CF417 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D552053419D5C769006CF417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D552053619D5C769006CF417 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D552054F19D5C98D006CF417 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		D552055019D5C98D006CF417 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = View.m; sourceTree = "<group>"; };
 		D568D37918CBFC4D00ED987D /* PilotPod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotPod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D568D37C18CBFC4D00ED987D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -45,47 +54,79 @@
 		D568D38A18CBFC4D00ED987D /* PilotPod-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PilotPod-Prefix.pch"; sourceTree = "<group>"; };
 		D568D38B18CBFC4D00ED987D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D568D38C18CBFC4D00ED987D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D568D38F18CBFC4D00ED987D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		D568D39218CBFC4D00ED987D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		D568D39418CBFC4D00ED987D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		D568D39518CBFC4D00ED987D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D568D39718CBFC4D00ED987D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D568D39D18CBFC4D00ED987D /* PilotPodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PilotPodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D568D39E18CBFC4D00ED987D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		D568D3A618CBFC4D00ED987D /* PilotPodTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PilotPodTests-Info.plist"; sourceTree = "<group>"; };
-		D568D3A818CBFC4D00ED987D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D568D3AA18CBFC4D00ED987D /* PilotPodTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PilotPodTests.m; sourceTree = "<group>"; };
+		D568D3B718CC012300ED987D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		D568D3B918CC014F00ED987D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D552051A19D5C769006CF417 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D568D37618CBFC4D00ED987D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */,
+				D568D3B818CC012300ED987D /* CoreBluetooth.framework in Frameworks */,
 				D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */,
 				D568D38118CBFC4D00ED987D /* UIKit.framework in Frameworks */,
 				D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D568D39A18CBFC4D00ED987D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D568D39F18CBFC4D00ED987D /* XCTest.framework in Frameworks */,
-				D568D3A118CBFC4D00ED987D /* UIKit.framework in Frameworks */,
-				D568D3A018CBFC4D00ED987D /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D552052019D5C769006CF417 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D552052119D5C769006CF417 /* AppKit.framework */,
+				D552052219D5C769006CF417 /* CoreData.framework */,
+				D552052319D5C769006CF417 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		D552052419D5C769006CF417 /* PilotPodOSX */ = {
+			isa = PBXGroup;
+			children = (
+				D552053019D5C769006CF417 /* AppDelegate.h */,
+				D552053119D5C769006CF417 /* AppDelegate.m */,
+				D552054F19D5C98D006CF417 /* View.h */,
+				D552055019D5C98D006CF417 /* View.m */,
+				D552053319D5C769006CF417 /* MainMenu.xib */,
+				D552053619D5C769006CF417 /* Images.xcassets */,
+				D552052519D5C769006CF417 /* Supporting Files */,
+			);
+			path = PilotPodOSX;
+			sourceTree = "<group>";
+		};
+		D552052519D5C769006CF417 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D552052619D5C769006CF417 /* PilotPodOSX-Info.plist */,
+				D552052719D5C769006CF417 /* InfoPlist.strings */,
+				D552052A19D5C769006CF417 /* main.m */,
+				D552052C19D5C769006CF417 /* PilotPodOSX-Prefix.pch */,
+				D552052D19D5C769006CF417 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D568D37018CBFC4D00ED987D = {
 			isa = PBXGroup;
 			children = (
 				D568D38218CBFC4D00ED987D /* PilotPod */,
-				D568D3A418CBFC4D00ED987D /* PilotPodTests */,
+				D552052419D5C769006CF417 /* PilotPodOSX */,
 				D568D37B18CBFC4D00ED987D /* Frameworks */,
 				D568D37A18CBFC4D00ED987D /* Products */,
 			);
@@ -95,7 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				D568D37918CBFC4D00ED987D /* PilotPod.app */,
-				D568D39D18CBFC4D00ED987D /* PilotPodTests.xctest */,
+				D552051D19D5C769006CF417 /* PilotPodOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,10 +144,14 @@
 		D568D37B18CBFC4D00ED987D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D568D3B918CC014F00ED987D /* CoreMotion.framework */,
+				D568D3B718CC012300ED987D /* CoreBluetooth.framework */,
 				D568D37C18CBFC4D00ED987D /* Foundation.framework */,
 				D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */,
 				D568D38018CBFC4D00ED987D /* UIKit.framework */,
 				D568D39E18CBFC4D00ED987D /* XCTest.framework */,
+				D552051E19D5C769006CF417 /* Cocoa.framework */,
+				D552052019D5C769006CF417 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,8 +161,6 @@
 			children = (
 				D568D38B18CBFC4D00ED987D /* AppDelegate.h */,
 				D568D38C18CBFC4D00ED987D /* AppDelegate.m */,
-				D568D38E18CBFC4D00ED987D /* Main_iPhone.storyboard */,
-				D568D39118CBFC4D00ED987D /* Main_iPad.storyboard */,
 				D568D39418CBFC4D00ED987D /* ViewController.h */,
 				D568D39518CBFC4D00ED987D /* ViewController.m */,
 				D568D39718CBFC4D00ED987D /* Images.xcassets */,
@@ -137,27 +180,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D568D3A418CBFC4D00ED987D /* PilotPodTests */ = {
-			isa = PBXGroup;
-			children = (
-				D568D3AA18CBFC4D00ED987D /* PilotPodTests.m */,
-				D568D3A518CBFC4D00ED987D /* Supporting Files */,
-			);
-			path = PilotPodTests;
-			sourceTree = "<group>";
-		};
-		D568D3A518CBFC4D00ED987D /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D568D3A618CBFC4D00ED987D /* PilotPodTests-Info.plist */,
-				D568D3A718CBFC4D00ED987D /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D552051C19D5C769006CF417 /* PilotPodOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "PilotPodOSX" */;
+			buildPhases = (
+				D552051919D5C769006CF417 /* Sources */,
+				D552051A19D5C769006CF417 /* Frameworks */,
+				D552051B19D5C769006CF417 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PilotPodOSX;
+			productName = PilotPodOSX;
+			productReference = D552051D19D5C769006CF417 /* PilotPodOSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D568D37818CBFC4D00ED987D /* PilotPod */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "PilotPod" */;
@@ -175,24 +217,6 @@
 			productReference = D568D37918CBFC4D00ED987D /* PilotPod.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D568D39C18CBFC4D00ED987D /* PilotPodTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D568D3B118CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "PilotPodTests" */;
-			buildPhases = (
-				D568D39918CBFC4D00ED987D /* Sources */,
-				D568D39A18CBFC4D00ED987D /* Frameworks */,
-				D568D39B18CBFC4D00ED987D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D568D3A318CBFC4D00ED987D /* PBXTargetDependency */,
-			);
-			name = PilotPodTests;
-			productName = PilotPodTests;
-			productReference = D568D39D18CBFC4D00ED987D /* PilotPodTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -201,11 +225,6 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Robby Kraft";
-				TargetAttributes = {
-					D568D39C18CBFC4D00ED987D = {
-						TestTargetID = D568D37818CBFC4D00ED987D;
-					};
-				};
 			};
 			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "PilotPod" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -221,34 +240,45 @@
 			projectRoot = "";
 			targets = (
 				D568D37818CBFC4D00ED987D /* PilotPod */,
-				D568D39C18CBFC4D00ED987D /* PilotPodTests */,
+				D552051C19D5C769006CF417 /* PilotPodOSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D552051B19D5C769006CF417 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D552052919D5C769006CF417 /* InfoPlist.strings in Resources */,
+				D552053719D5C769006CF417 /* Images.xcassets in Resources */,
+				D552052F19D5C769006CF417 /* Credits.rtf in Resources */,
+				D552053519D5C769006CF417 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D568D37718CBFC4D00ED987D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D568D39318CBFC4D00ED987D /* Main_iPad.storyboard in Resources */,
 				D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */,
-				D568D39018CBFC4D00ED987D /* Main_iPhone.storyboard in Resources */,
 				D568D38718CBFC4D00ED987D /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D568D39B18CBFC4D00ED987D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D568D3A918CBFC4D00ED987D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D552051919D5C769006CF417 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D552053219D5C769006CF417 /* AppDelegate.m in Sources */,
+				D552052B19D5C769006CF417 /* main.m in Sources */,
+				D552055119D5C98D006CF417 /* View.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D568D37518CBFC4D00ED987D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,25 +289,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D568D39918CBFC4D00ED987D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D568D3AB18CBFC4D00ED987D /* PilotPodTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		D568D3A318CBFC4D00ED987D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D568D37818CBFC4D00ED987D /* PilotPod */;
-			targetProxy = D568D3A218CBFC4D00ED987D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
+		D552052719D5C769006CF417 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D552052819D5C769006CF417 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D552052D19D5C769006CF417 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D552052E19D5C769006CF417 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		D552053319D5C769006CF417 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D552053419D5C769006CF417 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		D568D38518CBFC4D00ED987D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -286,33 +324,56 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		D568D38E18CBFC4D00ED987D /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D568D38F18CBFC4D00ED987D /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		D568D39118CBFC4D00ED987D /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D568D39218CBFC4D00ED987D /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		D568D3A718CBFC4D00ED987D /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D568D3A818CBFC4D00ED987D /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D552054A19D5C769006CF417 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PilotPodOSX/PilotPodOSX-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "PilotPodOSX/PilotPodOSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D552054B19D5C769006CF417 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PilotPodOSX/PilotPodOSX-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "PilotPodOSX/PilotPodOSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		D568D3AC18CBFC4D00ED987D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -395,6 +456,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
 				INFOPLIST_FILE = "PilotPod/PilotPod-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -408,56 +470,24 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
 				INFOPLIST_FILE = "PilotPod/PilotPod-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		D568D3B218CBFC4D00ED987D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PilotPod.app/PilotPod";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "PilotPodTests/PilotPodTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		D568D3B318CBFC4D00ED987D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PilotPod.app/PilotPod";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
-				INFOPLIST_FILE = "PilotPodTests/PilotPodTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "PilotPodOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D552054A19D5C769006CF417 /* Debug */,
+				D552054B19D5C769006CF417 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "PilotPod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -474,14 +504,7 @@
 				D568D3B018CBFC4D00ED987D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		D568D3B118CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "PilotPodTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D568D3B218CBFC4D00ED987D /* Debug */,
-				D568D3B318CBFC4D00ED987D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
