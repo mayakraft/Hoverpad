@@ -17,6 +17,6 @@
     CMMotionManager *motionManager;
 }
 @property UIButton *theButton;
-@property UITextField *uuid;
+//@property UITextField *uuid;
 
 @end

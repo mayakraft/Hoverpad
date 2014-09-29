@@ -14,9 +14,9 @@
 #define WRITE_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F41"
 #define NOTIFY_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F42"
 
-#define START @"Start"
-#define INIT @"Init"
-#define STOP @"Stop"
+#define START @"START"
+#define INIT @"INIT"
+#define STOP @"STOP"
 
 @implementation ViewController
 
@@ -24,13 +24,15 @@
 {
     [super viewDidLoad];
         
-    self.uuid = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, [[UIScreen mainScreen] bounds].size.width-100, 75)];
-    [self.view addSubview:self.uuid];
-    self.uuid.text = SERVICE_UUID;
+//    self.uuid = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, [[UIScreen mainScreen] bounds].size.width-100, 75)];
+//    [self.view addSubview:self.uuid];
+//    self.uuid.text = SERVICE_UUID;
     
     self.theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.theButton setFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*.5-50, 300, 100, 50)];
+    [self.theButton setFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*.5-50, [[UIScreen mainScreen] bounds].size.height*.5-25, 100, 50)];
     [self.theButton setTitle:INIT forState:UIControlStateNormal];
+    [self.theButton.titleLabel setFont:[UIFont systemFontOfSize:[[UIScreen mainScreen] bounds].size.width*.1]];
+    [self.theButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.theButton];
     
@@ -77,7 +79,7 @@
 
 - (NSString*)getServiceUuidAsString
 {
-    return self.uuid.text;
+    return SERVICE_UUID;
 }
 
 - (IBAction)buttonTapped:(id)sender
@@ -183,7 +185,7 @@
             self.theButton.enabled = YES;
             break;
         default:
-            NSLog(@"Peripheral state changed to %d", myPeripheralManager.state);
+            NSLog(@"Peripheral state changed to %ld", myPeripheralManager.state);
             break;
     }
 }

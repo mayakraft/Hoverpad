@@ -24,8 +24,8 @@
         // Initialization code here.
         NSOpenGLContext *glcontext = [self openGLContext];
         [glcontext makeCurrentContext];
-        [self setupGL];
         [self rebuildProjectionMatrix];
+        [self setupGL];
     }
     return self;
 }
@@ -35,14 +35,47 @@
     if(self){
         NSOpenGLContext *glcontext = [self openGLContext];
         [glcontext makeCurrentContext];
-        [self setupGL];
         [self rebuildProjectionMatrix];
+        [self setupGL];
     }
     return self;
 }
 
+-(void) setupGL{
+    for(int i = 0; i < 16; i++)
+        a[i] = 0.0f;
+    a[0] = a[5] = a[10] = a[15] = 1.0f;
+    
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_DEPTH_TEST);
+    GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
+    GLfloat pos1[] = {0.0f, 0.0f, 10.0f, 1.0f};
+    
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, pos1);
+//    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40);
+//    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, .0005);
+    GLfloat spot_direction[] = { 0.0, 0.0, -1.0 };
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    
+    glShadeModel(GL_SMOOTH);
+    glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 20);
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
+    static GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+    static GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
+    static GLfloat white10[] = {0.1f, 0.1f, 0.1f, 1.0};
+    static GLfloat white20[] = {0.2f, 0.2f, 0.2f, 1.0};
+    static GLfloat white50[] = {0.5f, 0.5f, 0.5f, 1.0f};
+    static GLfloat white80[] = {0.8f, 0.8f, 0.8f, 1.0f};
+
     [super drawRect:dirtyRect];
 
     glClearColor(.2, .2, .2, 1);
@@ -50,35 +83,28 @@
     
     glPushMatrix();
     glLoadIdentity();
-
     glTranslatef(0.0f, 0.0f, -7.0f);
     glRotatef(-90, 1, 0, 0);
     glMultMatrixf(a);
     
     glEnableClientState(GL_VERTEX_ARRAY);
-    [self drawQuad];
-    glDisableClientState(GL_VERTEX_ARRAY);
+    
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
+    [self drawBody];
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white10);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white80);
+    [self drawTop];
+    
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
+    [self drawScreen];
 
     glPopMatrix();
-    
+
     glFlush();
 }
-
--(void) spotlighting{
-    glEnable(GL_DEPTH_TEST);
-    GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat pos1[] = {0.0f, 0.0f, -50.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-    glLightfv(GL_LIGHT0, GL_POSITION, pos1);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-//    static GLfloat lightWhite[4] = {.60f, .60f, .60f, 1.0f};
-    static GLfloat lightWhite[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lightWhite);
-}
-
 
 -(void) setOrientation:(float *)q{
     a[0] = 1 - 2*q[1]*q[1] - 2*q[2]*q[2];   a[4] = 2*q[0]*q[1] - 2*q[2]*q[3];       a[8] = 2*q[0]*q[2] + 2*q[1]*q[3];
@@ -88,95 +114,94 @@
     a[15] = 1.0f;
 }
 
--(void) setupGL{
-    for(int i = 0; i < 16; i++)
-        a[i] = 0.0f;
-    a[0] = a[5] = a[10] = a[15] = 1.0f;
+-(void) drawTop{
+    // top
+    glBegin(GL_TRIANGLES);
+    glNormal3f(0,0,1);
+    glVertex3f(.5,1,.05);
+    glVertex3f(-.5,-1,.05);
+    glVertex3f(-.5,1,.05);
+    glVertex3f(-.5,-1,.05);
+    glVertex3f(.5,1,.05);
+    glVertex3f(.5,-1,.05);
+    glEnd();
+
+}
+
+-(void) drawScreen{
+    // top
+    glBegin(GL_TRIANGLES);
+    glNormal3f(0,0,1);
+    glVertex3f(.45,.775,.055);
+    glVertex3f(-.45,-.775,.055);
+    glVertex3f(-.45,.775,.055);
+    glVertex3f(-.45,-.775,.055);
+    glVertex3f(.45,.775,.055);
+    glVertex3f(.45,-.775,.055);
+    glEnd();
     
-    glEnable(GL_CULL_FACE);
-    [self spotlighting];
 }
 
 
--(void) drawQuad{
-    glColor4f(.3, .3, .3, .3);
-    // top
-    glBegin(GL_TRIANGLES);
-    glNormal3f(0,0,-1);
-    glVertex3f(.5,1,.05);
-    glVertex3f(-.5,1,.05);
-    glVertex3f(-.5,-1,.05);
-    glVertex3f(-.5,-1,.05);
-    glVertex3f(.5,-1,.05);
-    glVertex3f(.5,1,.05);
-    glEnd();
+-(void) drawBody{
+    glColor4f(1.0, 1.0, 1.0, 1.0);
 
     // bottom
     glColor4f(.7, .7, .7, .7);
     glBegin(GL_TRIANGLES);
-    glNormal3f(0,0,1);
+    glNormal3f(0,0,-1);
     glVertex3f(.5,1,-.05);
-    glVertex3f(-.5,-1,-.05);
     glVertex3f(-.5,1,-.05);
     glVertex3f(-.5,-1,-.05);
-    glVertex3f(.5,1,-.05);
+    glVertex3f(-.5,-1,-.05);
     glVertex3f(.5,-1,-.05);
+    glVertex3f(.5,1,-.05);
     glEnd();
     
     // side top or bottom
     glBegin(GL_TRIANGLES);
-    glNormal3f(0,1,0);
+    glNormal3f(0,-1,0);
     glVertex3f(.5,-1,.05);
+    glVertex3f(-.5,-1,-.05);
     glVertex3f(-.5,-1,.05);
     glVertex3f(-.5,-1,-.05);
-    glVertex3f(-.5,-1,-.05);
-    glVertex3f(.5,-1,-.05);
     glVertex3f(.5,-1,.05);
+    glVertex3f(.5,-1,-.05);
     glEnd();
 
     // side top or bottom
     glBegin(GL_TRIANGLES);
-    glNormal3f(0,-1,0);
+    glNormal3f(0,1,0);
     glVertex3f(-.5,1,.05);
-    glVertex3f(.5,1,.05);
-    glVertex3f(-.5,1,-.05);
     glVertex3f(-.5,1,-.05);
     glVertex3f(.5,1,.05);
+    glVertex3f(-.5,1,-.05);
     glVertex3f(.5,1,-.05);
+    glVertex3f(.5,1,.05);
     glEnd();
     
-    
-    // side left or right
-    glBegin(GL_TRIANGLES);
-    glNormal3f(1,0,0);
-    glVertex3f(-.5,1,.05);
-    glVertex3f(-.5,-1,-.05);
-    glVertex3f(-.5,-1,.05);
-    glVertex3f(-.5,-1,-.05);
-    glVertex3f(-.5,1,.05);
-    glVertex3f(-.5,1,-.05);
-    glEnd();
     
     // side left or right
     glBegin(GL_TRIANGLES);
     glNormal3f(-1,0,0);
+    glVertex3f(-.5,1,.05);
+    glVertex3f(-.5,-1,.05);
+    glVertex3f(-.5,-1,-.05);
+    glVertex3f(-.5,-1,-.05);
+    glVertex3f(-.5,1,-.05);
+    glVertex3f(-.5,1,.05);
+    glEnd();
+    
+    // side left or right
+    glBegin(GL_TRIANGLES);
+    glNormal3f(1,0,0);
     glVertex3f(.5,1,.05);
+    glVertex3f(.5,-1,-.05);
     glVertex3f(.5,-1,.05);
     glVertex3f(.5,-1,-.05);
-    glVertex3f(.5,-1,-.05);
-    glVertex3f(.5,1,-.05);
     glVertex3f(.5,1,.05);
+    glVertex3f(.5,1,-.05);
     glEnd();
-
-    
-//    glTexCoord2f(1,1);  glVertex3f(1,1,0);
-//    glTexCoord2f(0,1);  glVertex3f(-1,1,0);
-//    glTexCoord2f(0,0);  glVertex3f(-1,-1,0);
-//    glTexCoord2f(0,0);  glVertex3f(-1,-1,0);
-//    glTexCoord2f(1,0);  glVertex3f(1,-1,0);
-//    glTexCoord2f(1,1);  glVertex3f(1,1,0);
-//    glEnd();
-//    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 -(void) rebuildProjectionMatrix{
