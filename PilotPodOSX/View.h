@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface View : NSOpenGLView
--(void) updateAttitude:(NSString*)string;
+
+-(void) encodedOrientation:(NSData*) receivedData;
 
 @end

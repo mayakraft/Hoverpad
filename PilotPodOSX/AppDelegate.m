@@ -153,8 +153,8 @@
 //              [array[0] doubleValue], [array[1] doubleValue], [array[2] doubleValue],
 //              [array[3] doubleValue], [array[4] doubleValue], [array[5] doubleValue],
 //              [array[6] doubleValue], [array[7] doubleValue], [array[8] doubleValue]);
-        NSString *str = [[NSString alloc] initWithBytes:characteristic.value.bytes length:characteristic.value.length encoding:NSASCIIStringEncoding];
-        [view updateAttitude:str];
+
+        [view encodedOrientation:[characteristic value]];
         [view setNeedsDisplay:true];
 //        NSLog(@"r: %@",str);
     } else {

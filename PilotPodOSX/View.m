@@ -9,8 +9,12 @@
 #import "View.h"
 #import <OpenGL/gl.h>
 
+#import <GLKit/GLKit.h>
+
 @interface View (){
     GLfloat attitude[16];
+    GLfloat a[16];
+    GLKQuaternion orientation;
 }
 
 @end
@@ -58,7 +62,8 @@
     glTranslatef(0.0f, 0.0f, -10.0f);
     glRotatef(90, 1, 0, 0);
     
-    glMultMatrixf(attitude);
+    
+    glMultMatrixf(GLKMatrix4MakeWithQuaternion(orientation).m);
     
     glEnableClientState(GL_VERTEX_ARRAY);
   
@@ -70,6 +75,33 @@
     glPopMatrix();
     
     glFlush();
+}
+
+-(void) encodedOrientation:(NSData*) receivedData{
+    char *data = (char*)[receivedData bytes];
+    NSLog(@"R: %@",receivedData);
+    char x, y, z, w;
+    x = data[0];
+    y = data[1];
+    z = data[2];
+    w = data[3];
+    NSLog(@"%d (%d, %d, %d) ",w, x, y, z);
+//    NSLog(@"%d (%d, %d, %d) ", bytes[3],bytes[0], bytes[1], bytes[2]);
+
+    float qx, qy, qz, qw;
+    qx = x / 128.0f;
+    qy = y / 128.0f;
+    qz = z / 128.0f;
+    qw = w / 128.0f;
+    orientation = GLKQuaternionMake(qx, qy, qz, qw);
+    NSLog(@"%f (%f, %f, %f)",qw, qx, qy, qz);
+    
+    a[0] = 1 - 2*qy*qy - 2*qz*qz;   a[1] = 2*qx*qy - 2*qz*qw;       a[2] = 2*qx*qz + 2*qy*qw;
+    a[4] = 2*qx*qy + 2*qz*qw;       a[5] = 1 - 2*qx*qx - 2*qz*qz;   a[6] = 2*qy*qz - 2*qx*qw;
+    a[8] = 2*qx*qz - 2*qy*qw;       a[9] = 2*qy*qz + 2*qx*qw;       a[10] = 1 - 2*qx*qx - 2*qy*qy;
+    
+    a[3] = a[7] = a[11] = a[12] = a[13] = a[14] = 0.0f;
+    a[15] = 1.0f;
 }
 
 -(void) updateAttitude:(NSString*)string{
@@ -117,8 +149,8 @@
 
 -(void) loadGL{
     for(int i = 0; i < 16; i++)
-        attitude[i] = 0.0f;
-    attitude[0] = attitude[5] = attitude[10] = attitude[15] = 1.0f;
+        a[i] = 0.0f;
+    a[0] = a[5] = a[10] = a[15] = 1.0f;
 }
 
 

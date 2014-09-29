@@ -18,12 +18,6 @@
 #define INIT @"Init"
 #define STOP @"Stop"
 
-@interface ViewController (){
-    CMRotationMatrix attitude;
-    int count;
-}
-@end
-
 @implementation ViewController
 
 - (void)viewDidLoad
@@ -45,23 +39,15 @@
     }
     if (motionManager){
         if(motionManager.isDeviceMotionAvailable){
-            motionManager.deviceMotionUpdateInterval = 1.0;///45.0;
+            motionManager.deviceMotionUpdateInterval = 1.0/5.0;///45.0;
             [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
-                attitude = deviceMotion.attitude.rotationMatrix;
                 
 //                normalized = attitude * lastAttitude;  // results in the identity matrix plus perturbations between polling cycles
 //                lastAttitude = attitude;   // store last polling cycle to compare next time around
 //                lastAttitude.transpose();  //getInverse(attitude);  // transpose is the same as inverse for orthogonal matrices. and much easier
 //             log2Matrices3x3(normalized, attitude);
-                NSString *string = @"";
-                if(count % 3 == 0)
-                    string = [self attitudeString1];
-                else if(count % 3 == 1)
-                    string = [self attitudeString2];
-                else if(count % 3 == 2)
-                    string = [self attitudeString3];
-                count++;
-                [myPeripheralManager updateValue:[string dataUsingEncoding:NSASCIIStringEncoding]//[self dataForRotationMatrix:attitude]
+                
+                [myPeripheralManager updateValue:[self encodeOrientation:deviceMotion.attitude.quaternion]
                                forCharacteristic:myNotifyChar
                             onSubscribedCentrals:nil];
             }];
@@ -69,56 +55,24 @@
     }
 }
 
--(NSString*) attitudeString1{
-    NSString *ret = @"1";
-    
-    if(attitude.m11 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m11]];
-    if(attitude.m12 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m12]];
-    if(attitude.m13 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m13]];
-    
-    return ret;
-}
-
--(NSString*) attitudeString2{
-    NSString *ret = @"2";
-    
-    if(attitude.m21 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m21]];
-    if(attitude.m22 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m22]];
-    if(attitude.m23 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m23]];
-    
-    return ret;
-}
-
--(NSString*) attitudeString3{
-    NSString *ret = @"3";
-    
-    if(attitude.m31 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m31]];
-    if(attitude.m32 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m32]];
-    if(attitude.m33 >= 0) ret = [ret stringByAppendingString:@"+"];
-    ret = [ret stringByAppendingString:[NSString stringWithFormat:@"%.3f",attitude.m33]];
-    
-    return ret;
+// encodes (x,y,z)w quaternion floats into signed char
+// -1.0 to 1.0 into -127 to 127
+//
+-(NSData*) encodeOrientation:(CMQuaternion)q{
+    char bytes[4];
+    short temp;
+    temp = q.x * 128.0f;
+    bytes[0] = (char)temp;
+    bytes[1] = (char)(q.y * 128.0f);
+    bytes[2] = (char)(q.z * 128.0f);
+    bytes[3] = (char)(q.w * 128.0f);
+    return [NSData dataWithBytes:bytes length:4];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(NSData*)dataForRotationMatrix:(CMRotationMatrix)r{
-    NSArray *array = @[[NSNumber numberWithDouble:r.m11], [NSNumber numberWithDouble:r.m12], [NSNumber numberWithDouble:r.m13],
-                       [NSNumber numberWithDouble:r.m21], [NSNumber numberWithDouble:r.m22], [NSNumber numberWithDouble:r.m23],
-                       [NSNumber numberWithDouble:r.m31], [NSNumber numberWithDouble:r.m32], [NSNumber numberWithDouble:r.m33]];
-    return [NSKeyedArchiver archivedDataWithRootObject:array];
 }
 
 - (NSString*)getServiceUuidAsString
