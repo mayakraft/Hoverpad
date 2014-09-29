@@ -39,26 +39,26 @@
     }
     if (motionManager){
         if(motionManager.isDeviceMotionAvailable){
-            motionManager.deviceMotionUpdateInterval = 1.0/5.0;///45.0;
-            [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
+            motionManager.deviceMotionUpdateInterval = 1.0/10.0;///45.0;
+            [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
+                                               withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
                 
+                [myPeripheralManager updateValue:[self encodeQuaternion:deviceMotion.attitude.quaternion]
+                               forCharacteristic:myNotifyChar
+                            onSubscribedCentrals:nil];
+
 //                normalized = attitude * lastAttitude;  // results in the identity matrix plus perturbations between polling cycles
 //                lastAttitude = attitude;   // store last polling cycle to compare next time around
 //                lastAttitude.transpose();  //getInverse(attitude);  // transpose is the same as inverse for orthogonal matrices. and much easier
 //             log2Matrices3x3(normalized, attitude);
-                
-                [myPeripheralManager updateValue:[self encodeOrientation:deviceMotion.attitude.quaternion]
-                               forCharacteristic:myNotifyChar
-                            onSubscribedCentrals:nil];
             }];
         }
     }
 }
 
-// encodes (x,y,z)w quaternion floats into signed char
-// -1.0 to 1.0 into -127 to 127
-//
--(NSData*) encodeOrientation:(CMQuaternion)q{
+-(NSData*) encodeQuaternion:(CMQuaternion)q{
+    // encodes (x,y,z)w quaternion floats into signed char
+    // -1.0 to 1.0 into -127 to 127
     char bytes[4];
     short temp;
     temp = q.x * 128.0f;

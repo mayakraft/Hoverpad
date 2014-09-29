@@ -10,6 +10,6 @@
 
 @interface View : NSOpenGLView
 
--(void) encodedOrientation:(NSData*) receivedData;
+-(void) setOrientation:(float*)quaternion;
 
 @end

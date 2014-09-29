@@ -147,19 +147,22 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    if ([characteristic.value bytes]) {
-//        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithData:characteristic.value];
-//        NSLog(@"\n[%.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f]",
-//              [array[0] doubleValue], [array[1] doubleValue], [array[2] doubleValue],
-//              [array[3] doubleValue], [array[4] doubleValue], [array[5] doubleValue],
-//              [array[6] doubleValue], [array[7] doubleValue], [array[8] doubleValue]);
-
-        [view encodedOrientation:[characteristic value]];
+    if ([characteristic.value length] == 4) {  //([characteristic.value bytes]){
+        float q[4];
+        [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
+        [view setOrientation:q];
         [view setNeedsDisplay:true];
-//        NSLog(@"r: %@",str);
     } else {
         
     }
+}
+
+-(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {
+    char *data = (char*)[receivedData bytes];
+    *x = data[0] / 128.0f;
+    *y = data[1] / 128.0f;
+    *z = data[2] / 128.0f;
+    *w = data[3] / 128.0f;
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
