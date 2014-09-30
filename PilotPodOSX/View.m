@@ -97,12 +97,17 @@
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white80);
     [self drawTop];
 
-    if(_screenTouched)
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
-    else
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
-    [self drawScreen];
+    if(_screenTouched){
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, white);
+        [self drawScreen];
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+    }
+    else{
+        [self drawScreen];
+    }
+
 
     glPopMatrix();
 

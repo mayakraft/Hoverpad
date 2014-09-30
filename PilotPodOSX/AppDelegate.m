@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "View.h"
+#import "VHIDDevice.h"
+#import <WirtualJoy/WJoyDevice.h>
 
 #define SERVICE_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F30"
 
@@ -15,11 +17,13 @@
 #define WRITE_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F41"
 #define NOTIFY_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F42"
 
-@interface AppDelegate() {
+@interface AppDelegate() <VHIDDeviceDelegate> {
     CBCentralManager *myCentralManager;
     CBPeripheral *myPeripheral;
     CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
     View *view;
+    VHIDDevice *joystickDescription;
+    WJoyDevice *virtualJoystick;
 }
 
 @end
@@ -32,6 +36,20 @@
     [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
     [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
     view = self.window.contentView;
+    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:YES];
+    [joystickDescription setDelegate:self];
+    
+    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"iOS Joystick"];
+//    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+
+    NSPoint newPosition = NSZeroPoint;
+    newPosition.y += 0.3025f;
+    [joystickDescription setPointer:0 position:newPosition];
+}
+
+-(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
+    [virtualJoystick updateHIDState:state];
+    NSLog(@"HID state updated");
 }
 
 -(void) initCentral{
@@ -154,7 +172,7 @@
         [view setNeedsDisplay:true];
     }
     else if ([characteristic.value length] == 1) {
-        char *touched = [[characteristic value] bytes];
+        char *touched = (char*)[[characteristic value] bytes];
         BOOL t = *touched;
         [view setScreenTouched:t];
     }
