@@ -15,6 +15,8 @@
     CBPeripheralManager *myPeripheralManager;
     CBMutableCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
     CMMotionManager *motionManager;
+    
+    BOOL screenTouched;
 }
 @property UIButton *theButton;
 //@property UITextField *uuid;

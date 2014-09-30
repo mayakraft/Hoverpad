@@ -12,4 +12,6 @@
 
 -(void) setOrientation:(float*)quaternion;
 
+@property (nonatomic) BOOL screenTouched;
+
 @end

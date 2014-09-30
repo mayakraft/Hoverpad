@@ -96,8 +96,11 @@
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white10);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white80);
     [self drawTop];
-    
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
+
+    if(_screenTouched)
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
+    else
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
     [self drawScreen];
 

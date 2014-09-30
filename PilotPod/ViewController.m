@@ -28,6 +28,12 @@
 //    [self.view addSubview:self.uuid];
 //    self.uuid.text = SERVICE_UUID;
     
+    UIButton *screenButton = [[UIButton alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [screenButton setBackgroundColor:[UIColor clearColor]];
+    [screenButton setBackgroundImage:[UIImage imageNamed:@"white.png"] forState:UIControlStateHighlighted];
+    [screenButton addTarget:self action:@selector(screenTouch:) forControlEvents:UIControlEventAllTouchEvents];
+    [self.view addSubview:screenButton];
+
     self.theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.theButton setFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*.5-50, [[UIScreen mainScreen] bounds].size.height*.5-25, 100, 50)];
     [self.theButton setTitle:INIT forState:UIControlStateNormal];
@@ -56,6 +62,25 @@
             }];
         }
     }
+}
+
+-(void) updateTouchIfChanged:(BOOL)isTracking{
+    if (screenTouched != isTracking) {
+        screenTouched = isTracking;
+        [self updateState];
+    }
+}
+
+-(void) updateState{
+    unsigned char d = (screenTouched ? 1 : 0);
+    [myPeripheralManager updateValue:[NSData dataWithBytes:&d length:1]
+                   forCharacteristic:myNotifyChar
+                onSubscribedCentrals:nil];
+
+}
+
+-(void) screenTouch:(UIButton*)sender{
+    [self updateTouchIfChanged:sender.isTracking];
 }
 
 -(NSData*) encodeQuaternion:(CMQuaternion)q{
@@ -185,7 +210,7 @@
             self.theButton.enabled = YES;
             break;
         default:
-            NSLog(@"Peripheral state changed to %ld", myPeripheralManager.state);
+            NSLog(@"Peripheral state changed to %d", myPeripheralManager.state);
             break;
     }
 }

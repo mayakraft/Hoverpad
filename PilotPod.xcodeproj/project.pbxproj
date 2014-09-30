@@ -25,6 +25,7 @@
 		D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D568D39718CBFC4D00ED987D /* Images.xcassets */; };
 		D568D3B818CC012300ED987D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B718CC012300ED987D /* CoreBluetooth.framework */; };
 		D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B918CC014F00ED987D /* CoreMotion.framework */; };
+		D599218819DA295400B445EF /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D599218719DA295400B445EF /* white.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		D568D39E18CBFC4D00ED987D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D568D3B718CC012300ED987D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		D568D3B918CC014F00ED987D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		D599218719DA295400B445EF /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				D568D38C18CBFC4D00ED987D /* AppDelegate.m */,
 				D568D39418CBFC4D00ED987D /* ViewController.h */,
 				D568D39518CBFC4D00ED987D /* ViewController.m */,
+				D599218719DA295400B445EF /* white.png */,
 				D568D39718CBFC4D00ED987D /* Images.xcassets */,
 				D568D38318CBFC4D00ED987D /* Supporting Files */,
 			);
@@ -263,6 +266,7 @@
 			files = (
 				D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */,
 				D568D38718CBFC4D00ED987D /* InfoPlist.strings in Resources */,
+				D599218819DA295400B445EF /* white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

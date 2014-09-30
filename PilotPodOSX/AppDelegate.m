@@ -152,7 +152,13 @@
         [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
         [view setOrientation:q];
         [view setNeedsDisplay:true];
-    } else {
+    }
+    else if ([characteristic.value length] == 1) {
+        char *touched = [[characteristic value] bytes];
+        BOOL t = *touched;
+        [view setScreenTouched:t];
+    }
+    else{
         
     }
 }
