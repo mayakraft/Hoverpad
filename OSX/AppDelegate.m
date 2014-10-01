@@ -10,6 +10,7 @@
 #import "View.h"
 #import "VHIDDevice.h"
 #import <WirtualJoy/WJoyDevice.h>
+#import "InstructionsView.h"
 
 #define SERVICE_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F30"
 
@@ -21,9 +22,10 @@
     CBCentralManager *myCentralManager;
     CBPeripheral *myPeripheral;
     CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
-    View *view;
     VHIDDevice *joystickDescription;
     WJoyDevice *virtualJoystick;
+    View *orientationView;
+    InstructionsView *instructionView;
 }
 
 @end
@@ -63,13 +65,11 @@
     [statusItem setToolTip:@"You do not need this..."];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
-    [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
-    [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
-    view = self.orientationWindow.contentView;
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification{
     
+    orientationView = _orientationWindow.contentView;
+    instructionView = _instructions.contentView;
+
     NSButton *closeButton = [_orientationWindow standardWindowButton:NSWindowCloseButton];
     [closeButton setTarget:self];
     [closeButton setAction:@selector(toggleOrientationWindow:)];
@@ -83,6 +83,10 @@
     
     virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
 //    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+    
+    // boot BLE
+    [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
 }
 
 -(void) something{
@@ -105,7 +109,7 @@
     NSLog(@"startScan");
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
     [myCentralManager scanForPeripheralsWithServices:services options:nil];
-    [self isLECapableHardware];
+    [self setIsBLECapable:[self isLECapableHardware]];
 }
 
 - (BOOL) isLECapableHardware
@@ -133,10 +137,11 @@
     
     NSLog(@"Central manager state: %@", state);
     
-//    NSAlert *alert = [[NSAlert alloc] init];
-//    [alert setMessageText:state];
-//    [alert addButtonWithTitle:@"OK"];
-//    [alert setIcon:[[NSImage alloc] initWithContentsOfFile:@"AppIcon"]];
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:state];
+    [alert addButtonWithTitle:@"OK"];
+    [alert setIcon:[[NSImage alloc] initWithContentsOfFile:@"AppIcon"]];
+    //TODO: Alert not presenting
 //    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
     return FALSE;
 }
@@ -147,12 +152,12 @@
     
     NSLog(@"Connected to peripheral %@", peripheral.name);
 
-    _deviceConnected = true;
+    [self setIsDeviceConnected:YES];
     
     // Let's qeury the service
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
     [peripheral discoverServices:services];
-    
+    NSLog(@"SERVICES: %@",services);
 }
 
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
@@ -167,9 +172,33 @@
     [myCentralManager connectPeripheral:myPeripheral options:nil];
 }
 
+-(void) connectionsDidUpdate{
+    [instructionView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
+}
+
+-(void) setIsBLECapable:(BOOL)isBLECapable{
+    _isBLECapable = isBLECapable;
+    if(isBLECapable) _isBLEEnabled = true;
+    if(!isBLECapable) _isBLEEnabled = false;
+    [self connectionsDidUpdate];
+}
+
+-(void)setIsBLEEnabled:(BOOL)isBLEEnabled{
+    _isBLEEnabled = isBLEEnabled;
+    [self connectionsDidUpdate];
+}
+
+-(void) setIsDeviceConnected:(BOOL)isDeviceConnected{
+    _isDeviceConnected = isDeviceConnected;
+    [self connectionsDidUpdate];
+}
+
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
     if(central.state == CBCentralManagerStatePoweredOn){
         NSLog(@"Central powered on");
+    }
+    if(central.state == CBCentralManagerStatePoweredOff){
+        NSLog(@"Central powered off");
     }
 }
 
@@ -221,13 +250,13 @@
         [joystickDescription setPointer:0 position:newPosition];
 
         //TODO: if view is visible
-        [view setOrientation:q];
-        [view setNeedsDisplay:true];
+        [orientationView setOrientation:q];
+        [orientationView setNeedsDisplay:true];
     }
     else if ([characteristic.value length] == 1) {
         char *touched = (char*)[[characteristic value] bytes];
         BOOL t = *touched;
-        [view setScreenTouched:t];
+        [orientationView setScreenTouched:t];
     }
     else{
         

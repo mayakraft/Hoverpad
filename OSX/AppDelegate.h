@@ -16,17 +16,21 @@
     NSImage *statusHighlightImage;
 }
 
+// WINDOWS
+
 -(IBAction)toggleOrientationWindow:(id)sender;
 -(IBAction)toggleInstructionsWindow:(id)sender;
-
 @property (assign) IBOutlet NSWindow *orientationWindow;
 @property (assign) IBOutlet NSWindow *instructions;
-
 @property IBOutlet NSMenuItem *orientationMenuItem;
 @property IBOutlet NSMenuItem *instructionsMenuItem;
-
-@property BOOL deviceConnected;
 @property BOOL orientationWindowVisible;
 @property BOOL instructionsWindowVisible;
+
+// BLE and DEVICE related
+
+@property (nonatomic) BOOL isDeviceConnected;
+@property (nonatomic) BOOL isBLEEnabled;
+@property (nonatomic) BOOL isBLECapable;
 
 @end
