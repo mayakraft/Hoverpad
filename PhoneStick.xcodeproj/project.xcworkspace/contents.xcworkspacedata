@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Hover.xcodeproj">
+      location = "self:PhoneStick.xcodeproj">
    </FileRef>
 </Workspace>
