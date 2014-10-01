@@ -30,6 +30,33 @@
 
 @implementation AppDelegate
 
+-(void) toggleOrientationWindow:(id)sender{
+    BOOL isVisible = [_window isVisible];
+    if(isVisible) [_orientationMenuItem setTitle:@"Show Orientation"];
+    else [_orientationMenuItem setTitle:@"Hide Orientation"];
+    [_window setIsVisible:!isVisible];
+}
+
+-(void) toggleInstructionsWindow:(id)sender{
+    BOOL isVisible = [_instructions isVisible];
+    if(isVisible) [_instructionsMenuItem setTitle:@"Instructions"];
+    else [_instructionsMenuItem setTitle:@"Hide Instructions"];
+    [_instructions setIsVisible:!isVisible];
+}
+
+
+-(void) awakeFromNib{
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    NSImage *menuIcon = [NSImage imageNamed:@"Menu Icon"];
+    NSImage *highlightIcon = [NSImage imageNamed:@"Menu Icon"];
+    
+    [statusItem setImage:menuIcon];
+    [statusItem setAlternateImage:highlightIcon];
+    [statusItem setMenu:statusMenu];
+    [statusItem setHighlightMode:YES];
+    [statusItem setToolTip:@"You do not need this..."];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application

@@ -11,6 +11,7 @@
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B719DAF9CE00278548 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
+		D5352FA419DB9926005C39E1 /* InstructionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5352FA319DB9926005C39E1 /* InstructionsView.m */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
 		D552052919D5C769006CF417 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D552052719D5C769006CF417 /* InfoPlist.strings */; };
 		D552052B19D5C769006CF417 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D552052A19D5C769006CF417 /* main.m */; };
@@ -54,13 +55,6 @@
 			remoteGlobalIDString = 0A46960715B593A2003AB8FD;
 			remoteInfo = WirtualJoy;
 		};
-		D505A3A919DAF62C00278548 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D505A38619DAF62C00278548 /* WirtualJoy.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0A4696CE15B5953E003AB8FD;
-			remoteInfo = Test;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +65,8 @@
 		D505A3AE19DAF6C500278548 /* VHIDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDDevice.m; path = WJoy/VHID/VHIDDevice.m; sourceTree = SOURCE_ROOT; };
 		D505A3AF19DAF6C500278548 /* VHIDPointerCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHIDPointerCollection.h; path = WJoy/VHID/VHIDPointerCollection.h; sourceTree = SOURCE_ROOT; };
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
+		D5352FA219DB9926005C39E1 /* InstructionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsView.h; sourceTree = "<group>"; };
+		D5352FA319DB9926005C39E1 /* InstructionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsView.m; sourceTree = "<group>"; };
 		D552051D19D5C769006CF417 /* PilotPodOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotPodOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -137,7 +133,6 @@
 				D505A3A419DAF62C00278548 /* wjoy.kext */,
 				D505A3A619DAF62C00278548 /* WJoyTool */,
 				D505A3A819DAF62C00278548 /* WirtualJoy.framework */,
-				D505A3AA19DAF62C00278548 /* Test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,6 +167,8 @@
 				D552053119D5C769006CF417 /* AppDelegate.m */,
 				D552054F19D5C98D006CF417 /* View.h */,
 				D552055019D5C98D006CF417 /* View.m */,
+				D5352FA219DB9926005C39E1 /* InstructionsView.h */,
+				D5352FA319DB9926005C39E1 /* InstructionsView.m */,
 				D505A3B419DAF6C800278548 /* VHID */,
 				D552053319D5C769006CF417 /* MainMenu.xib */,
 				D552053619D5C769006CF417 /* Images.xcassets */,
@@ -295,7 +292,7 @@
 		D568D37118CBFC4D00ED987D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Robby Kraft";
 			};
 			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "PilotPod" */;
@@ -345,13 +342,6 @@
 			remoteRef = D505A3A719DAF62C00278548 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D505A3AA19DAF62C00278548 /* Test.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Test.app;
-			remoteRef = D505A3A919DAF62C00278548 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -388,6 +378,7 @@
 				D552053219D5C769006CF417 /* AppDelegate.m in Sources */,
 				D552052B19D5C769006CF417 /* main.m in Sources */,
 				D552055119D5C98D006CF417 /* View.m in Sources */,
+				D5352FA419DB9926005C39E1 /* InstructionsView.m in Sources */,
 				D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,7 +482,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -531,7 +521,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
