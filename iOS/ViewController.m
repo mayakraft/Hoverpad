@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  PilotPod
+//  Hover
 //
 //  Created by Robby Kraft on 3/8/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
@@ -15,13 +15,12 @@
 #define NOTIFY_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F42"
 
 #define START @"START"
-#define INIT @"INIT"
+#define INIT @"BOOT"
 #define STOP @"STOP"
 
 @implementation ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
         
 //    self.uuid = [[UITextField alloc] initWithFrame:CGRectMake(50, 50, [[UIScreen mainScreen] bounds].size.width-100, 75)];
@@ -42,30 +41,36 @@
     [self.theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.theButton];
     
+    identity = GLKQuaternionIdentity;
+    
     if (!motionManager) {
         motionManager = [[CMMotionManager alloc] init];
     }
-    if (motionManager){
-        if(motionManager.isDeviceMotionAvailable){
-            motionManager.deviceMotionUpdateInterval = 1.0/10.0;///45.0;
-            [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
-                                               withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
-                
-                [myPeripheralManager updateValue:[self encodeQuaternion:deviceMotion.attitude.quaternion]
-                               forCharacteristic:myNotifyChar
-                            onSubscribedCentrals:nil];
-
-//                normalized = attitude * lastAttitude;  // results in the identity matrix plus perturbations between polling cycles
-//                lastAttitude = attitude;   // store last polling cycle to compare next time around
-//                lastAttitude.transpose();  //getInverse(attitude);  // transpose is the same as inverse for orthogonal matrices. and much easier
-//             log2Matrices3x3(normalized, attitude);
-            }];
-        }
+    if (motionManager && motionManager.isDeviceMotionAvailable){
+        motionManager.deviceMotionUpdateInterval = 1.0/30.0;
+        [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
+        
+            CMQuaternion q = deviceMotion.attitude.quaternion;
+            lq.x = q.x;   lq.y = q.y;   lq.z = q.z;   lq.w = q.w;
+            if(screenTouched){
+                identity = GLKQuaternionInvert(lq);//lq;
+            }
+            NSData *newOrientation = [self encodeQuaternion:GLKQuaternionMultiply(identity, lq)];
+            if(![_orientation isEqualToData:newOrientation]){
+                [self setOrientation:newOrientation];
+            }
+        }];
     }
+}
+
+-(void) setOrientation:(NSData *)orientation{
+    _orientation = orientation;
+    [myPeripheralManager updateValue:orientation forCharacteristic:myNotifyChar onSubscribedCentrals:nil];
 }
 
 -(void) updateTouchIfChanged:(BOOL)isTracking{
     if (screenTouched != isTracking) {
+        // touch changed
         screenTouched = isTracking;
         [self updateState];
     }
@@ -73,17 +78,14 @@
 
 -(void) updateState{
     unsigned char d = (screenTouched ? 1 : 0);
-    [myPeripheralManager updateValue:[NSData dataWithBytes:&d length:1]
-                   forCharacteristic:myNotifyChar
-                onSubscribedCentrals:nil];
-
+    [myPeripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:myNotifyChar onSubscribedCentrals:nil];
 }
 
 -(void) screenTouch:(UIButton*)sender{
     [self updateTouchIfChanged:sender.isTracking];
 }
 
--(NSData*) encodeQuaternion:(CMQuaternion)q{
+-(NSData*) encodeQuaternion:(GLKQuaternion)q{
     // encodes (x,y,z)w quaternion floats into signed char
     // -1.0 to 1.0 into -127 to 127
     char bytes[4];
@@ -96,19 +98,16 @@
     return [NSData dataWithBytes:bytes length:4];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (NSString*)getServiceUuidAsString
-{
+- (NSString*)getServiceUuidAsString{
     return SERVICE_UUID;
 }
 
-- (IBAction)buttonTapped:(id)sender
-{
+- (IBAction)buttonTapped:(id)sender{
     if (sender != self.theButton) {
         NSLog(@"Something is wrong!");
         return;
@@ -129,36 +128,28 @@
     }
 }
 
-- (void)initPeripheral
-{
+- (void)initPeripheral{
     myReadChar = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID]
                                                     properties:CBCharacteristicPropertyRead
                                                          value:nil
-                                                   permissions:CBAttributePermissionsReadable
-                  ];
+                                                   permissions:CBAttributePermissionsReadable];
     myWriteChar = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:WRITE_CHAR_UUID]
                                                      properties:CBCharacteristicPropertyWrite
                                                           value:nil
-                                                    permissions:CBAttributePermissionsWriteable
-                   ];
-    
+                                                    permissions:CBAttributePermissionsWriteable];
     myNotifyChar = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID]
                                                       properties:CBCharacteristicPropertyNotify
                                                            value:nil
-                                                     permissions:0
-                    ];
-    
+                                                     permissions:0];
     myPeripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
 }
 
 
-- (NSString*)getName
-{
+- (NSString*)getName{
     return [[self getServiceUuidAsString] substringFromIndex:[[self getServiceUuidAsString] length]-4];
 }
 
-- (void)startAdvertisements
-{
+- (void)startAdvertisements{
     NSLog(@"Starting advertisements...");
     
     NSMutableDictionary *advertisingDict = [NSMutableDictionary dictionary];
@@ -168,10 +159,8 @@
     [myPeripheralManager startAdvertising:advertisingDict];
 }
 
-- (void)stopAdvertisements
-{
+- (void)stopAdvertisements{
     NSLog(@"Stopping advertisements...");
-    
     [myPeripheralManager stopAdvertising];
     
     NSLog(@"Advertisements stopped!");
@@ -200,8 +189,7 @@
 
 #pragma mark Peripheral Manager delegates
 
-- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
-{
+- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     switch (myPeripheralManager.state) {
         case CBPeripheralManagerStatePoweredOn:
             NSLog(@"Peripheral powered on, we are in business!");
@@ -215,8 +203,7 @@
     }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error
-{
+- (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
     NSLog(@"Advertisements started!");
     [self.theButton setTitle:STOP forState:UIControlStateNormal];
     self.theButton.enabled = YES;
@@ -235,8 +222,7 @@
     }
 }
 
-- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request
-{
+- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
     NSLog(@"Received read request!");
     NSString *valueToSend;
     NSDate *currentTime = [NSDate date];
@@ -249,13 +235,11 @@
     [myPeripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
 }
 
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
-{
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"Central subscribed!");
 }
 
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic
-{
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"Central unsubscribed!");
 }
 

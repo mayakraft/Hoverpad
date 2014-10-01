@@ -1,6 +1,5 @@
 //
 //  AppDelegate.h
-//  PilotPodOSX
 //
 //  Created by Robby Kraft on 3/8/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
@@ -19,13 +18,13 @@
 // WINDOWS
 
 -(IBAction)toggleOrientationWindow:(id)sender;
--(IBAction)toggleInstructionsWindow:(id)sender;
+-(IBAction)toggleStatusWindow:(id)sender;
 @property (assign) IBOutlet NSWindow *orientationWindow;
-@property (assign) IBOutlet NSWindow *instructions;
+@property (assign) IBOutlet NSWindow *statusWindow;
 @property IBOutlet NSMenuItem *orientationMenuItem;
-@property IBOutlet NSMenuItem *instructionsMenuItem;
+@property IBOutlet NSMenuItem *statusMenuItem;
 @property BOOL orientationWindowVisible;
-@property BOOL instructionsWindowVisible;
+@property BOOL statusWindowVisible;
 
 // BLE and DEVICE related
 

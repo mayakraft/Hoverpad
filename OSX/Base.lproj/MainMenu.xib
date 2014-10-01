@@ -13,21 +13,21 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
-                <outlet property="instructions" destination="sol-HT-Oha" id="XOf-H9-9oq"/>
-                <outlet property="instructionsMenuItem" destination="i2e-vr-eoA" id="cJz-bI-5u0"/>
                 <outlet property="orientationMenuItem" destination="AKh-Zv-8Zw" id="dnl-Gr-wfg"/>
                 <outlet property="orientationWindow" destination="QvC-M9-y7g" id="L0f-bz-rUh"/>
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
+                <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
+                <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
-                <menuItem title="HoverPodOSX" id="1Xt-HY-uBw">
+                <menuItem title="HoverOSX" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="HoverPodOSX" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="HoverOSX" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
-                            <menuItem title="About HoverPodOSX" id="5kV-Vb-QxS">
+                            <menuItem title="About HoverOSX" id="5kV-Vb-QxS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
@@ -41,7 +41,7 @@
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                            <menuItem title="Hide HoverPodOSX" keyEquivalent="h" id="Olw-nP-bQN">
+                            <menuItem title="Hide HoverOSX" keyEquivalent="h" id="Olw-nP-bQN">
                                 <connections>
                                     <action selector="hide:" target="-1" id="PnN-Uc-m68"/>
                                 </connections>
@@ -59,7 +59,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit HoverPodOSX" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem title="Quit HoverOSX" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
                                 </connections>
@@ -398,7 +398,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="HoverPodOSX Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="HoverOSX Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>
@@ -409,7 +409,7 @@
             </items>
         </menu>
         <window title="Orientation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
@@ -430,10 +430,10 @@
                         <action selector="toggleOrientationWindow:" target="Voe-Tx-rLC" id="48M-D0-lYr"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Instructions" id="i2e-vr-eoA">
+                <menuItem title="Show Status" id="i2e-vr-eoA">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="toggleInstructionsWindow:" target="Voe-Tx-rLC" id="Ma9-Dt-Doi"/>
+                        <action selector="toggleStatusWindow:" target="Voe-Tx-rLC" id="34y-7o-1vX"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="TWb-ee-zNk"/>
@@ -446,12 +446,12 @@
             </items>
             <point key="canvasLocation" x="-265.5" y="563.5"/>
         </menu>
-        <window title="Instructions" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="sol-HT-Oha">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Status" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="sol-HT-Oha">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="109" y="132" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
-            <view key="contentView" id="bWk-FN-cnD" customClass="InstructionsView">
+            <view key="contentView" id="bWk-FN-cnD" customClass="StatusView">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>

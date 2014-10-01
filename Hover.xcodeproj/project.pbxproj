@@ -19,7 +19,7 @@
 		D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B918CC014F00ED987D /* CoreMotion.framework */; };
 		D5959DA619DBBCD500E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA519DBBCD500E5C7A3 /* main.m */; };
 		D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */; };
-		D5959DAE19DBBCE500E5C7A3 /* InstructionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */; };
+		D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAA19DBBCE500E5C7A3 /* StatusView.m */; };
 		D5959DAF19DBBCE500E5C7A3 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAC19DBBCE500E5C7A3 /* View.m */; };
 		D5959DB219DBBD1500E5C7A3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */; };
 		D5959DB519DBBD5C00E5C7A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */; };
@@ -63,14 +63,14 @@
 		D505A3AE19DAF6C500278548 /* VHIDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDDevice.m; path = WJoy/VHID/VHIDDevice.m; sourceTree = SOURCE_ROOT; };
 		D505A3AF19DAF6C500278548 /* VHIDPointerCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHIDPointerCollection.h; path = WJoy/VHID/VHIDPointerCollection.h; sourceTree = SOURCE_ROOT; };
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
-		D552051D19D5C769006CF417 /* HoverPodOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverPodOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D552051D19D5C769006CF417 /* HoverOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D552052219D5C769006CF417 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D552052319D5C769006CF417 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		D552052619D5C769006CF417 /* HoverPodOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "HoverPodOSX-Info.plist"; path = "OSX/HoverPodOSX-Info.plist"; sourceTree = "<group>"; };
-		D552052C19D5C769006CF417 /* HoverPodOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HoverPodOSX-Prefix.pch"; path = "OSX/HoverPodOSX-Prefix.pch"; sourceTree = "<group>"; };
-		D568D37918CBFC4D00ED987D /* HoverPod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverPod.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D552052619D5C769006CF417 /* HoverOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "HoverOSX-Info.plist"; path = "OSX/HoverOSX-Info.plist"; sourceTree = "<group>"; };
+		D552052C19D5C769006CF417 /* HoverOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HoverOSX-Prefix.pch"; path = "OSX/HoverOSX-Prefix.pch"; sourceTree = "<group>"; };
+		D568D37918CBFC4D00ED987D /* Hover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D568D37C18CBFC4D00ED987D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D568D38018CBFC4D00ED987D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -80,8 +80,8 @@
 		D5959DA519DBBCD500E5C7A3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = OSX/main.m; sourceTree = SOURCE_ROOT; };
 		D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = OSX/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = OSX/AppDelegate.m; sourceTree = SOURCE_ROOT; };
-		D5959DA919DBBCE500E5C7A3 /* InstructionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstructionsView.h; path = OSX/InstructionsView.h; sourceTree = SOURCE_ROOT; };
-		D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InstructionsView.m; path = OSX/InstructionsView.m; sourceTree = SOURCE_ROOT; };
+		D5959DA919DBBCE500E5C7A3 /* StatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatusView.h; path = OSX/StatusView.h; sourceTree = SOURCE_ROOT; };
+		D5959DAA19DBBCE500E5C7A3 /* StatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusView.m; path = OSX/StatusView.m; sourceTree = SOURCE_ROOT; };
 		D5959DAB19DBBCE500E5C7A3 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = OSX/View.h; sourceTree = SOURCE_ROOT; };
 		D5959DAC19DBBCE500E5C7A3 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = View.m; path = OSX/View.m; sourceTree = SOURCE_ROOT; };
 		D5959DB119DBBD1500E5C7A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = OSX/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
@@ -93,9 +93,9 @@
 		D5959DBB19DBBDED00E5C7A3 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = iOS/ViewController.h; sourceTree = SOURCE_ROOT; };
 		D5959DBC19DBBDED00E5C7A3 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = iOS/ViewController.m; sourceTree = SOURCE_ROOT; };
 		D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iOS/Images.xcassets; sourceTree = SOURCE_ROOT; };
-		D5959DC219DBBE2600E5C7A3 /* HoverPod-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "HoverPod-Info.plist"; path = "iOS/HoverPod-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D5959DC219DBBE2600E5C7A3 /* Hover-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Hover-Info.plist"; path = "iOS/Hover-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D5959DC519DBBE3A00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = iOS/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
-		D5959DC719DBBE4700E5C7A3 /* HoverPod-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HoverPod-Prefix.pch"; path = "iOS/HoverPod-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		D5959DC719DBBE4700E5C7A3 /* Hover-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Hover-Prefix.pch"; path = "iOS/Hover-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		D5959DC819DBBE5A00E5C7A3 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white.png; path = iOS/white.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -163,8 +163,8 @@
 				D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */,
 				D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */,
 				D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */,
-				D5959DA919DBBCE500E5C7A3 /* InstructionsView.h */,
-				D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */,
+				D5959DA919DBBCE500E5C7A3 /* StatusView.h */,
+				D5959DAA19DBBCE500E5C7A3 /* StatusView.m */,
 				D5959DAB19DBBCE500E5C7A3 /* View.h */,
 				D5959DAC19DBBCE500E5C7A3 /* View.m */,
 				D5959DB619DBBD7800E5C7A3 /* Images.xcassets */,
@@ -178,10 +178,10 @@
 		D552052519D5C769006CF417 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D552052619D5C769006CF417 /* HoverPodOSX-Info.plist */,
+				D552052619D5C769006CF417 /* HoverOSX-Info.plist */,
 				D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */,
 				D5959DA519DBBCD500E5C7A3 /* main.m */,
-				D552052C19D5C769006CF417 /* HoverPodOSX-Prefix.pch */,
+				D552052C19D5C769006CF417 /* HoverOSX-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -199,8 +199,8 @@
 		D568D37A18CBFC4D00ED987D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D568D37918CBFC4D00ED987D /* HoverPod.app */,
-				D552051D19D5C769006CF417 /* HoverPodOSX.app */,
+				D568D37918CBFC4D00ED987D /* Hover.app */,
+				D552051D19D5C769006CF417 /* HoverOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,8 +241,8 @@
 			children = (
 				D5959DBA19DBBDED00E5C7A3 /* main.m */,
 				D5959DC419DBBE3A00E5C7A3 /* InfoPlist.strings */,
-				D5959DC719DBBE4700E5C7A3 /* HoverPod-Prefix.pch */,
-				D5959DC219DBBE2600E5C7A3 /* HoverPod-Info.plist */,
+				D5959DC719DBBE4700E5C7A3 /* Hover-Prefix.pch */,
+				D5959DC219DBBE2600E5C7A3 /* Hover-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -250,9 +250,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D552051C19D5C769006CF417 /* HoverPodOSX */ = {
+		D552051C19D5C769006CF417 /* HoverOSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverPodOSX" */;
+			buildConfigurationList = D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverOSX" */;
 			buildPhases = (
 				D552051919D5C769006CF417 /* Sources */,
 				D552051A19D5C769006CF417 /* Frameworks */,
@@ -262,14 +262,14 @@
 			);
 			dependencies = (
 			);
-			name = HoverPodOSX;
+			name = HoverOSX;
 			productName = PilotPodOSX;
-			productReference = D552051D19D5C769006CF417 /* HoverPodOSX.app */;
+			productReference = D552051D19D5C769006CF417 /* HoverOSX.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D568D37818CBFC4D00ED987D /* HoverPod */ = {
+		D568D37818CBFC4D00ED987D /* Hover */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "HoverPod" */;
+			buildConfigurationList = D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "Hover" */;
 			buildPhases = (
 				D568D37518CBFC4D00ED987D /* Sources */,
 				D568D37618CBFC4D00ED987D /* Frameworks */,
@@ -279,9 +279,9 @@
 			);
 			dependencies = (
 			);
-			name = HoverPod;
+			name = Hover;
 			productName = PilotPod;
-			productReference = D568D37918CBFC4D00ED987D /* HoverPod.app */;
+			productReference = D568D37918CBFC4D00ED987D /* Hover.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -293,7 +293,7 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Robby Kraft";
 			};
-			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "HoverPod" */;
+			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "Hover" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -312,8 +312,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				D568D37818CBFC4D00ED987D /* HoverPod */,
-				D552051C19D5C769006CF417 /* HoverPodOSX */,
+				D568D37818CBFC4D00ED987D /* Hover */,
+				D552051C19D5C769006CF417 /* HoverOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -373,7 +373,7 @@
 				D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */,
 				D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */,
 				D5959DA619DBBCD500E5C7A3 /* main.m in Sources */,
-				D5959DAE19DBBCE500E5C7A3 /* InstructionsView.m in Sources */,
+				D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */,
 				D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */,
 				D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */,
 			);
@@ -430,15 +430,15 @@
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OSX/HoverPodOSX-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/HoverOSX-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "OSX/HoverPodOSX-Info.plist";
+				INFOPLIST_FILE = "OSX/HoverOSX-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = HoverPodOSX;
+				PRODUCT_NAME = HoverOSX;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -456,11 +456,11 @@
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "OSX/HoverPodOSX-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/HoverOSX-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "OSX/HoverPodOSX-Info.plist";
+				INFOPLIST_FILE = "OSX/HoverOSX-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = HoverPodOSX;
+				PRODUCT_NAME = HoverOSX;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -544,10 +544,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS/HoverPod-Prefix.pch";
-				INFOPLIST_FILE = "iOS/HoverPod-Info.plist";
+				GCC_PREFIX_HEADER = "iOS/Hover-Prefix.pch";
+				INFOPLIST_FILE = "iOS/Hover-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = HoverPod;
+				PRODUCT_NAME = Hover;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -558,10 +558,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iOS/HoverPod-Prefix.pch";
-				INFOPLIST_FILE = "iOS/HoverPod-Info.plist";
+				GCC_PREFIX_HEADER = "iOS/Hover-Prefix.pch";
+				INFOPLIST_FILE = "iOS/Hover-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = HoverPod;
+				PRODUCT_NAME = Hover;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -569,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverPodOSX" */ = {
+		D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D552054A19D5C769006CF417 /* Debug */,
@@ -578,7 +578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "HoverPod" */ = {
+		D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "Hover" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D568D3AC18CBFC4D00ED987D /* Debug */,
@@ -587,7 +587,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "HoverPod" */ = {
+		D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "Hover" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D568D3AF18CBFC4D00ED987D /* Debug */,

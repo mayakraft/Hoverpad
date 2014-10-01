@@ -1,6 +1,6 @@
 //
 //  main.m
-//  PilotPod
+//  Hover
 //
 //  Created by Robby Kraft on 3/8/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.

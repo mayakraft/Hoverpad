@@ -1,0 +1,36 @@
+#Phone into Joystick
+
+###turn your smartphone into a Bluetooth LE joystick
+
+combination iOS app + MacOSX app
+
+![animation](http://robbykraft.com/joystickphone.gif)
+
+#great for Oculus Rift
+
+**problem + solution:** the presence I experienced in virtual reality was tested when keyboard-walking jerked me around. analog sticks solve this problem, and since smartphones outnumber joysticks *[citation needed]* nobody needs to be jerked around.
+
+only works in joystick-enabled games
+
+#not for gaming
+
+gamers are used to being jerked around (hah). (no, seriously) this controller is slow, and you will get fragged.
+
+#setup
+
+1. run OSX app (it’s a status bar app), it auto-begins searching for a device
+2. connect through the iOS app (for connection status check OSX app)
+
+#usage
+
+###touch screen to re-calibrate joystick
+
+it’s helpful to re-calibrate your physical orientation against gravity. a screen touch forces the identity matrix on the controller, release and the device is facing (the new) forward.
+
+#thank you
+
+Virtual HID driver by [Alexandr Serkov](https://code.google.com/u/alexandr.serkov/) (alxn1)
+
+#license
+
+MIT

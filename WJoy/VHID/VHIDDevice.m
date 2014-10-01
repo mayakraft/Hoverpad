@@ -106,7 +106,6 @@
 
 - (void)setButton:(NSUInteger)buttonIndex pressed:(BOOL)pressed
 {
-    NSLog(@"VHIDDevice setButton");
     if(buttonIndex >= [self buttonCount] ||
        [self isButtonPressed:buttonIndex] == pressed)
     {
@@ -137,8 +136,6 @@
 
     [m_Pointers setPointer:pointerIndex position:position];
 
-    NSLog(@"changing state:");
-    NSLog(@"%@",[self state]);
     if(m_Delegate != nil)
         [m_Delegate VHIDDevice:self stateChanged:[self state]];
 }
@@ -210,39 +207,32 @@
 
     unsigned char   *data           = [result mutableBytes];
     unsigned char    usage          = ((isMouse)?(0x02):(0x05));
-    NSLog(@"1: %@",result);
 
     *data = 0x05; data++; *data = 0x01; data++;      // USAGE_PAGE (Generic Desktop)
     *data = 0x09; data++; *data = usage; data++;     // USAGE (Mouse/Game Pad)
     *data = 0xA1; data++; *data = 0x01; data++;      // COLLECTION (Application)
-    NSLog(@"2: %@",result);
 
     if(isMouse)
     {
         *data = 0x09; data++; *data = 0x01; data++;  // USAGE (Pointer)
     }
-    NSLog(@"3: %@",result);
 
     *data = 0xA1; data++; *data = 0x00; data++;      // COLLECTION (Physical)
-    NSLog(@"4: %@",result);
 
     if(buttonsHID != nil)
     {
         memcpy(data, [buttonsHID bytes], [buttonsHID length]);
         data += [buttonsHID length];
     }
-    NSLog(@"5: %@",result);
 
     if(pointersHID != nil)
     {
         memcpy(data, [pointersHID bytes], [pointersHID length]);
         data += [pointersHID length];
     }
-    NSLog(@"6: %@",result);
 
     *data = 0xC0; data++; // END_COLLECTION
     *data = 0xC0; data++; // END_COLLECTION
-    NSLog(@"7: %@",result);
 
     return result;
 }

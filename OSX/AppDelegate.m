@@ -1,6 +1,5 @@
 //
 //  AppDelegate.m
-//  PilotPodOSX
 //
 //  Created by Robby Kraft on 3/8/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
@@ -10,7 +9,8 @@
 #import "View.h"
 #import "VHIDDevice.h"
 #import <WirtualJoy/WJoyDevice.h>
-#import "InstructionsView.h"
+#import "StatusView.h"
+#import <GLKit/GLKit.h>
 
 #define SERVICE_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F30"
 
@@ -25,7 +25,7 @@
     VHIDDevice *joystickDescription;
     WJoyDevice *virtualJoystick;
     View *orientationView;
-    InstructionsView *instructionView;
+    StatusView *statusView;
 }
 
 @end
@@ -44,14 +44,17 @@
     _orientationWindowVisible = !_orientationWindowVisible;
 }
 
--(void) toggleInstructionsWindow:(id)sender{
-    BOOL isVisible = [_instructions isVisible];
-    if(isVisible) [_instructionsMenuItem setTitle:@"Instructions"];
-    else [_instructionsMenuItem setTitle:@"Hide Instructions"];
-    [_instructions setIsVisible:!isVisible];
-//    [_instructions makeKeyAndOrderFront:self];
+-(void) toggleStatusWindow:(id)sender{
+    if(_statusWindowVisible){
+        [_statusMenuItem setTitle:@"Show Status"];
+        [_statusWindow close];
+    }
+    else{
+        [_statusMenuItem setTitle:@"Hide Status"];
+        [_statusWindow makeKeyAndOrderFront:self];
+    }
+    _statusWindowVisible = !_statusWindowVisible;
 }
-
 
 -(void) awakeFromNib{
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -62,21 +65,21 @@
     [statusItem setAlternateImage:highlightIcon];
     [statusItem setMenu:statusMenu];
     [statusItem setHighlightMode:YES];
-    [statusItem setToolTip:@"You do not need this..."];
+    [statusItem setToolTip:@"Phone Joystick"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification{
     
     orientationView = _orientationWindow.contentView;
-    instructionView = _instructions.contentView;
+    statusView = _statusWindow.contentView;
 
     NSButton *closeButton = [_orientationWindow standardWindowButton:NSWindowCloseButton];
     [closeButton setTarget:self];
     [closeButton setAction:@selector(toggleOrientationWindow:)];
     
-    NSButton *closeInstructions = [_instructions standardWindowButton:NSWindowCloseButton];
-    [closeInstructions setTarget:self];
-    [closeInstructions setAction:@selector(toggleInstructionsWindow:)];
+    NSButton *closeStatus = [_statusWindow standardWindowButton:NSWindowCloseButton];
+    [closeStatus setTarget:self];
+    [closeStatus setAction:@selector(toggleStatusWindow:)];
 
     joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
@@ -97,7 +100,6 @@
 
 -(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
     [virtualJoystick updateHIDState:state];
-    NSLog(@"HID state updated");
 }
 
 -(void) initCentral{
@@ -173,7 +175,7 @@
 }
 
 -(void) connectionsDidUpdate{
-    [instructionView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
+    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
 }
 
 -(void) setIsBLECapable:(BOOL)isBLECapable{
@@ -201,7 +203,6 @@
         NSLog(@"Central powered off");
     }
 }
-
 
 
 #pragma mark Peripheral Delegate methods
@@ -238,20 +239,21 @@
     }
 }
 
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
-{
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     if ([characteristic.value length] == 4) {  //([characteristic.value bytes]){
         float q[4];
         [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
 
-        NSPoint newPosition = NSZeroPoint;
-        newPosition.x += q[0];
-        newPosition.y += q[1];
-        [joystickDescription setPointer:0 position:newPosition];
+        float pitch, roll, yaw;
+        [self quaternion:q ToPitch:&pitch Roll:&roll Yaw:&yaw];
 
-        //TODO: if view is visible
-        [orientationView setOrientation:q];
-        [orientationView setNeedsDisplay:true];
+        [joystickDescription setPointer:0 position:CGPointMake(pitch/M_PI, roll/M_PI)];
+        [joystickDescription setPointer:1 position:CGPointMake(yaw/M_PI, 0)];
+        
+        if(_orientationWindowVisible){
+            [orientationView setOrientation:q];
+            [orientationView setNeedsDisplay:true];
+        }
     }
     else if ([characteristic.value length] == 1) {
         char *touched = (char*)[[characteristic value] bytes];
@@ -263,6 +265,19 @@
     }
 }
 
+-(void) quaternion:(float*)q ToPitch:(float*)pitch Roll:(float*)roll Yaw:(float*)yaw{
+
+// prioritizes pitch and roll, yaw flips other axis
+    *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+    *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
+    *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
+
+// prioritizes roll and yaw, pitch flips other axis
+//    *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
+//    *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
+//    *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
+}
+
 -(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {
     char *data = (char*)[receivedData bytes];
     *x = data[0] / 128.0f;
@@ -271,8 +286,7 @@
     *w = data[3] / 128.0f;
 }
 
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
-{
+- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     NSLog(@"Wrote value for characteristic!");
 }
 
