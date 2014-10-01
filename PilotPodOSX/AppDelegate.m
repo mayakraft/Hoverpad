@@ -35,6 +35,8 @@
     if(isVisible) [_orientationMenuItem setTitle:@"Show Orientation"];
     else [_orientationMenuItem setTitle:@"Hide Orientation"];
     [_window setIsVisible:!isVisible];
+    [_window makeKeyAndOrderFront:self];
+    //TODO: make key order didn't work
 }
 
 -(void) toggleInstructionsWindow:(id)sender{
@@ -42,6 +44,7 @@
     if(isVisible) [_instructionsMenuItem setTitle:@"Instructions"];
     else [_instructionsMenuItem setTitle:@"Hide Instructions"];
     [_instructions setIsVisible:!isVisible];
+    [_instructions makeKeyAndOrderFront:self];
 }
 
 
@@ -63,12 +66,14 @@
     [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
     [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
     view = self.window.contentView;
-    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:YES];
+    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
     
-    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"iOS Joystick"];
+    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
 //    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+}
 
+-(void) something{
     NSPoint newPosition = NSZeroPoint;
     newPosition.y += 0.3025f;
     [joystickDescription setPointer:0 position:newPosition];
@@ -129,6 +134,8 @@
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
     NSLog(@"Connected to peripheral %@", peripheral.name);
+
+    _deviceConnected = true;
     
     // Let's qeury the service
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
@@ -195,6 +202,13 @@
     if ([characteristic.value length] == 4) {  //([characteristic.value bytes]){
         float q[4];
         [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
+
+        NSPoint newPosition = NSZeroPoint;
+        newPosition.x += q[0];
+        newPosition.y += q[1];
+        [joystickDescription setPointer:0 position:newPosition];
+
+        //TODO: if view is visible
         [view setOrientation:q];
         [view setNeedsDisplay:true];
     }

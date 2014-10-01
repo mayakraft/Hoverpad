@@ -25,4 +25,6 @@
 @property IBOutlet NSMenuItem *orientationMenuItem;
 @property IBOutlet NSMenuItem *instructionsMenuItem;
 
+@property BOOL deviceConnected;
+
 @end
