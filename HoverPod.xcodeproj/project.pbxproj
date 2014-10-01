@@ -11,26 +11,24 @@
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B719DAF9CE00278548 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
-		D5352FA419DB9926005C39E1 /* InstructionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5352FA319DB9926005C39E1 /* InstructionsView.m */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
-		D552052919D5C769006CF417 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D552052719D5C769006CF417 /* InfoPlist.strings */; };
-		D552052B19D5C769006CF417 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D552052A19D5C769006CF417 /* main.m */; };
-		D552052F19D5C769006CF417 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D552052D19D5C769006CF417 /* Credits.rtf */; };
-		D552053219D5C769006CF417 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D552053119D5C769006CF417 /* AppDelegate.m */; };
-		D552053519D5C769006CF417 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D552053319D5C769006CF417 /* MainMenu.xib */; };
-		D552053719D5C769006CF417 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D552053619D5C769006CF417 /* Images.xcassets */; };
-		D552055119D5C98D006CF417 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = D552055019D5C98D006CF417 /* View.m */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
 		D568D38118CBFC4D00ED987D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D38018CBFC4D00ED987D /* UIKit.framework */; };
-		D568D38718CBFC4D00ED987D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D568D38518CBFC4D00ED987D /* InfoPlist.strings */; };
-		D568D38918CBFC4D00ED987D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D38818CBFC4D00ED987D /* main.m */; };
-		D568D38D18CBFC4D00ED987D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D38C18CBFC4D00ED987D /* AppDelegate.m */; };
-		D568D39618CBFC4D00ED987D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D568D39518CBFC4D00ED987D /* ViewController.m */; };
-		D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D568D39718CBFC4D00ED987D /* Images.xcassets */; };
 		D568D3B818CC012300ED987D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B718CC012300ED987D /* CoreBluetooth.framework */; };
 		D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B918CC014F00ED987D /* CoreMotion.framework */; };
-		D599218819DA295400B445EF /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D599218719DA295400B445EF /* white.png */; };
+		D5959DA619DBBCD500E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA519DBBCD500E5C7A3 /* main.m */; };
+		D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */; };
+		D5959DAE19DBBCE500E5C7A3 /* InstructionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */; };
+		D5959DAF19DBBCE500E5C7A3 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAC19DBBCE500E5C7A3 /* View.m */; };
+		D5959DB219DBBD1500E5C7A3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */; };
+		D5959DB519DBBD5C00E5C7A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */; };
+		D5959DB719DBBD7800E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB619DBBD7800E5C7A3 /* Images.xcassets */; };
+		D5959DBD19DBBDED00E5C7A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DB919DBBDED00E5C7A3 /* AppDelegate.m */; };
+		D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBA19DBBDED00E5C7A3 /* main.m */; };
+		D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBC19DBBDED00E5C7A3 /* ViewController.m */; };
+		D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */; };
+		D5959DC919DBBE5A00E5C7A3 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC819DBBE5A00E5C7A3 /* white.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,41 +63,40 @@
 		D505A3AE19DAF6C500278548 /* VHIDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDDevice.m; path = WJoy/VHID/VHIDDevice.m; sourceTree = SOURCE_ROOT; };
 		D505A3AF19DAF6C500278548 /* VHIDPointerCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHIDPointerCollection.h; path = WJoy/VHID/VHIDPointerCollection.h; sourceTree = SOURCE_ROOT; };
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
-		D5352FA219DB9926005C39E1 /* InstructionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsView.h; sourceTree = "<group>"; };
-		D5352FA319DB9926005C39E1 /* InstructionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsView.m; sourceTree = "<group>"; };
-		D552051D19D5C769006CF417 /* PilotPodOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotPodOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D552051D19D5C769006CF417 /* HoverPodOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverPodOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D552052219D5C769006CF417 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D552052319D5C769006CF417 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		D552052619D5C769006CF417 /* PilotPodOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PilotPodOSX-Info.plist"; sourceTree = "<group>"; };
-		D552052819D5C769006CF417 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D552052A19D5C769006CF417 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D552052C19D5C769006CF417 /* PilotPodOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PilotPodOSX-Prefix.pch"; sourceTree = "<group>"; };
-		D552052E19D5C769006CF417 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		D552053019D5C769006CF417 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D552053119D5C769006CF417 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D552053419D5C769006CF417 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		D552053619D5C769006CF417 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D552054F19D5C98D006CF417 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
-		D552055019D5C98D006CF417 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = View.m; sourceTree = "<group>"; };
-		D568D37918CBFC4D00ED987D /* PilotPod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PilotPod.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D552052619D5C769006CF417 /* HoverPodOSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "HoverPodOSX-Info.plist"; path = "OSX/HoverPodOSX-Info.plist"; sourceTree = "<group>"; };
+		D552052C19D5C769006CF417 /* HoverPodOSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HoverPodOSX-Prefix.pch"; path = "OSX/HoverPodOSX-Prefix.pch"; sourceTree = "<group>"; };
+		D568D37918CBFC4D00ED987D /* HoverPod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverPod.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D568D37C18CBFC4D00ED987D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D568D38018CBFC4D00ED987D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		D568D38418CBFC4D00ED987D /* PilotPod-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PilotPod-Info.plist"; sourceTree = "<group>"; };
-		D568D38618CBFC4D00ED987D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D568D38818CBFC4D00ED987D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D568D38A18CBFC4D00ED987D /* PilotPod-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PilotPod-Prefix.pch"; sourceTree = "<group>"; };
-		D568D38B18CBFC4D00ED987D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D568D38C18CBFC4D00ED987D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D568D39418CBFC4D00ED987D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D568D39518CBFC4D00ED987D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		D568D39718CBFC4D00ED987D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D568D39E18CBFC4D00ED987D /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D568D3B718CC012300ED987D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		D568D3B918CC014F00ED987D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		D599218719DA295400B445EF /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
+		D5959DA519DBBCD500E5C7A3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = OSX/main.m; sourceTree = SOURCE_ROOT; };
+		D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = OSX/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = OSX/AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		D5959DA919DBBCE500E5C7A3 /* InstructionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstructionsView.h; path = OSX/InstructionsView.h; sourceTree = SOURCE_ROOT; };
+		D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InstructionsView.m; path = OSX/InstructionsView.m; sourceTree = SOURCE_ROOT; };
+		D5959DAB19DBBCE500E5C7A3 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = OSX/View.h; sourceTree = SOURCE_ROOT; };
+		D5959DAC19DBBCE500E5C7A3 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = View.m; path = OSX/View.m; sourceTree = SOURCE_ROOT; };
+		D5959DB119DBBD1500E5C7A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = OSX/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		D5959DB419DBBD5C00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = OSX/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		D5959DB619DBBD7800E5C7A3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = OSX/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		D5959DB819DBBDED00E5C7A3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = iOS/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		D5959DB919DBBDED00E5C7A3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = iOS/AppDelegate.m; sourceTree = SOURCE_ROOT; };
+		D5959DBA19DBBDED00E5C7A3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iOS/main.m; sourceTree = SOURCE_ROOT; };
+		D5959DBB19DBBDED00E5C7A3 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = iOS/ViewController.h; sourceTree = SOURCE_ROOT; };
+		D5959DBC19DBBDED00E5C7A3 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = iOS/ViewController.m; sourceTree = SOURCE_ROOT; };
+		D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = iOS/Images.xcassets; sourceTree = SOURCE_ROOT; };
+		D5959DC219DBBE2600E5C7A3 /* HoverPod-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "HoverPod-Info.plist"; path = "iOS/HoverPod-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D5959DC519DBBE3A00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = iOS/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		D5959DC719DBBE4700E5C7A3 /* HoverPod-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "HoverPod-Prefix.pch"; path = "iOS/HoverPod-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		D5959DC819DBBE5A00E5C7A3 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = white.png; path = iOS/white.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,31 +157,31 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		D552052419D5C769006CF417 /* PilotPodOSX */ = {
+		D552052419D5C769006CF417 /* OSX */ = {
 			isa = PBXGroup;
 			children = (
-				D552053019D5C769006CF417 /* AppDelegate.h */,
-				D552053119D5C769006CF417 /* AppDelegate.m */,
-				D552054F19D5C98D006CF417 /* View.h */,
-				D552055019D5C98D006CF417 /* View.m */,
-				D5352FA219DB9926005C39E1 /* InstructionsView.h */,
-				D5352FA319DB9926005C39E1 /* InstructionsView.m */,
+				D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */,
+				D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */,
+				D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */,
+				D5959DA919DBBCE500E5C7A3 /* InstructionsView.h */,
+				D5959DAA19DBBCE500E5C7A3 /* InstructionsView.m */,
+				D5959DAB19DBBCE500E5C7A3 /* View.h */,
+				D5959DAC19DBBCE500E5C7A3 /* View.m */,
+				D5959DB619DBBD7800E5C7A3 /* Images.xcassets */,
 				D505A3B419DAF6C800278548 /* VHID */,
-				D552053319D5C769006CF417 /* MainMenu.xib */,
-				D552053619D5C769006CF417 /* Images.xcassets */,
 				D552052519D5C769006CF417 /* Supporting Files */,
 			);
+			name = OSX;
 			path = PilotPodOSX;
 			sourceTree = "<group>";
 		};
 		D552052519D5C769006CF417 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D552052619D5C769006CF417 /* PilotPodOSX-Info.plist */,
-				D552052719D5C769006CF417 /* InfoPlist.strings */,
-				D552052A19D5C769006CF417 /* main.m */,
-				D552052C19D5C769006CF417 /* PilotPodOSX-Prefix.pch */,
-				D552052D19D5C769006CF417 /* Credits.rtf */,
+				D552052619D5C769006CF417 /* HoverPodOSX-Info.plist */,
+				D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */,
+				D5959DA519DBBCD500E5C7A3 /* main.m */,
+				D552052C19D5C769006CF417 /* HoverPodOSX-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -192,8 +189,8 @@
 		D568D37018CBFC4D00ED987D = {
 			isa = PBXGroup;
 			children = (
-				D568D38218CBFC4D00ED987D /* PilotPod */,
-				D552052419D5C769006CF417 /* PilotPodOSX */,
+				D568D38218CBFC4D00ED987D /* iOS */,
+				D552052419D5C769006CF417 /* OSX */,
 				D568D37B18CBFC4D00ED987D /* Frameworks */,
 				D568D37A18CBFC4D00ED987D /* Products */,
 			);
@@ -202,8 +199,8 @@
 		D568D37A18CBFC4D00ED987D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D568D37918CBFC4D00ED987D /* PilotPod.app */,
-				D552051D19D5C769006CF417 /* PilotPodOSX.app */,
+				D568D37918CBFC4D00ED987D /* HoverPod.app */,
+				D552051D19D5C769006CF417 /* HoverPodOSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -224,27 +221,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D568D38218CBFC4D00ED987D /* PilotPod */ = {
+		D568D38218CBFC4D00ED987D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D568D38B18CBFC4D00ED987D /* AppDelegate.h */,
-				D568D38C18CBFC4D00ED987D /* AppDelegate.m */,
-				D568D39418CBFC4D00ED987D /* ViewController.h */,
-				D568D39518CBFC4D00ED987D /* ViewController.m */,
-				D599218719DA295400B445EF /* white.png */,
-				D568D39718CBFC4D00ED987D /* Images.xcassets */,
+				D5959DB819DBBDED00E5C7A3 /* AppDelegate.h */,
+				D5959DB919DBBDED00E5C7A3 /* AppDelegate.m */,
+				D5959DBB19DBBDED00E5C7A3 /* ViewController.h */,
+				D5959DBC19DBBDED00E5C7A3 /* ViewController.m */,
+				D5959DC819DBBE5A00E5C7A3 /* white.png */,
+				D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */,
 				D568D38318CBFC4D00ED987D /* Supporting Files */,
 			);
+			name = iOS;
 			path = PilotPod;
 			sourceTree = "<group>";
 		};
 		D568D38318CBFC4D00ED987D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D568D38418CBFC4D00ED987D /* PilotPod-Info.plist */,
-				D568D38518CBFC4D00ED987D /* InfoPlist.strings */,
-				D568D38818CBFC4D00ED987D /* main.m */,
-				D568D38A18CBFC4D00ED987D /* PilotPod-Prefix.pch */,
+				D5959DBA19DBBDED00E5C7A3 /* main.m */,
+				D5959DC419DBBE3A00E5C7A3 /* InfoPlist.strings */,
+				D5959DC719DBBE4700E5C7A3 /* HoverPod-Prefix.pch */,
+				D5959DC219DBBE2600E5C7A3 /* HoverPod-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -252,9 +250,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D552051C19D5C769006CF417 /* PilotPodOSX */ = {
+		D552051C19D5C769006CF417 /* HoverPodOSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "PilotPodOSX" */;
+			buildConfigurationList = D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverPodOSX" */;
 			buildPhases = (
 				D552051919D5C769006CF417 /* Sources */,
 				D552051A19D5C769006CF417 /* Frameworks */,
@@ -264,14 +262,14 @@
 			);
 			dependencies = (
 			);
-			name = PilotPodOSX;
+			name = HoverPodOSX;
 			productName = PilotPodOSX;
-			productReference = D552051D19D5C769006CF417 /* PilotPodOSX.app */;
+			productReference = D552051D19D5C769006CF417 /* HoverPodOSX.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D568D37818CBFC4D00ED987D /* PilotPod */ = {
+		D568D37818CBFC4D00ED987D /* HoverPod */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "PilotPod" */;
+			buildConfigurationList = D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "HoverPod" */;
 			buildPhases = (
 				D568D37518CBFC4D00ED987D /* Sources */,
 				D568D37618CBFC4D00ED987D /* Frameworks */,
@@ -281,9 +279,9 @@
 			);
 			dependencies = (
 			);
-			name = PilotPod;
+			name = HoverPod;
 			productName = PilotPod;
-			productReference = D568D37918CBFC4D00ED987D /* PilotPod.app */;
+			productReference = D568D37918CBFC4D00ED987D /* HoverPod.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -295,7 +293,7 @@
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Robby Kraft";
 			};
-			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "PilotPod" */;
+			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "HoverPod" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -314,8 +312,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				D568D37818CBFC4D00ED987D /* PilotPod */,
-				D552051C19D5C769006CF417 /* PilotPodOSX */,
+				D568D37818CBFC4D00ED987D /* HoverPod */,
+				D552051C19D5C769006CF417 /* HoverPodOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -349,10 +347,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D552052919D5C769006CF417 /* InfoPlist.strings in Resources */,
-				D552053719D5C769006CF417 /* Images.xcassets in Resources */,
-				D552052F19D5C769006CF417 /* Credits.rtf in Resources */,
-				D552053519D5C769006CF417 /* MainMenu.xib in Resources */,
+				D5959DB719DBBD7800E5C7A3 /* Images.xcassets in Resources */,
+				D5959DB519DBBD5C00E5C7A3 /* InfoPlist.strings in Resources */,
+				D5959DB219DBBD1500E5C7A3 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,9 +357,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D568D39818CBFC4D00ED987D /* Images.xcassets in Resources */,
-				D568D38718CBFC4D00ED987D /* InfoPlist.strings in Resources */,
-				D599218819DA295400B445EF /* white.png in Resources */,
+				D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */,
+				D5959DC919DBBE5A00E5C7A3 /* white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,13 +369,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5959DAF19DBBCE500E5C7A3 /* View.m in Sources */,
 				D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */,
 				D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */,
-				D552053219D5C769006CF417 /* AppDelegate.m in Sources */,
-				D552052B19D5C769006CF417 /* main.m in Sources */,
-				D552055119D5C98D006CF417 /* View.m in Sources */,
-				D5352FA419DB9926005C39E1 /* InstructionsView.m in Sources */,
+				D5959DA619DBBCD500E5C7A3 /* main.m in Sources */,
+				D5959DAE19DBBCE500E5C7A3 /* InstructionsView.m in Sources */,
 				D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */,
+				D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,43 +383,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D568D39618CBFC4D00ED987D /* ViewController.m in Sources */,
-				D568D38D18CBFC4D00ED987D /* AppDelegate.m in Sources */,
-				D568D38918CBFC4D00ED987D /* main.m in Sources */,
+				D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */,
+				D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */,
+				D5959DBD19DBBDED00E5C7A3 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D552052719D5C769006CF417 /* InfoPlist.strings */ = {
+		D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D552052819D5C769006CF417 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D552052D19D5C769006CF417 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D552052E19D5C769006CF417 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		D552053319D5C769006CF417 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D552053419D5C769006CF417 /* Base */,
+				D5959DB119DBBD1500E5C7A3 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		D568D38518CBFC4D00ED987D /* InfoPlist.strings */ = {
+		D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D568D38618CBFC4D00ED987D /* en */,
+				D5959DB419DBBD5C00E5C7A3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D5959DC419DBBE3A00E5C7A3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D5959DC519DBBE3A00E5C7A3 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -442,15 +430,15 @@
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPodOSX/PilotPodOSX-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/HoverPodOSX-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "PilotPodOSX/PilotPodOSX-Info.plist";
+				INFOPLIST_FILE = "OSX/HoverPodOSX-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HoverPodOSX;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -468,11 +456,11 @@
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPodOSX/PilotPodOSX-Prefix.pch";
+				GCC_PREFIX_HEADER = "OSX/HoverPodOSX-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = "PilotPodOSX/PilotPodOSX-Info.plist";
+				INFOPLIST_FILE = "OSX/HoverPodOSX-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HoverPodOSX;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -556,10 +544,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
-				INFOPLIST_FILE = "PilotPod/PilotPod-Info.plist";
+				GCC_PREFIX_HEADER = "iOS/HoverPod-Prefix.pch";
+				INFOPLIST_FILE = "iOS/HoverPod-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HoverPod;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -570,10 +558,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "PilotPod/PilotPod-Prefix.pch";
-				INFOPLIST_FILE = "PilotPod/PilotPod-Info.plist";
+				GCC_PREFIX_HEADER = "iOS/HoverPod-Prefix.pch";
+				INFOPLIST_FILE = "iOS/HoverPod-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = HoverPod;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -581,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "PilotPodOSX" */ = {
+		D552054919D5C769006CF417 /* Build configuration list for PBXNativeTarget "HoverPodOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D552054A19D5C769006CF417 /* Debug */,
@@ -590,7 +578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "PilotPod" */ = {
+		D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "HoverPod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D568D3AC18CBFC4D00ED987D /* Debug */,
@@ -599,7 +587,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "PilotPod" */ = {
+		D568D3AE18CBFC4D00ED987D /* Build configuration list for PBXNativeTarget "HoverPod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D568D3AF18CBFC4D00ED987D /* Debug */,

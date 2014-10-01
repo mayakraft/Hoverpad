@@ -31,12 +31,15 @@
 @implementation AppDelegate
 
 -(void) toggleOrientationWindow:(id)sender{
-    BOOL isVisible = [_window isVisible];
-    if(isVisible) [_orientationMenuItem setTitle:@"Show Orientation"];
-    else [_orientationMenuItem setTitle:@"Hide Orientation"];
-    [_window setIsVisible:!isVisible];
-    [_window makeKeyAndOrderFront:self];
-    //TODO: make key order didn't work
+    if(_orientationWindowVisible){
+        [_orientationMenuItem setTitle:@"Show Orientation"];
+        [_orientationWindow close];
+    }
+    else{
+        [_orientationMenuItem setTitle:@"Hide Orientation"];
+        [_orientationWindow makeKeyAndOrderFront:self];
+    }
+    _orientationWindowVisible = !_orientationWindowVisible;
 }
 
 -(void) toggleInstructionsWindow:(id)sender{
@@ -44,7 +47,7 @@
     if(isVisible) [_instructionsMenuItem setTitle:@"Instructions"];
     else [_instructionsMenuItem setTitle:@"Hide Instructions"];
     [_instructions setIsVisible:!isVisible];
-    [_instructions makeKeyAndOrderFront:self];
+//    [_instructions makeKeyAndOrderFront:self];
 }
 
 
@@ -65,7 +68,16 @@
     // Insert code here to initialize your application
     [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
     [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
-    view = self.window.contentView;
+    view = self.orientationWindow.contentView;
+    
+    NSButton *closeButton = [_orientationWindow standardWindowButton:NSWindowCloseButton];
+    [closeButton setTarget:self];
+    [closeButton setAction:@selector(toggleOrientationWindow:)];
+    
+    NSButton *closeInstructions = [_instructions standardWindowButton:NSWindowCloseButton];
+    [closeInstructions setTarget:self];
+    [closeInstructions setAction:@selector(toggleInstructionsWindow:)];
+
     joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
     
@@ -121,11 +133,11 @@
     
     NSLog(@"Central manager state: %@", state);
     
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:state];
-    [alert addButtonWithTitle:@"OK"];
-    [alert setIcon:[[NSImage alloc] initWithContentsOfFile:@"AppIcon"]];
-    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+//    NSAlert *alert = [[NSAlert alloc] init];
+//    [alert setMessageText:state];
+//    [alert addButtonWithTitle:@"OK"];
+//    [alert setIcon:[[NSImage alloc] initWithContentsOfFile:@"AppIcon"]];
+//    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
     return FALSE;
 }
 

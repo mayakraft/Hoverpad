@@ -210,7 +210,7 @@
             self.theButton.enabled = YES;
             break;
         default:
-            NSLog(@"Peripheral state changed to %d", myPeripheralManager.state);
+            NSLog(@"Peripheral state changed to %d", (int)myPeripheralManager.state);
             break;
     }
 }

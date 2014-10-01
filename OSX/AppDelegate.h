@@ -19,12 +19,14 @@
 -(IBAction)toggleOrientationWindow:(id)sender;
 -(IBAction)toggleInstructionsWindow:(id)sender;
 
-@property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSWindow *orientationWindow;
 @property (assign) IBOutlet NSWindow *instructions;
 
 @property IBOutlet NSMenuItem *orientationMenuItem;
 @property IBOutlet NSMenuItem *instructionsMenuItem;
 
 @property BOOL deviceConnected;
+@property BOOL orientationWindowVisible;
+@property BOOL instructionsWindowVisible;
 
 @end
