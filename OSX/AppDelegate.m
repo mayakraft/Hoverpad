@@ -155,6 +155,7 @@
     NSLog(@"Connected to peripheral %@", peripheral.name);
 
     [self setIsDeviceConnected:YES];
+    [statusView setDeviceID:peripheral.name];
     
     // Let's qeury the service
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];

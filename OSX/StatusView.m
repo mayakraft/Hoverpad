@@ -9,6 +9,11 @@
 
 @implementation StatusView
 
+-(void) setDeviceID:(NSString *)deviceID{
+    _deviceID = deviceID;
+    [_deviceTextField setStringValue:_deviceID];
+}
+
 -(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(BOOL)isConnected{
     if(isCapable) [_colorWell1 setColor:[NSColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0]];
     else [_colorWell1 setColor:[NSColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];

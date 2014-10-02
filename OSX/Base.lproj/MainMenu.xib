@@ -23,11 +23,11 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
-                <menuItem title="PhoneStickOSX" id="1Xt-HY-uBw">
+                <menuItem title="HoverpadOSX" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="PhoneStickOSX" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="HoverpadOSX" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
-                            <menuItem title="About PhoneStickOSX" id="5kV-Vb-QxS">
+                            <menuItem title="About HoverpadOSX" id="5kV-Vb-QxS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
@@ -41,7 +41,7 @@
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                            <menuItem title="Hide PhoneStickOSX" keyEquivalent="h" id="Olw-nP-bQN">
+                            <menuItem title="Hide HoverpadOSX" keyEquivalent="h" id="Olw-nP-bQN">
                                 <connections>
                                     <action selector="hide:" target="-1" id="PnN-Uc-m68"/>
                                 </connections>
@@ -59,7 +59,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit PhoneStickOSX" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem title="Quit HoverpadOSX" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
                                 </connections>
@@ -398,7 +398,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="PhoneStickOSX Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="HoverpadOSX Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>
@@ -492,11 +492,19 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xWv-Ot-nrr">
-                        <rect key="frame" x="50" y="61" width="393" height="34"/>
+                        <rect key="frame" x="50" y="68" width="393" height="34"/>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="iOS device has been connected" id="VL5-o5-gZB">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zH-pE-lg9">
+                        <rect key="frame" x="52" y="68" width="196" height="16"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="device id" drawsBackground="YES" id="2Sh-55-GsX">
+                            <font key="font" metaFont="miniSystem"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
@@ -504,6 +512,7 @@
                     <outlet property="colorWell1" destination="xRs-b4-uRX" id="dU8-Rb-feK"/>
                     <outlet property="colorWell2" destination="R4F-aB-Ncg" id="4Ep-U0-d8c"/>
                     <outlet property="colorWell3" destination="0wl-Xw-Dwt" id="ZKF-Cp-rpZ"/>
+                    <outlet property="deviceTextField" destination="6zH-pE-lg9" id="X0t-Dg-Kq2"/>
                 </connections>
             </view>
             <point key="canvasLocation" x="139" y="647"/>
