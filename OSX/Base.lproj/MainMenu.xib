@@ -456,27 +456,27 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="khW-kF-kuD">
-                        <rect key="frame" x="18" y="216" width="393" height="34"/>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="To successfully run, both devices must have bluetooth low energy (BLE), and must be enabled, " id="8uS-OI-PtQ">
+                        <rect key="frame" x="187" y="196" width="256" height="54"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="To successfully run, both devices must have bluetooth low energy (BLE), and must be enabled" id="8uS-OI-PtQ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xRs-b4-uRX">
-                        <rect key="frame" x="20" y="159" width="24" height="24"/>
+                        <rect key="frame" x="189" y="159" width="24" height="24"/>
                         <color key="color" white="0.91831527217741937" alpha="1" colorSpace="calibratedWhite"/>
                     </colorWell>
                     <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4F-aB-Ncg">
-                        <rect key="frame" x="20" y="116" width="24" height="24"/>
+                        <rect key="frame" x="189" y="116" width="24" height="24"/>
                         <color key="color" white="0.92297757056451613" alpha="1" colorSpace="calibratedWhite"/>
                     </colorWell>
                     <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0wl-Xw-Dwt">
-                        <rect key="frame" x="20" y="73" width="24" height="24"/>
+                        <rect key="frame" x="189" y="73" width="24" height="24"/>
                         <color key="color" white="0.921875" alpha="1" colorSpace="calibratedWhite"/>
                     </colorWell>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qZd-At-Dum">
-                        <rect key="frame" x="50" y="146" width="393" height="34"/>
+                        <rect key="frame" x="219" y="154" width="224" height="34"/>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="This computer is Bluetooth Low Energy capable" id="tbn-la-DYH">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -484,7 +484,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x01-mw-Vgc">
-                        <rect key="frame" x="50" y="103" width="393" height="34"/>
+                        <rect key="frame" x="219" y="103" width="224" height="34"/>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Bluetooth Low Energy is turned on" id="UBS-cC-Z3v">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -492,7 +492,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xWv-Ot-nrr">
-                        <rect key="frame" x="50" y="68" width="393" height="34"/>
+                        <rect key="frame" x="219" y="68" width="224" height="34"/>
                         <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="iOS device has been connected" id="VL5-o5-gZB">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -500,8 +500,8 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zH-pE-lg9">
-                        <rect key="frame" x="52" y="68" width="196" height="16"/>
-                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="device id" drawsBackground="YES" id="2Sh-55-GsX">
+                        <rect key="frame" x="221" y="68" width="47" height="16"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" placeholderString="device id" drawsBackground="YES" id="2Sh-55-GsX">
                             <font key="font" metaFont="miniSystem"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

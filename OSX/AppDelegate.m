@@ -12,11 +12,11 @@
 #import "StatusView.h"
 #import <GLKit/GLKit.h>
 
-#define SERVICE_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F30"
+#define SERVICE_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE20"
 
-#define READ_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F40"
-#define WRITE_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F41"
-#define NOTIFY_CHAR_UUID @"27E6BBA2-008E-4FFC-BC88-E8D3088D5F42"
+#define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE30"
+#define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
+#define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 
 @interface AppDelegate() <VHIDDeviceDelegate> {
     CBCentralManager *myCentralManager;
@@ -31,30 +31,6 @@
 @end
 
 @implementation AppDelegate
-
--(void) toggleOrientationWindow:(id)sender{
-    if(_orientationWindowVisible){
-        [_orientationMenuItem setTitle:@"Show Orientation"];
-        [_orientationWindow close];
-    }
-    else{
-        [_orientationMenuItem setTitle:@"Hide Orientation"];
-        [_orientationWindow makeKeyAndOrderFront:self];
-    }
-    _orientationWindowVisible = !_orientationWindowVisible;
-}
-
--(void) toggleStatusWindow:(id)sender{
-    if(_statusWindowVisible){
-        [_statusMenuItem setTitle:@"Show Status"];
-        [_statusWindow close];
-    }
-    else{
-        [_statusMenuItem setTitle:@"Hide Status"];
-        [_statusWindow makeKeyAndOrderFront:self];
-    }
-    _statusWindowVisible = !_statusWindowVisible;
-}
 
 -(void) awakeFromNib{
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
@@ -92,14 +68,49 @@
     [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
 }
 
--(void) something{
-    NSPoint newPosition = NSZeroPoint;
-    newPosition.y += 0.3025f;
-    [joystickDescription setPointer:0 position:newPosition];
+-(void) toggleOrientationWindow:(id)sender{
+    if(_orientationWindowVisible){
+        [_orientationMenuItem setTitle:@"Show Orientation"];
+        [_orientationWindow close];
+    }
+    else{
+        [_orientationMenuItem setTitle:@"Hide Orientation"];
+        [_orientationWindow makeKeyAndOrderFront:self];
+    }
+    _orientationWindowVisible = !_orientationWindowVisible;
+}
+
+-(void) toggleStatusWindow:(id)sender{
+    if(_statusWindowVisible){
+        [_statusMenuItem setTitle:@"Show Status"];
+        [_statusWindow close];
+    }
+    else{
+        [_statusMenuItem setTitle:@"Hide Status"];
+        [_statusWindow makeKeyAndOrderFront:self];
+    }
+    _statusWindowVisible = !_statusWindowVisible;
 }
 
 -(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
     [virtualJoystick updateHIDState:state];
+}
+
+-(void) setIsBLECapable:(BOOL)isBLECapable{
+    _isBLECapable = isBLECapable;
+    if(isBLECapable) _isBLEEnabled = true;
+    if(!isBLECapable) _isBLEEnabled = false;
+    [self connectionsDidUpdate];
+}
+
+-(void)setIsBLEEnabled:(BOOL)isBLEEnabled{
+    _isBLEEnabled = isBLEEnabled;
+    [self connectionsDidUpdate];
+}
+
+-(void) setIsDeviceConnected:(BOOL)isDeviceConnected{
+    _isDeviceConnected = isDeviceConnected;
+    [self connectionsDidUpdate];
 }
 
 -(void) initCentral{
@@ -118,8 +129,7 @@
 {
     NSString * state = nil;
     
-    switch ([myCentralManager state])
-    {
+    switch ([myCentralManager state]){
         case CBCentralManagerStateUnsupported:
             state = @"The platform/hardware doesn't support Bluetooth Low Energy.";
             break;
@@ -134,7 +144,6 @@
         case CBCentralManagerStateUnknown:
         default:
             return FALSE;
-            
     }
     
     NSLog(@"Central manager state: %@", state);
@@ -168,6 +177,7 @@
         return;
     }
     NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
+    NSLog(@"all the rest: %@",advertisementData);
     [myCentralManager stopScan];
     myPeripheral = peripheral;
     myPeripheral.delegate = self;
@@ -177,23 +187,6 @@
 
 -(void) connectionsDidUpdate{
     [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
-}
-
--(void) setIsBLECapable:(BOOL)isBLECapable{
-    _isBLECapable = isBLECapable;
-    if(isBLECapable) _isBLEEnabled = true;
-    if(!isBLECapable) _isBLEEnabled = false;
-    [self connectionsDidUpdate];
-}
-
--(void)setIsBLEEnabled:(BOOL)isBLEEnabled{
-    _isBLEEnabled = isBLEEnabled;
-    [self connectionsDidUpdate];
-}
-
--(void) setIsDeviceConnected:(BOOL)isDeviceConnected{
-    _isDeviceConnected = isDeviceConnected;
-    [self connectionsDidUpdate];
 }
 
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
@@ -261,8 +254,12 @@
         BOOL t = *touched;
         [orientationView setScreenTouched:t];
     }
-    else{
-        
+    else if ([characteristic.value length] == 2){
+        char *data = (char*)[[characteristic value] bytes];
+        if (*data == 0x3b){ // exit code
+            myPeripheral = nil;
+            [self setIsDeviceConnected:NO];
+        }
     }
 }
 

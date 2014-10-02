@@ -12,10 +12,9 @@
 
 @interface ViewController : UIViewController <CBPeripheralManagerDelegate>
 {
-    CBPeripheralManager *myPeripheralManager;
-    CBMutableCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
+    CBPeripheralManager *peripheralManager;
+    CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic;
     CMMotionManager *motionManager;
-    
     BOOL screenTouched;
     GLKQuaternion identity;
     GLKQuaternion lq;
@@ -23,7 +22,5 @@
 
 @property (nonatomic) NSData *orientation;
 @property UIButton *theButton;
-
-//@property UITextField *uuid;
 
 @end
