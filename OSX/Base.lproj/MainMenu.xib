@@ -420,6 +420,9 @@
         </window>
         <menu id="7uu-il-wul">
             <items>
+                <menuItem title="Re-Scan" image="NSRefreshTemplate" id="Y5g-Uw-3iA">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
                 <menuItem title="Preferences" id="vXZ-Pg-BtJ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
@@ -507,15 +510,66 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zzl-cX-uPy">
+                        <rect key="frame" x="300" y="40" width="78" height="11"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="nsstatusavailable" id="ytu-tE-rqq">
+                            <font key="font" metaFont="miniSystem"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <box autoresizesSubviews="NO" fixedFrame="YES" title="Devices in Range" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Xws-9N-azR">
+                        <rect key="frame" x="17" y="16" width="145" height="234"/>
+                        <view key="contentView">
+                            <rect key="frame" x="1" y="1" width="143" height="218"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBr-rX-Fef">
+                                    <rect key="frame" x="18" y="14" width="107" height="194"/>
+                                    <clipView key="contentView" ambiguous="YES" misplaced="YES" drawsBackground="NO" copiesOnScroll="NO" id="sFO-2G-k0H">
+                                        <rect key="frame" x="1" y="1" width="223" height="133"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textView ambiguous="YES" editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="OB8-ct-zaB">
+                                                <rect key="frame" x="0.0" y="0.0" width="226" height="133"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <size key="minSize" width="107" height="194"/>
+                                                <size key="maxSize" width="463" height="10000000"/>
+                                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <size key="minSize" width="107" height="194"/>
+                                                <size key="maxSize" width="463" height="10000000"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </clipView>
+                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="KDz-L6-pim">
+                                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="0EQ-hJ-I6X">
+                                        <rect key="frame" x="224" y="1" width="15" height="133"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                </scrollView>
+                            </subviews>
+                        </view>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </box>
                 </subviews>
                 <connections>
                     <outlet property="colorWell1" destination="xRs-b4-uRX" id="dU8-Rb-feK"/>
                     <outlet property="colorWell2" destination="R4F-aB-Ncg" id="4Ep-U0-d8c"/>
                     <outlet property="colorWell3" destination="0wl-Xw-Dwt" id="ZKF-Cp-rpZ"/>
                     <outlet property="deviceTextField" destination="6zH-pE-lg9" id="X0t-Dg-Kq2"/>
+                    <outlet property="devicesInRangeTextView" destination="OB8-ct-zaB" id="uxp-Eo-mn6"/>
                 </connections>
             </view>
             <point key="canvasLocation" x="139" y="647"/>
         </window>
     </objects>
+    <resources>
+        <image name="NSRefreshTemplate" width="10" height="12"/>
+    </resources>
 </document>

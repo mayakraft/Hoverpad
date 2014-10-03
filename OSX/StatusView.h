@@ -16,8 +16,9 @@
 @property IBOutlet NSColorWell *colorWell1;
 @property IBOutlet NSColorWell *colorWell2;
 @property IBOutlet NSColorWell *colorWell3;
-@property IBOutlet NSColorWell *colorWell4;
 
 @property IBOutlet NSTextField *deviceTextField;
+
+@property IBOutlet NSTextView *devicesInRangeTextView;
 
 @end

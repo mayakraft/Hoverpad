@@ -12,21 +12,23 @@
 #import "StatusView.h"
 #import <GLKit/GLKit.h>
 
-#define SERVICE_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE20"
+#define SERVICE_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE30"
 
-#define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE30"
-#define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
-#define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
+#define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
+#define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
+#define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
 @interface AppDelegate() <VHIDDeviceDelegate> {
-    CBCentralManager *myCentralManager;
-    CBPeripheral *myPeripheral;
     CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
     VHIDDevice *joystickDescription;
     WJoyDevice *virtualJoystick;
     View *orientationView;
     StatusView *statusView;
+    NSMutableArray *peripheralsInRange;
 }
+
+@property CBCentralManager *centralManager;
+@property CBPeripheral *peripheral;
 
 @end
 
@@ -62,6 +64,8 @@
     
     virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
 //    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+    
+    peripheralsInRange = [NSMutableArray array];
     
     // boot BLE
     [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
@@ -115,21 +119,28 @@
 
 -(void) initCentral{
     NSLog(@"initCentral");
-    myCentralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 }
 
 -(void) startScan{
     NSLog(@"startScan");
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
-    [myCentralManager scanForPeripheralsWithServices:services options:nil];
+    [_centralManager scanForPeripheralsWithServices:services options:nil];
     [self setIsBLECapable:[self isLECapableHardware]];
+}
+
+-(void) connectionsDidUpdate{
+    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
+    NSString *deviceName = [_peripheral name];
+    if(!deviceName) deviceName = @"";
+    [statusView setDeviceID:deviceName];
 }
 
 - (BOOL) isLECapableHardware
 {
     NSString * state = nil;
     
-    switch ([myCentralManager state]){
+    switch ([_centralManager state]){
         case CBCentralManagerStateUnsupported:
             state = @"The platform/hardware doesn't support Bluetooth Low Energy.";
             break;
@@ -162,9 +173,8 @@
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
     NSLog(@"Connected to peripheral %@", peripheral.name);
-
+    
     [self setIsDeviceConnected:YES];
-    [statusView setDeviceID:peripheral.name];
     
     // Let's qeury the service
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
@@ -172,21 +182,58 @@
     NSLog(@"SERVICES: %@",services);
 }
 
+-(void) setStatusWindowDevicesInRange{
+    NSString *string = @"";
+    for(NSDictionary *p in peripheralsInRange){
+        string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
+    }
+    NSLog(@"STRING: %@",string);
+    [[statusView devicesInRangeTextView] setString:string];
+}
+
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
-    if(myPeripheral != nil){
+    
+//    for(CBPeripheral *p in peripheralsInRange){
+//        BOOL alreadyFound;
+//        if([[peripheral name] isEqualToString:[p name]])
+//            alreadyFound = true;
+//        if(!alreadyFound)
+//            [peripheralsInRange addObject:peripheral];
+//    }
+//    for(NSDictionary *p in peripheralsInRange){
+//        BOOL alreadyFound;
+//        if([[peripheral name] isEqualToString:[p objectForKey:@"name"]])
+//            alreadyFound = true;
+//        if(!alreadyFound)
+//            [peripheralsInRange addObject:@{@"name" : [peripheral name],
+//                                            @"RSSI" : RSSI,
+//                                            @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
+//    }
+    [peripheralsInRange addObject:@{@"name" : [peripheral name],
+                                    @"RSSI" : RSSI,
+                                    @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
+    NSLog(@"IN RANGE: %@",peripheralsInRange);
+    [self setStatusWindowDevicesInRange];
+    if(_peripheral != nil){
         return;
     }
     NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
-    NSLog(@"all the rest: %@",advertisementData);
-    [myCentralManager stopScan];
-    myPeripheral = peripheral;
-    myPeripheral.delegate = self;
-    
-    [myCentralManager connectPeripheral:myPeripheral options:nil];
-}
+    NSLog(@" - with ServiceUUID: %@",[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey]);
+    CBUUID *uuid = [[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey] firstObject];
+    NSString *str = [[[NSUUID alloc] initWithUUIDBytes:uuid.data.bytes] UUIDString];
+    NSLog(@"%@",str);
 
--(void) connectionsDidUpdate{
-    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
+    NSLog(@"Peripheral.name: %@",peripheral.name);
+    NSLog(@"Peripheral.services: %@",peripheral.services);
+    NSLog(@"Peripheral.state: %ld",peripheral.state);
+    NSLog(@"advertisementData: %@",advertisementData);
+    NSLog(@"RSSI: %@",RSSI);
+
+    [_centralManager stopScan];
+    _peripheral = peripheral;
+    [_peripheral setDelegate:self];
+    
+    [_centralManager connectPeripheral:_peripheral options:nil];
 }
 
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
@@ -228,7 +275,7 @@
             myNotifyChar = characteristic;
             NSLog(@"Found notify char!");
             
-            [myPeripheral setNotifyValue:YES forCharacteristic:myNotifyChar];
+            [_peripheral setNotifyValue:YES forCharacteristic:myNotifyChar];
         }
     }
 }
@@ -257,7 +304,8 @@
     else if ([characteristic.value length] == 2){
         char *data = (char*)[[characteristic value] bytes];
         if (*data == 0x3b){ // exit code
-            myPeripheral = nil;
+            [_centralManager cancelPeripheralConnection:_peripheral];
+            _peripheral = nil;
             [self setIsDeviceConnected:NO];
         }
     }
