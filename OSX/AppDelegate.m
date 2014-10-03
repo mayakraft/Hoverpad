@@ -74,6 +74,10 @@
     [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
 }
 
+-(void) togglePreferencesWindow:(id)sender{
+    [_preferencesWindow makeKeyAndOrderFront:self];
+}
+
 -(void) toggleOrientationWindow:(id)sender{
     if(_orientationWindowVisible){
         [_orientationMenuItem setTitle:@"Show Orientation"];
@@ -96,6 +100,11 @@
         [_statusWindow makeKeyAndOrderFront:self];
     }
     _statusWindowVisible = !_statusWindowVisible;
+}
+
+-(void) orientationControlChanged:(id)sender{
+    
+    [self setOrientationPriority:(int)[(NSMatrix*)sender selectedRow]];
 }
 
 -(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
@@ -192,7 +201,7 @@
     return !alreadyFound;
 }
 
-#pragma mark Central delegates
+#pragma mark- central delegates
 
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
@@ -258,7 +267,7 @@
     }
 }
 
-#pragma mark Peripheral Delegate methods
+#pragma mark- peripheral delegates
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
     NSLog(@"delegate: didDiscoverServices");
@@ -323,15 +332,23 @@
 
 -(void) quaternion:(float*)q ToPitch:(float*)pitch Roll:(float*)roll Yaw:(float*)yaw{
 
-// prioritizes pitch and roll, yaw flips other axis
-    *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-    *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
-    *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
-
-// prioritizes roll and yaw, pitch flips other axis
-//    *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
-//    *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
-//    *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
+    // prioritizes pitch and roll, yaw flips other axis
+    if(_orientationPriority == 0){
+        *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+        *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
+        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
+    }
+    // prioritizes roll and yaw, pitch flips other axis
+    else if(_orientationPriority == 1){
+        *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
+        *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
+        *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
+    }
+    else if(_orientationPriority == 2){
+        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
+        *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
+        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+    }
 }
 
 -(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {

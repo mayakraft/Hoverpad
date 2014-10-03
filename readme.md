@@ -2,13 +2,13 @@
 
 ###turn your smartphone into a Bluetooth LE joystick
 
-combination iOS app + MacOSX app
+combination iOS app + MacOSX app creates a virtual HID joystick with multiple analog axis mapped to the orientation sensors in the phone
 
 ![animation](http://robbykraft.com/joystickphone.gif)
 
 #great for Oculus Rift
 
-**problem + solution:** the presence I experienced in virtual reality was tested when keyboard-walking jerked me around. analog sticks solve this problem, and since smartphones outnumber joysticks *[citation needed]* nobody needs to be jerked around.
+the presence I experienced in virtual reality was impaired when keyboard-walking jerked me out of place. analog sticks solve this problem, and since smartphones outnumber joysticks **[citation needed]** nobody needs to get jerked around.
 
 only works in joystick-enabled games
 

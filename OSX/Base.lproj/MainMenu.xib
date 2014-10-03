@@ -15,6 +15,8 @@
             <connections>
                 <outlet property="orientationMenuItem" destination="AKh-Zv-8Zw" id="dnl-Gr-wfg"/>
                 <outlet property="orientationWindow" destination="QvC-M9-y7g" id="L0f-bz-rUh"/>
+                <outlet property="preferencesMenuItem" destination="vXZ-Pg-BtJ" id="66r-PJ-JW7"/>
+                <outlet property="preferencesWindow" destination="SF6-Rk-ue3" id="gRK-kH-JkL"/>
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
                 <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
                 <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>
@@ -425,6 +427,9 @@
                 </menuItem>
                 <menuItem title="Preferences" id="vXZ-Pg-BtJ">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="togglePreferencesWindow:" target="Voe-Tx-rLC" id="4PV-Ss-Cdq"/>
+                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="hXJ-qQ-nMM"/>
                 <menuItem title="Show Orientation" id="AKh-Zv-8Zw">
@@ -447,7 +452,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-265.5" y="563.5"/>
+            <point key="canvasLocation" x="-311.5" y="215.5"/>
         </menu>
         <window title="Status" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="sol-HT-Oha">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
@@ -559,6 +564,83 @@
                 </connections>
             </view>
             <point key="canvasLocation" x="139" y="647"/>
+        </window>
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="SF6-Rk-ue3">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="109" y="132" width="445" height="169"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <view key="contentView" id="ugQ-Ct-72Y">
+                <rect key="frame" x="0.0" y="0.0" width="445" height="169"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <matrix verticalHuggingPriority="750" fixedFrame="YES" selectionByRect="NO" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sz2-i9-jBp">
+                        <rect key="frame" x="153" y="83" width="103" height="58"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        <size key="cellSize" width="95" height="18"/>
+                        <size key="intercellSpacing" width="4" height="2"/>
+                        <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="Jnu-mf-oe2">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <cells>
+                            <column>
+                                <buttonCell type="radio" title="Pitch &amp; Roll" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="01F-6y-h4x">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Roll &amp; Yaw" imagePosition="left" alignment="left" inset="2" id="yxh-y0-h1Z">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <buttonCell type="radio" title="Yaw &amp; Pitch" imagePosition="left" alignment="left" inset="2" id="xxL-QT-Aq8">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </column>
+                        </cells>
+                        <connections>
+                            <action selector="orientationControlChanged:" target="Voe-Tx-rLC" id="WcD-LP-ySm"/>
+                        </connections>
+                    </matrix>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8rN-pk-t5Y">
+                        <rect key="frame" x="18" y="124" width="129" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Orientation Priority:" id="jl2-ag-rLB">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <openGLView fixedFrame="YES" useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17w-Oy-1AW">
+                        <rect key="frame" x="264" y="24" width="150" height="125"/>
+                    </openGLView>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3tQ-wk-zVr">
+                        <rect key="frame" x="153" y="32" width="54" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="15 fps" drawsBackground="YES" id="Rhj-ci-hSR">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PCq-hC-6mg">
+                        <rect key="frame" x="46" y="35" width="101" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Sensor Refresh:" id="obi-Y6-tk3">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0AS-dp-WWX">
+                        <rect key="frame" x="18" y="67" width="129" height="52"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="Priority axis range: 180° The other one flips the coordinate frame after a 90° rotation" id="Pe6-0L-deC">
+                            <font key="font" metaFont="system" size="10"/>
+                            <color key="textColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="-395.5" y="481.5"/>
         </window>
     </objects>
     <resources>

@@ -13,7 +13,6 @@
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
 #define START @"START"
-#define BOOT @"BOOT"
 #define STOP @"STOP"
 
 @implementation ViewController
@@ -29,7 +28,7 @@
 
     self.theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.theButton setFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*.5-50, [[UIScreen mainScreen] bounds].size.height*.5-25, 100, 50)];
-    [self.theButton setTitle:INIT forState:UIControlStateNormal];
+    [self.theButton setTitle:START forState:UIControlStateNormal];
     [self.theButton.titleLabel setFont:[UIFont systemFontOfSize:[[UIScreen mainScreen] bounds].size.width*.1]];
     [self.theButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -122,14 +121,9 @@
 
     self.theButton.enabled = NO;
     
-    if ([self.theButton.titleLabel.text isEqualToString:INIT]) {
+    if ([self.theButton.titleLabel.text isEqualToString:START]) {
         [self initPeripheral];
     }
-    
-    if ([self.theButton.titleLabel.text isEqualToString:START]) {
-        [self startAdvertisements];
-    }
-    
     if ([self.theButton.titleLabel.text isEqualToString:STOP]) {
         [self stopAdvertisements];
     }
@@ -169,10 +163,8 @@
     [peripheralManager removeAllServices];
     peripheralManager = nil;
     
-    
-    
     NSLog(@"Advertisements stopped!");
-    [self.theButton setTitle:INIT forState:UIControlStateNormal];
+    [self.theButton setTitle:START forState:UIControlStateNormal];
     self.theButton.enabled = YES;
 }
 
@@ -190,13 +182,16 @@
     return service;
 }
 
-#pragma mark Peripheral Manager delegates
+#pragma mark- Peripheral Manager delegates
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
-        NSLog(@"delegate: Peripheral powered on, we are in business!");
+        NSLog(@"delegate: peripheral manager powered on");
         
         [peripheralManager addService:[self constructService:SERVICE_UUID]];
+
+#pragma mark- auto start advertisements
+        [self performSelector:@selector(startAdvertisements) withObject:nil afterDelay:1.0];
         
         [self.theButton setTitle:START forState:UIControlStateNormal];
         self.theButton.enabled = YES;
