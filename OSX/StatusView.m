@@ -14,15 +14,24 @@
     [_deviceTextField setStringValue:_deviceID];
 }
 
+-(void) setDevicesInRange:(NSDictionary *)devicesInRange{
+    NSString *string = @"";
+    for(NSDictionary *p in devicesInRange){
+        string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
+    }
+    NSLog(@"STRING: %@",string);
+    [_devicesInRangeTextView setString:string];
+}
+
 -(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(BOOL)isConnected{
-    if(isCapable) [_colorWell1 setColor:[NSColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0]];
-    else [_colorWell1 setColor:[NSColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
+    if(isCapable) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    else [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 
-    if(isEnabled) [_colorWell2 setColor:[NSColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0]];
-    else [_colorWell2 setColor:[NSColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
+    if(isEnabled) [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    else [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 
-    if(isConnected) [_colorWell3 setColor:[NSColor colorWithRed:0.0 green:0.8 blue:0.0 alpha:1.0]];
-    else [_colorWell3 setColor:[NSColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1.0]];
+    if(isConnected) [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    else [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 }
 
 @end

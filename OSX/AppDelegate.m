@@ -6,14 +6,16 @@
 //
 
 #import "AppDelegate.h"
-#import "View.h"
 #import "VHIDDevice.h"
 #import <WirtualJoy/WJoyDevice.h>
-#import "StatusView.h"
 #import <GLKit/GLKit.h>
 
-#define SERVICE_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE30"
+// NSViews
+#import "View.h"
+#import "StatusView.h"
 
+#define SERVICE_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE30"
+//#define SERVICE_PREFIX @"2166E780-4A62-11E4-817C-0002A5D5"
 #define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
 #define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
@@ -168,11 +170,33 @@
     return FALSE;
 }
 
+//-(void) buildReadWriteNotifyStrings:(NSString*)UUID{
+//    NSString *IDPrefix = [UUID substringToIndex:3];
+//    READ_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@1",IDPrefix]];
+//    WRITE_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@2",IDPrefix]];
+//    NOTIFY_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@3",IDPrefix]];
+//}
+
+-(BOOL) addPeripheralInRangeIfUnique:(CBPeripheral*)peripheral RSSI:(NSNumber*)RSSI{
+    // returns YES if addition was made
+    BOOL alreadyFound = NO;
+    for(NSDictionary *p in peripheralsInRange){
+        if([[peripheral name] isEqualToString:[p objectForKey:@"name"]])
+            alreadyFound = YES;
+    }
+    if(!alreadyFound){
+        [peripheralsInRange addObject:@{@"name" : [peripheral name],
+                                        @"RSSI" : RSSI,
+                                        @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
+    }
+    return !alreadyFound;
+}
+
 #pragma mark Central delegates
 
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
     
-    NSLog(@"Connected to peripheral %@", peripheral.name);
+    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
     
     [self setIsDeviceConnected:YES];
     
@@ -182,75 +206,62 @@
     NSLog(@"SERVICES: %@",services);
 }
 
--(void) setStatusWindowDevicesInRange{
-    NSString *string = @"";
-    for(NSDictionary *p in peripheralsInRange){
-        string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
-    }
-    NSLog(@"STRING: %@",string);
-    [[statusView devicesInRangeTextView] setString:string];
-}
-
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
+    NSLog(@"central delegate: didDiscoverPeripheral");
+
+    if([self addPeripheralInRangeIfUnique:peripheral RSSI:RSSI])
+        [statusView setDevicesInRange:peripheralsInRange];
     
-//    for(CBPeripheral *p in peripheralsInRange){
-//        BOOL alreadyFound;
-//        if([[peripheral name] isEqualToString:[p name]])
-//            alreadyFound = true;
-//        if(!alreadyFound)
-//            [peripheralsInRange addObject:peripheral];
+    //TODO: doesn't clear ghost devices
+
+//    if(_peripheral != nil){
+//        return;
 //    }
-//    for(NSDictionary *p in peripheralsInRange){
-//        BOOL alreadyFound;
-//        if([[peripheral name] isEqualToString:[p objectForKey:@"name"]])
-//            alreadyFound = true;
-//        if(!alreadyFound)
-//            [peripheralsInRange addObject:@{@"name" : [peripheral name],
-//                                            @"RSSI" : RSSI,
-//                                            @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
-//    }
-    [peripheralsInRange addObject:@{@"name" : [peripheral name],
-                                    @"RSSI" : RSSI,
-                                    @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
-    NSLog(@"IN RANGE: %@",peripheralsInRange);
-    [self setStatusWindowDevicesInRange];
-    if(_peripheral != nil){
-        return;
-    }
+    
     NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
     NSLog(@" - with ServiceUUID: %@",[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey]);
     CBUUID *uuid = [[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey] firstObject];
+    if(uuid == nil) {
+        NSLog(@"ATTN: Skipping over a discovered peripheral because it isn't sharing its Advertisment Data with us");
+        return;
+    }
     NSString *str = [[[NSUUID alloc] initWithUUIDBytes:uuid.data.bytes] UUIDString];
     NSLog(@"%@",str);
+//    if([SERVICE_PREFIX isEqual:[str substringToIndex:32]]){
+    if([str isEqual:SERVICE_UUID]){
+        NSLog(@"Peripheral is in our service!");
 
-    NSLog(@"Peripheral.name: %@",peripheral.name);
-    NSLog(@"Peripheral.services: %@",peripheral.services);
-    NSLog(@"Peripheral.state: %ld",peripheral.state);
-    NSLog(@"advertisementData: %@",advertisementData);
-    NSLog(@"RSSI: %@",RSSI);
-
-    [_centralManager stopScan];
-    _peripheral = peripheral;
-    [_peripheral setDelegate:self];
-    
-    [_centralManager connectPeripheral:_peripheral options:nil];
+        NSLog(@"Peripheral.name: %@",peripheral.name);
+        NSLog(@"Peripheral.services: %@",peripheral.services);
+        NSLog(@"Peripheral.state: %ld",peripheral.state);
+        NSLog(@"advertisementData: %@",advertisementData);
+        NSLog(@"RSSI: %@",RSSI);
+        
+        [_centralManager stopScan];
+        
+        _peripheral = peripheral;
+//        [self buildReadWriteNotifyStrings:[[advertisementData objectForKey:CBAdvertisementDataLocalNameKey] substringToIndex:4]];
+        [_peripheral setDelegate:self];
+        [_centralManager connectPeripheral:_peripheral options:nil];
+    }
+    else{
+        NSLog(@"ATTN: skipping over peripheral, it appears it isn't in our service");
+    }
 }
 
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
     if(central.state == CBCentralManagerStatePoweredOn){
-        NSLog(@"Central powered on");
+        NSLog(@"central delegate: central powered on");
     }
     if(central.state == CBCentralManagerStatePoweredOff){
-        NSLog(@"Central powered off");
+        NSLog(@"central delegate: central powered off");
     }
 }
 
-
 #pragma mark Peripheral Delegate methods
 
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
-{
-    NSLog(@"Discovered services!");
+- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
+    NSLog(@"delegate: didDiscoverServices");
     for (CBService *service in peripheral.services) {
         if ([service.UUID isEqual:[CBUUID UUIDWithString:SERVICE_UUID]]) {
             NSLog(@"Found our service!");
@@ -259,23 +270,21 @@
     }
 }
 
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
-{
-    NSLog(@"Discovered characteristics!");
+- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
+    NSLog(@"peripheral delegate: didDiscoverCharacteristicForService");
     for (CBCharacteristic* characteristic in service.characteristics) {
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:READ_CHAR_UUID]]) {
             myReadChar = characteristic;
-            NSLog(@"Found read char!");
+            NSLog(@"found our read characteristic");
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHAR_UUID]]) {
             myWriteChar = characteristic;
-            NSLog(@"Found write char!");
+            NSLog(@"found our write characteristic");
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID]]) {
             myNotifyChar = characteristic;
-            NSLog(@"Found notify char!");
-            
             [_peripheral setNotifyValue:YES forCharacteristic:myNotifyChar];
+            NSLog(@"found our notify characteristic");
         }
     }
 }
@@ -307,6 +316,7 @@
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
             [self setIsDeviceConnected:NO];
+            [self performSelector:@selector(startScan) withObject:nil afterDelay:1.0];
         }
     }
 }
@@ -333,7 +343,7 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    NSLog(@"Wrote value for characteristic!");
+    NSLog(@"delegate: didWriteValueForCharacteristic");
 }
 
 

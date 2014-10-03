@@ -23,4 +23,6 @@
 @property (nonatomic) NSData *orientation;
 @property UIButton *theButton;
 
+@property NSString *UUID;
+
 @end

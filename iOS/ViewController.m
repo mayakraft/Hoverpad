@@ -7,14 +7,13 @@
 
 #import "ViewController.h"
 
-#define SERVICE_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE30"
-
+#define SERVICE_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE30"
 #define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
 #define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
 #define START @"START"
-#define INIT @"BOOT"
+#define BOOT @"BOOT"
 #define STOP @"STOP"
 
 @implementation ViewController
@@ -35,6 +34,8 @@
     [self.theButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.theButton];
+    
+    _UUID = [self random16bit:4];
     
     identity = GLKQuaternionIdentity;
     
@@ -58,6 +59,20 @@
     }
 }
 
+-(NSString*)random16bit:(NSUInteger)numberOfDigits{
+    NSString *string = @"";
+    for(int i = 0; i < numberOfDigits; i++){
+        int number = arc4random()%16;
+        if(number > 9){
+            char letter = 'A' + number - 10;
+            string = [string stringByAppendingString:[NSString stringWithFormat:@"%c",letter]];
+        }
+        else
+            string = [string stringByAppendingString:[NSString stringWithFormat:@"%d",number]];
+    }
+    return string;
+}
+
 -(void) setOrientation:(NSData *)orientation{
     _orientation = orientation;
     [peripheralManager updateValue:orientation forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
@@ -72,7 +87,6 @@
 }
 
 -(void) sendDisconnect{
-//    unsigned char exit[2]; // Hex 3b;
     unsigned char exit[2] = {0x3b};
     [peripheralManager updateValue:[NSData dataWithBytes:&exit length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
@@ -134,12 +148,12 @@
 }
 
 - (NSString*)getName{
-    return [SERVICE_UUID substringFromIndex:[SERVICE_UUID length]-4];
+    return @"Hoverpad";//[NSString stringWithFormat:@"%@",_UUID];
 }
 
 - (void)startAdvertisements{
     NSLog(@"Starting advertisements...");
-
+    
     NSMutableDictionary *advertisingDict = [NSMutableDictionary dictionary];
     [advertisingDict setObject:[self getName] forKey:CBAdvertisementDataLocalNameKey];
     [advertisingDict setObject:@[[CBUUID UUIDWithString:SERVICE_UUID]] forKey:CBAdvertisementDataServiceUUIDsKey];
@@ -153,12 +167,12 @@
     
     [peripheralManager stopAdvertising];
     [peripheralManager removeAllServices];
-//    peripheralManager = nil;
+    peripheralManager = nil;
     
-
+    
     
     NSLog(@"Advertisements stopped!");
-    [self.theButton setTitle:START forState:UIControlStateNormal];
+    [self.theButton setTitle:INIT forState:UIControlStateNormal];
     self.theButton.enabled = YES;
 }
 

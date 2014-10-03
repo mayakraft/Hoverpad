@@ -13,12 +13,14 @@
 
 @property (nonatomic) NSString *deviceID;
 
-@property IBOutlet NSColorWell *colorWell1;
-@property IBOutlet NSColorWell *colorWell2;
-@property IBOutlet NSColorWell *colorWell3;
+@property IBOutlet NSImageView *imageStatus1;
+@property IBOutlet NSImageView *imageStatus2;
+@property IBOutlet NSImageView *imageStatus3;
 
 @property IBOutlet NSTextField *deviceTextField;
 
 @property IBOutlet NSTextView *devicesInRangeTextView;
+
+@property (nonatomic) NSArray *devicesInRange;
 
 @end
