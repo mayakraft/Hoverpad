@@ -9,7 +9,7 @@
 
 @interface StatusView : NSView
 
--(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(BOOL)isConnected;
+-(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected;
 
 @property (nonatomic) NSString *deviceID;
 

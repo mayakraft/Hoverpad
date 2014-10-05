@@ -23,15 +23,19 @@
     [_devicesInRangeTextView setString:string];
 }
 
--(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(BOOL)isConnected{
+-(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected{
     if(isCapable) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     else [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 
     if(isEnabled) [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     else [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 
-    if(isConnected) [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-    else [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
+    if(isConnected == 0)
+        [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
+    else if(isConnected == 1)
+        [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
+    else if(isConnected == 2)
+        [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
 }
 
 @end

@@ -292,6 +292,11 @@
 			attributes = {
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Robby Kraft";
+				TargetAttributes = {
+					D568D37818CBFC4D00ED987D = {
+						DevelopmentTeam = 78C98TD784;
+					};
+				};
 			};
 			buildConfigurationList = D568D37418CBFC4D00ED987D /* Build configuration list for PBXProject "Hoverpad" */;
 			compatibilityVersion = "Xcode 3.2";

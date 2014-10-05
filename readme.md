@@ -8,7 +8,7 @@ combination iOS app + MacOSX app creates a virtual HID joystick with multiple an
 
 #great for Oculus Rift
 
-the presence I experienced in virtual reality was impaired when keyboard-walking jerked me out of place. analog sticks solve this problem, and since smartphones outnumber joysticks **[citation needed]** nobody needs to get jerked around.
+the presence I experienced in virtual reality was disrupted when keyboard-walking jerked me out of place. analog sticks solve this problem, and since smartphones outnumber joysticks **[citation needed]** nobody needs to get jerked around.
 
 only works in joystick-enabled games
 

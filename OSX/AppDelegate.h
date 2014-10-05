@@ -8,6 +8,12 @@
 #import <Cocoa/Cocoa.h>
 #import <IOBluetooth/IOBluetooth.h>
 
+typedef enum : NSUInteger {
+    BLEConnectionStateDisconnected,
+    BLEConnectionStateScanning,
+    BLEConnectionStateConnected
+} BLEConnectionState;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>{
     IBOutlet NSMenu *statusMenu;
     NSStatusItem *statusItem;
@@ -15,17 +21,22 @@
     NSImage *statusHighlightImage;
 }
 
-// WINDOWS
+@property (nonatomic) BLEConnectionState connectionState;
 
+// MENU CONTROLS
 -(IBAction)toggleOrientationWindow:(id)sender;
 -(IBAction)toggleStatusWindow:(id)sender;
 -(IBAction)togglePreferencesWindow:(id)sender;
-@property (assign) IBOutlet NSWindow *orientationWindow;
-@property (assign) IBOutlet NSWindow *statusWindow;
-@property (assign) IBOutlet NSWindow *preferencesWindow;
+-(IBAction)scanOrEject:(id)sender;
 @property IBOutlet NSMenuItem *orientationMenuItem;
 @property IBOutlet NSMenuItem *statusMenuItem;
 @property IBOutlet NSMenuItem *preferencesMenuItem;
+@property IBOutlet NSMenuItem *scanOrEjectMenuItem;
+
+// WINDOWS
+@property (assign) IBOutlet NSWindow *orientationWindow;
+@property (assign) IBOutlet NSWindow *statusWindow;
+@property (assign) IBOutlet NSWindow *preferencesWindow;
 @property BOOL orientationWindowVisible;
 @property BOOL statusWindowVisible;
 
@@ -33,7 +44,7 @@
 
 // BLE and DEVICE related
 
-@property (nonatomic) BOOL isDeviceConnected;
+//@property (nonatomic) BOOL isDeviceConnected;
 @property (nonatomic) BOOL isBLEEnabled;
 @property (nonatomic) BOOL isBLECapable;
 

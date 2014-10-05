@@ -20,6 +20,8 @@
 #define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
+#define countingCharacters @"⠀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿"
+
 @interface AppDelegate() <VHIDDeviceDelegate> {
     CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
     VHIDDevice *joystickDescription;
@@ -27,6 +29,8 @@
     View *orientationView;
     StatusView *statusView;
     NSMutableArray *peripheralsInRange;
+    NSUInteger scanClock;
+    NSTimer *scanClockLoop;
 }
 
 @property CBCentralManager *centralManager;
@@ -40,7 +44,7 @@
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     NSImage *menuIcon = [NSImage imageNamed:@"Menu Icon"];
     NSImage *highlightIcon = [NSImage imageNamed:@"Menu Icon"];
-    
+
     [statusItem setImage:menuIcon];
     [statusItem setAlternateImage:highlightIcon];
     [statusItem setMenu:statusMenu];
@@ -71,10 +75,74 @@
     
     // boot BLE
     [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
-    [self performSelector:@selector(startScan) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(bootScanIfPossible) withObject:nil afterDelay:3.0];
+}
+
+-(void)bootScanIfPossible{
+    if(_connectionState == BLEConnectionStateDisconnected)
+        [self setConnectionState:BLEConnectionStateScanning];
+}
+
+-(void) scanClockLoopFunction{
+    if(scanClock >= countingCharacters.length-1){
+        [self setConnectionState:BLEConnectionStateDisconnected];
+        return;
+    }
+    scanClock++;
+    NSLog(@"scanning (%lusec)",(unsigned long)scanClock);
+    [_scanOrEjectMenuItem setTitle:[NSString stringWithFormat:@"%@ Scanning",[countingCharacters substringWithRange:NSMakeRange(scanClock, 1)]]];
+}
+
+-(void) setConnectionState:(BLEConnectionState)connectionState{
+    _connectionState = connectionState;
+    if(connectionState == BLEConnectionStateDisconnected){
+        if(scanClockLoop){
+            [scanClockLoop invalidate];
+            scanClockLoop = nil;
+        }
+        if(_centralManager && _peripheral){
+            [_centralManager cancelPeripheralConnection:_peripheral];
+            _peripheral = nil;
+        }
+        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameRefreshTemplate]];
+        [_scanOrEjectMenuItem setTitle:@"Scan"];
+        [_scanOrEjectMenuItem setEnabled:YES];
+    }
+    else if(connectionState == BLEConnectionStateScanning){
+        scanClock = 0;
+        [_scanOrEjectMenuItem setEnabled:NO];
+        [_scanOrEjectMenuItem setImage:nil];
+        [_scanOrEjectMenuItem setTitle:[NSString stringWithFormat:@"%@ Scanning",[countingCharacters substringWithRange:NSMakeRange(scanClock, 1)]]];
+        scanClockLoop = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(scanClockLoopFunction) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:scanClockLoop forMode:NSRunLoopCommonModes];
+        [self startScan];
+    }
+    else if(connectionState == BLEConnectionStateConnected){
+        if(scanClockLoop){
+            [scanClockLoop invalidate];
+            scanClockLoop = nil;
+        }
+        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
+        [_scanOrEjectMenuItem setTitle:@"Disconnect:(name)"];
+        [_scanOrEjectMenuItem setEnabled:YES];
+    }
+    [self connectionsDidUpdate];
+}
+
+-(void)scanOrEject:(id)sender{
+    if(_connectionState == BLEConnectionStateDisconnected){
+        [self setConnectionState:BLEConnectionStateScanning];
+    }
+    else if(_connectionState == BLEConnectionStateScanning){
+
+    }
+    else if(_connectionState == BLEConnectionStateConnected){
+        [self setConnectionState:BLEConnectionStateDisconnected];
+    }
 }
 
 -(void) togglePreferencesWindow:(id)sender{
+    [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
     [_preferencesWindow makeKeyAndOrderFront:self];
 }
 
@@ -85,6 +153,7 @@
     }
     else{
         [_orientationMenuItem setTitle:@"Hide Orientation"];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
         [_orientationWindow makeKeyAndOrderFront:self];
     }
     _orientationWindowVisible = !_orientationWindowVisible;
@@ -97,6 +166,7 @@
     }
     else{
         [_statusMenuItem setTitle:@"Hide Status"];
+        [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
         [_statusWindow makeKeyAndOrderFront:self];
     }
     _statusWindowVisible = !_statusWindowVisible;
@@ -123,11 +193,6 @@
     [self connectionsDidUpdate];
 }
 
--(void) setIsDeviceConnected:(BOOL)isDeviceConnected{
-    _isDeviceConnected = isDeviceConnected;
-    [self connectionsDidUpdate];
-}
-
 -(void) initCentral{
     NSLog(@"initCentral");
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
@@ -137,11 +202,10 @@
     NSLog(@"startScan");
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
     [_centralManager scanForPeripheralsWithServices:services options:nil];
-    [self setIsBLECapable:[self isLECapableHardware]];
 }
 
 -(void) connectionsDidUpdate{
-    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_isDeviceConnected];
+    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_connectionState];
     NSString *deviceName = [_peripheral name];
     if(!deviceName) deviceName = @"";
     [statusView setDeviceID:deviceName];
@@ -207,7 +271,7 @@
     
     NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
     
-    [self setIsDeviceConnected:YES];
+    [self setConnectionState:BLEConnectionStateConnected];
     
     // Let's qeury the service
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
@@ -261,6 +325,7 @@
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
     if(central.state == CBCentralManagerStatePoweredOn){
         NSLog(@"central delegate: central powered on");
+        [self setIsBLECapable:[self isLECapableHardware]];
     }
     if(central.state == CBCentralManagerStatePoweredOff){
         NSLog(@"central delegate: central powered off");
@@ -322,33 +387,66 @@
     else if ([characteristic.value length] == 2){
         char *data = (char*)[[characteristic value] bytes];
         if (*data == 0x3b){ // exit code
-            [_centralManager cancelPeripheralConnection:_peripheral];
-            _peripheral = nil;
-            [self setIsDeviceConnected:NO];
-            [self performSelector:@selector(startScan) withObject:nil afterDelay:1.0];
+            [self setConnectionState:BLEConnectionStateDisconnected];
+//            [self performSelector:@selector(startScan) withObject:nil afterDelay:1.0];
         }
     }
 }
 
 -(void) quaternion:(float*)q ToPitch:(float*)pitch Roll:(float*)roll Yaw:(float*)yaw{
+    static int count;
+    count++;
+//    GLKQuaternion quat = GLKQuaternionMake(q[0], q[1], q[2], q[3]);
+//    GLKMatrix4 matrix = GLKMatrix4MakeWithQuaternion(quat);
+//    if(!(count % 15)){
+//        NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
+//              matrix.m00, matrix.m01, matrix.m02,
+//              matrix.m10, matrix.m11, matrix.m12,
+//              matrix.m20, matrix.m21, matrix.m22);
+//    }
 
     // prioritizes pitch and roll, yaw flips other axis
-    if(_orientationPriority == 0){
-        *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-        *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
-        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
-    }
-    // prioritizes roll and yaw, pitch flips other axis
-    else if(_orientationPriority == 1){
-        *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
-        *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
-        *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
-    }
-    else if(_orientationPriority == 2){
-        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
-        *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
-        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-    }
+//    *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+    *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
+//    *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
+  
+//    *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
+    *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
+//    *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
+    
+//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
+    *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
+//        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+
+    // if the signs are the same
+    if((q[1] >= 0.0 && q[3] >= 0.0) && q[1] > q[3]) *pitch = M_PI*.5;
+    if((q[1] < 0.0 && q[3] < 0.0)   && q[1] < q[3]) *pitch = M_PI*.5;
+    // if the signs are different
+    if((q[1] >= 0.0 && q[3] < 0.0) && -q[1] > q[3]) *pitch = -M_PI*.5;
+    if((q[1] < 0.0 && q[3] >= 0.0) && -q[1] > q[3]) *pitch = -M_PI*.5;
+
+    
+    if(!(count % 5))
+        NSLog(@"P:%.3f  R:%.3f  Y:%.3f\n   qx:%.3f  qy:%.3f  qz:%.3f  qw:%.3f\n  (%.3f) - (%.3f)",*pitch, *roll, *yaw,
+              q[0], q[1], q[2], q[3],
+              q[3]*q[1], q[2]*q[0]);
+    
+//    if(_orientationPriority == 0){
+//        *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+//        *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
+//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
+//    }
+//    // prioritizes roll and yaw, pitch flips other axis
+//    else if(_orientationPriority == 1){
+//        *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
+//        *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
+//        *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
+//    }
+//    else if(_orientationPriority == 2){
+//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
+//        *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
+//        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
+//    }
 }
 
 -(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {

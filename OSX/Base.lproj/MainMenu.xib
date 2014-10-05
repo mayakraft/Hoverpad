@@ -17,6 +17,7 @@
                 <outlet property="orientationWindow" destination="QvC-M9-y7g" id="L0f-bz-rUh"/>
                 <outlet property="preferencesMenuItem" destination="vXZ-Pg-BtJ" id="66r-PJ-JW7"/>
                 <outlet property="preferencesWindow" destination="SF6-Rk-ue3" id="gRK-kH-JkL"/>
+                <outlet property="scanOrEjectMenuItem" destination="Y5g-Uw-3iA" id="hNA-tO-m5h"/>
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
                 <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
                 <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>
@@ -420,15 +421,12 @@
                 <autoresizingMask key="autoresizingMask"/>
             </view>
         </window>
-        <menu id="7uu-il-wul">
+        <menu autoenablesItems="NO" id="7uu-il-wul">
             <items>
-                <menuItem title="Re-Scan" image="NSRefreshTemplate" id="Y5g-Uw-3iA">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Preferences" id="vXZ-Pg-BtJ">
+                <menuItem title="Scan" image="NSRefreshTemplate" id="Y5g-Uw-3iA">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="togglePreferencesWindow:" target="Voe-Tx-rLC" id="4PV-Ss-Cdq"/>
+                        <action selector="scanOrEject:" target="Voe-Tx-rLC" id="jJs-BJ-ZAP"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="hXJ-qQ-nMM"/>
@@ -445,6 +443,12 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="TWb-ee-zNk"/>
+                <menuItem title="Preferences" id="vXZ-Pg-BtJ">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="togglePreferencesWindow:" target="Voe-Tx-rLC" id="4PV-Ss-Cdq"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Quit" id="GYg-3h-Xob">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
