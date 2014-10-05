@@ -31,6 +31,7 @@
     NSMutableArray *peripheralsInRange;
     NSUInteger scanClock;
     NSTimer *scanClockLoop;
+    float axis4, axis5, axis6, axis7, axis8, axis9, axis10, axis11, axis12, axis13, axis14, axis15, axis16, axis17, axis18, axis19, axis20;
 }
 
 @property CBCentralManager *centralManager;
@@ -49,7 +50,7 @@
     [statusItem setAlternateImage:highlightIcon];
     [statusItem setMenu:statusMenu];
     [statusItem setHighlightMode:YES];
-    [statusItem setToolTip:@"Phone Joystick"];
+    [statusItem setToolTip:@"Hoverpad"];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification{
@@ -65,10 +66,9 @@
     [closeStatus setTarget:self];
     [closeStatus setAction:@selector(toggleStatusWindow:)];
 
-    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:6 buttonCount:1 isRelative:NO];
+    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:4 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
     
-    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
 //    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
     
     peripheralsInRange = [NSMutableArray array];
@@ -104,6 +104,8 @@
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
+        if(virtualJoystick) virtualJoystick = nil;
+
         [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameRefreshTemplate]];
         [_scanOrEjectMenuItem setTitle:@"Scan"];
         [_scanOrEjectMenuItem setEnabled:YES];
@@ -122,8 +124,9 @@
             [scanClockLoop invalidate];
             scanClockLoop = nil;
         }
+        virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
         [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
-        [_scanOrEjectMenuItem setTitle:@"Disconnect:(name)"];
+        [_scanOrEjectMenuItem setTitle:@"Disconnect"];
         [_scanOrEjectMenuItem setEnabled:YES];
     }
     [self connectionsDidUpdate];
@@ -178,7 +181,8 @@
 }
 
 -(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
-    [virtualJoystick updateHIDState:state];
+    if(virtualJoystick)
+        [virtualJoystick updateHIDState:state];
 }
 
 -(void) setIsBLECapable:(BOOL)isBLECapable{
@@ -364,6 +368,9 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
+
+    static const float halfpi = M_PI*.5;
+    
     if ([characteristic.value length] == 4) {  //([characteristic.value bytes]){
         float q[4];
         [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
@@ -371,8 +378,9 @@
         float pitch, roll, yaw;
         [self quaternion:q ToPitch:&pitch Roll:&roll Yaw:&yaw];
 
-        [joystickDescription setPointer:0 position:CGPointMake(pitch/M_PI, roll/M_PI)];
-        [joystickDescription setPointer:1 position:CGPointMake(yaw/M_PI, 0)];
+        [joystickDescription setPointer:0 position:CGPointMake(pitch/halfpi, roll/halfpi)];
+        [joystickDescription setPointer:1 position:CGPointMake(yaw/halfpi, 0)];
+//        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
         
         if(_orientationWindowVisible){
             [orientationView setOrientation:q];
@@ -388,7 +396,6 @@
         char *data = (char*)[[characteristic value] bytes];
         if (*data == 0x3b){ // exit code
             [self setConnectionState:BLEConnectionStateDisconnected];
-//            [self performSelector:@selector(startScan) withObject:nil afterDelay:1.0];
         }
     }
 }
@@ -396,57 +403,15 @@
 -(void) quaternion:(float*)q ToPitch:(float*)pitch Roll:(float*)roll Yaw:(float*)yaw{
     static int count;
     count++;
-//    GLKQuaternion quat = GLKQuaternionMake(q[0], q[1], q[2], q[3]);
-//    GLKMatrix4 matrix = GLKMatrix4MakeWithQuaternion(quat);
-//    if(!(count % 15)){
-//        NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
-//              matrix.m00, matrix.m01, matrix.m02,
-//              matrix.m10, matrix.m11, matrix.m12,
-//              matrix.m20, matrix.m21, matrix.m22);
-//    }
-
-    // prioritizes pitch and roll, yaw flips other axis
-//    *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-    *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
-//    *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
-  
-//    *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
-    *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
-//    *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
-    
-//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
-    *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
-//        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-
-    // if the signs are the same
-    if((q[1] >= 0.0 && q[3] >= 0.0) && q[1] > q[3]) *pitch = M_PI*.5;
-    if((q[1] < 0.0 && q[3] < 0.0)   && q[1] < q[3]) *pitch = M_PI*.5;
-    // if the signs are different
-    if((q[1] >= 0.0 && q[3] < 0.0) && -q[1] > q[3]) *pitch = -M_PI*.5;
-    if((q[1] < 0.0 && q[3] >= 0.0) && -q[1] > q[3]) *pitch = -M_PI*.5;
-
-    
-    if(!(count % 5))
-        NSLog(@"P:%.3f  R:%.3f  Y:%.3f\n   qx:%.3f  qy:%.3f  qz:%.3f  qw:%.3f\n  (%.3f) - (%.3f)",*pitch, *roll, *yaw,
-              q[0], q[1], q[2], q[3],
-              q[3]*q[1], q[2]*q[0]);
-    
-//    if(_orientationPriority == 0){
-//        *roll = atan2( (2*(q[3]*q[0]+q[2]*q[1])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-//        *yaw = asin(2*(q[3]*q[2]-q[1]*q[0]));
-//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[2]*q[2]+q[1]*q[1])) );
-//    }
-//    // prioritizes roll and yaw, pitch flips other axis
-//    else if(_orientationPriority == 1){
-//        *roll = atan2( (2*(q[3]*q[0]+q[1]*q[2])) , (1-2*(q[0]*q[0]+q[1]*q[1])) );
-//        *pitch = asin(2*(q[3]*q[1]-q[2]*q[0]));
-//        *yaw = atan2( (2*(q[3]*q[2]+q[0]*q[1])) , (1-2*(q[1]*q[1]+q[2]*q[2])) );
-//    }
-//    else if(_orientationPriority == 2){
-//        *pitch = atan2( (2*(q[3]*q[1]+q[0]*q[2])) , (1-2*(q[1]*q[1]+q[0]*q[0])) );
-//        *roll = asin(2*(q[3]*q[0]-q[2]*q[1]));
-//        *yaw = atan2( (2*(q[3]*q[2]+q[1]*q[0])) , (1-2*(q[0]*q[0]+q[2]*q[2])) );
-//    }
+    GLKQuaternion quat = GLKQuaternionMake(q[0], q[1], q[2], q[3]);
+    GLKMatrix4 matrix = GLKMatrix4MakeWithQuaternion(quat);
+    *yaw = atan2f(matrix.m10, sqrtf(matrix.m20*matrix.m20 + matrix.m00*matrix.m00));
+    *roll = atan2f(matrix.m21, sqrtf(matrix.m01*matrix.m01 + matrix.m11*matrix.m11));
+    *pitch = atan2f(matrix.m02, sqrtf(matrix.m12*matrix.m12 + matrix.m22*matrix.m22));
+//    NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
+//          matrix.m00, matrix.m01, matrix.m02,
+//          matrix.m10, matrix.m11, matrix.m12,
+//          matrix.m20, matrix.m21, matrix.m22);
 }
 
 -(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {
