@@ -40,8 +40,6 @@ typedef enum : NSUInteger {
 @property BOOL orientationWindowVisible;
 @property BOOL statusWindowVisible;
 
-@property int orientationPriority;
-
 // BLE and DEVICE related
 
 //@property (nonatomic) BOOL isDeviceConnected;
@@ -50,6 +48,6 @@ typedef enum : NSUInteger {
 
 // PREFERENCES PANE
 
-- (IBAction)orientationControlChanged:(id)sender;
+-(IBAction)axisInvert:(id)sender;
 
 @end

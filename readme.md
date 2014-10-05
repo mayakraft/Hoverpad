@@ -23,6 +23,14 @@ gamers are used to being jerked around (hah). (no, seriously) this controller is
 
 #usage
 
+hold the phone like a cafeteria tray, with the home button on the right
+
+### axis map
+
+* 1: pitch
+* 2: roll
+* 3: yaw
+
 ###touch screen to re-calibrate joystick
 
 it’s helpful to re-calibrate your physical orientation against gravity. a screen touch forces the identity matrix on the controller, release and the device is facing (the new) forward.

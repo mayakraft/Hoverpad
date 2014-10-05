@@ -31,7 +31,7 @@
     NSMutableArray *peripheralsInRange;
     NSUInteger scanClock;
     NSTimer *scanClockLoop;
-    float axis4, axis5, axis6, axis7, axis8, axis9, axis10, axis11, axis12, axis13, axis14, axis15, axis16, axis17, axis18, axis19, axis20;
+    BOOL invertPitch, invertRoll, invertYaw;
 }
 
 @property CBCentralManager *centralManager;
@@ -41,11 +41,35 @@
 
 @implementation AppDelegate
 
+-(void) axisInvert:(id)sender{
+    if([sender tag] == 1){
+        invertPitch = [(NSButton*)sender state];
+    }
+    if([sender tag] == 2){
+        invertRoll = [(NSButton*)sender state];
+    }
+    if([sender tag] == 3){
+        invertYaw = [(NSButton*)sender state];
+    }
+}
+
+-(void) createVirtualJoystick{
+    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:4 buttonCount:1 isRelative:NO];
+    [joystickDescription setDelegate:self];
+    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
+//    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+}
+
+-(void) destroyVirtualJoystick{
+    joystickDescription.delegate = nil;
+    joystickDescription = nil;
+    virtualJoystick = nil;
+}
+
 -(void) awakeFromNib{
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     NSImage *menuIcon = [NSImage imageNamed:@"Menu Icon"];
     NSImage *highlightIcon = [NSImage imageNamed:@"Menu Icon"];
-
     [statusItem setImage:menuIcon];
     [statusItem setAlternateImage:highlightIcon];
     [statusItem setMenu:statusMenu];
@@ -61,15 +85,9 @@
     NSButton *closeButton = [_orientationWindow standardWindowButton:NSWindowCloseButton];
     [closeButton setTarget:self];
     [closeButton setAction:@selector(toggleOrientationWindow:)];
-    
     NSButton *closeStatus = [_statusWindow standardWindowButton:NSWindowCloseButton];
     [closeStatus setTarget:self];
     [closeStatus setAction:@selector(toggleStatusWindow:)];
-
-    joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:4 buttonCount:1 isRelative:NO];
-    [joystickDescription setDelegate:self];
-    
-//    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
     
     peripheralsInRange = [NSMutableArray array];
     
@@ -94,6 +112,8 @@
 }
 
 -(void) setConnectionState:(BLEConnectionState)connectionState{
+    if(_connectionState == connectionState)
+        return;
     _connectionState = connectionState;
     if(connectionState == BLEConnectionStateDisconnected){
         if(scanClockLoop){
@@ -104,7 +124,7 @@
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
-        if(virtualJoystick) virtualJoystick = nil;
+        [self destroyVirtualJoystick];
 
         [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameRefreshTemplate]];
         [_scanOrEjectMenuItem setTitle:@"Scan"];
@@ -124,7 +144,8 @@
             [scanClockLoop invalidate];
             scanClockLoop = nil;
         }
-        virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
+        [self createVirtualJoystick];
+        
         [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
         [_scanOrEjectMenuItem setTitle:@"Disconnect"];
         [_scanOrEjectMenuItem setEnabled:YES];
@@ -175,10 +196,6 @@
     _statusWindowVisible = !_statusWindowVisible;
 }
 
--(void) orientationControlChanged:(id)sender{
-    
-    [self setOrientationPriority:(int)[(NSMatrix*)sender selectedRow]];
-}
 
 -(void) VHIDDevice:(VHIDDevice *)device stateChanged:(NSData *)state{
     if(virtualJoystick)
@@ -401,13 +418,14 @@
 }
 
 -(void) quaternion:(float*)q ToPitch:(float*)pitch Roll:(float*)roll Yaw:(float*)yaw{
-    static int count;
-    count++;
     GLKQuaternion quat = GLKQuaternionMake(q[0], q[1], q[2], q[3]);
     GLKMatrix4 matrix = GLKMatrix4MakeWithQuaternion(quat);
-    *yaw = atan2f(matrix.m10, sqrtf(matrix.m20*matrix.m20 + matrix.m00*matrix.m00));
-    *roll = atan2f(matrix.m21, sqrtf(matrix.m01*matrix.m01 + matrix.m11*matrix.m11));
-    *pitch = atan2f(matrix.m02, sqrtf(matrix.m12*matrix.m12 + matrix.m22*matrix.m22));
+    int pD = invertPitch ? -1 : 1;
+    int rD = invertRoll ? -1 : 1;
+    int yD = invertYaw ? -1 : 1;
+    *yaw =   yD * atan2f(matrix.m10, sqrtf(powf(matrix.m11,2) + powf(matrix.m12,2) ) );
+    *roll = rD * -atan2f(matrix.m12, sqrtf(powf(matrix.m10,2) + powf(matrix.m11,2) ) );
+    *pitch = pD * atan2f(matrix.m02, sqrtf(powf(matrix.m12,2) + powf(matrix.m22,2) ) );
 //    NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
 //          matrix.m00, matrix.m01, matrix.m02,
 //          matrix.m10, matrix.m11, matrix.m12,
