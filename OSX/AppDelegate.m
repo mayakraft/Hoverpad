@@ -14,10 +14,9 @@
 #import "View.h"
 #import "StatusView.h"
 
-#define SERVICE_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE30"
-//#define SERVICE_PREFIX @"2166E780-4A62-11E4-817C-0002A5D5"
-#define READ_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE31"
-#define WRITE_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE32"
+#define SERVICE_UUID     @"2166E780-4A62-11E4-817C-0002A5D5DE30"
+#define READ_CHAR_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE31"
+#define WRITE_CHAR_UUID  @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
 #define countingCharacters @"⠀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿"
@@ -91,9 +90,7 @@
     
     peripheralsInRange = [NSMutableArray array];
     
-    // boot BLE
-    [self performSelector:@selector(initCentral) withObject:nil afterDelay:1.0];
-    [self performSelector:@selector(bootScanIfPossible) withObject:nil afterDelay:3.0];
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 }
 
 -(void)bootScanIfPossible{
@@ -155,7 +152,13 @@
 
 -(void)scanOrEject:(id)sender{
     if(_connectionState == BLEConnectionStateDisconnected){
-        [self setConnectionState:BLEConnectionStateScanning];
+        if(_isBLECapable)
+            [self setConnectionState:BLEConnectionStateScanning];
+        else{
+            // bluetooth wasn't enabled before
+            // try again from the beginning
+            _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+        }
     }
     else if(_connectionState == BLEConnectionStateScanning){
 
@@ -214,11 +217,6 @@
     [self connectionsDidUpdate];
 }
 
--(void) initCentral{
-    NSLog(@"initCentral");
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-}
-
 -(void) startScan{
     NSLog(@"startScan");
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
@@ -238,19 +236,20 @@
     
     switch ([_centralManager state]){
         case CBCentralManagerStateUnsupported:
-            state = @"The platform/hardware doesn't support Bluetooth Low Energy.";
+            state = @"This must be frustrating, I'm sorry, your computer doesn't have Bluetooth Low Energy";
             break;
         case CBCentralManagerStateUnauthorized:
-            state = @"The app is not authorized to use Bluetooth Low Energy.";
+            state = @"The app needs permission to use Bluetooth Low Energy";
             break;
         case CBCentralManagerStatePoweredOff:
-            state = @"Bluetooth is currently powered off.";
+            state = @"Turn on Bluetooth Low Energy and try again";
             break;
         case CBCentralManagerStatePoweredOn:
             return TRUE;
         case CBCentralManagerStateUnknown:
         default:
-            return FALSE;
+            state = @"Bluetooth status unknown";
+//            return FALSE;
     }
     
     NSLog(@"Central manager state: %@", state);
@@ -261,15 +260,11 @@
     [alert setIcon:[[NSImage alloc] initWithContentsOfFile:@"AppIcon"]];
     //TODO: Alert not presenting
 //    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:nil contextInfo:nil];
+
+    _centralManager = nil;
+    
     return FALSE;
 }
-
-//-(void) buildReadWriteNotifyStrings:(NSString*)UUID{
-//    NSString *IDPrefix = [UUID substringToIndex:3];
-//    READ_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@1",IDPrefix]];
-//    WRITE_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@2",IDPrefix]];
-//    NOTIFY_CHAR_UUID = [SERVICE_PREFIX stringByAppendingString:[NSString stringWithFormat:@"%@3",IDPrefix]];
-//}
 
 -(BOOL) addPeripheralInRangeIfUnique:(CBPeripheral*)peripheral RSSI:(NSNumber*)RSSI{
     // returns YES if addition was made
@@ -346,7 +341,11 @@
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
     if(central.state == CBCentralManagerStatePoweredOn){
         NSLog(@"central delegate: central powered on");
-        [self setIsBLECapable:[self isLECapableHardware]];
+        
+        [self setIsBLECapable:[self isLECapableHardware]]; // will dealloc _centralManager if unsuccessful
+        // re order this better
+        if(_centralManager && _isBLECapable)
+            [self bootScanIfPossible];
     }
     if(central.state == CBCentralManagerStatePoweredOff){
         NSLog(@"central delegate: central powered off");
