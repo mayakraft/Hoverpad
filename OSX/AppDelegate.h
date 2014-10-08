@@ -21,9 +21,12 @@ typedef enum : NSUInteger {
     NSImage *statusHighlightImage;
 }
 
+// BLE and DEVICE related
+@property (nonatomic) BOOL isBLECapable;
+@property (nonatomic) BOOL isBLEEnabled;
 @property (nonatomic) BLEConnectionState connectionState;
 
-// MENU CONTROLS
+// STATUS BAR MENU CONTROLS
 -(IBAction)toggleOrientationWindow:(id)sender;
 -(IBAction)toggleStatusWindow:(id)sender;
 -(IBAction)togglePreferencesWindow:(id)sender;
@@ -40,14 +43,16 @@ typedef enum : NSUInteger {
 @property BOOL orientationWindowVisible;
 @property BOOL statusWindowVisible;
 
-// BLE and DEVICE related
-
-//@property (nonatomic) BOOL isDeviceConnected;
-@property (nonatomic) BOOL isBLEEnabled;
-@property (nonatomic) BOOL isBLECapable;
-
-// PREFERENCES PANE
-
+// PREFERENCES WINDOW CONTROLS
 -(IBAction)axisInvert:(id)sender;
+@property IBOutlet NSTextField *pitchRangeField;
+@property IBOutlet NSTextField *rollRangeField;
+@property IBOutlet NSTextField *yawRangeField;
+@property IBOutlet NSSlider *pitchSlider;
+@property IBOutlet NSSlider *rollSlider;
+@property IBOutlet NSSlider *yawSlider;
+-(IBAction)pitchSliderChange:(id)sender;
+-(IBAction)rollSliderChange:(id)sender;
+-(IBAction)yawSliderChange:(id)sender;
 
 @end

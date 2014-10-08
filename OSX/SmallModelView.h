@@ -10,4 +10,8 @@
 
 @interface SmallModelView : NSOpenGLView
 
+@property (nonatomic) float pitchAngle;
+@property (nonatomic) float rollAngle;
+@property (nonatomic) float yawAngle;
+
 @end

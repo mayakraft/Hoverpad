@@ -15,12 +15,18 @@
             <connections>
                 <outlet property="orientationMenuItem" destination="AKh-Zv-8Zw" id="dnl-Gr-wfg"/>
                 <outlet property="orientationWindow" destination="QvC-M9-y7g" id="L0f-bz-rUh"/>
+                <outlet property="pitchRangeField" destination="hmH-tf-fs9" id="0F9-o0-Gy6"/>
+                <outlet property="pitchSlider" destination="Q5D-bK-2gU" id="0UC-0P-nui"/>
                 <outlet property="preferencesMenuItem" destination="vXZ-Pg-BtJ" id="66r-PJ-JW7"/>
                 <outlet property="preferencesWindow" destination="SF6-Rk-ue3" id="gRK-kH-JkL"/>
+                <outlet property="rollRangeField" destination="bsc-eX-QIB" id="If5-tI-t8W"/>
+                <outlet property="rollSlider" destination="ePN-O5-fv4" id="iMD-zQ-WMP"/>
                 <outlet property="scanOrEjectMenuItem" destination="Y5g-Uw-3iA" id="hNA-tO-m5h"/>
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
                 <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
                 <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>
+                <outlet property="yawRangeField" destination="4ry-7c-BTD" id="23i-9t-Ss0"/>
+                <outlet property="yawSlider" destination="VyE-nv-QZM" id="f1w-4r-wnK"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
@@ -499,45 +505,6 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <box autoresizesSubviews="NO" fixedFrame="YES" title="Devices in Range" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Xws-9N-azR">
-                        <rect key="frame" x="17" y="16" width="132" height="144"/>
-                        <view key="contentView">
-                            <rect key="frame" x="1" y="1" width="130" height="128"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBr-rX-Fef">
-                                    <rect key="frame" x="18" y="19" width="94" height="95"/>
-                                    <clipView key="contentView" ambiguous="YES" misplaced="YES" drawsBackground="NO" copiesOnScroll="NO" id="sFO-2G-k0H">
-                                        <rect key="frame" x="1" y="1" width="223" height="133"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <textView ambiguous="YES" editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="OB8-ct-zaB">
-                                                <rect key="frame" x="0.0" y="0.0" width="226" height="194"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <size key="minSize" width="94" height="95"/>
-                                                <size key="maxSize" width="463" height="10000000"/>
-                                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <size key="minSize" width="94" height="95"/>
-                                                <size key="maxSize" width="463" height="10000000"/>
-                                            </textView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </clipView>
-                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="KDz-L6-pim">
-                                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </scroller>
-                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="0EQ-hJ-I6X">
-                                        <rect key="frame" x="224" y="1" width="15" height="133"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                    </scroller>
-                                </scrollView>
-                            </subviews>
-                        </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </box>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U94-Kn-cYN">
                         <rect key="frame" x="161" y="100" width="24" height="25"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSStatusNone" id="ZEq-wR-nXl"/>
@@ -558,6 +525,45 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <box autoresizesSubviews="NO" fixedFrame="YES" title="Devices in Range" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Xws-9N-azR">
+                        <rect key="frame" x="17" y="16" width="132" height="144"/>
+                        <view key="contentView">
+                            <rect key="frame" x="1" y="1" width="130" height="128"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBr-rX-Fef">
+                                    <rect key="frame" x="11" y="14" width="110" height="107"/>
+                                    <clipView key="contentView" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" drawsBackground="NO" copiesOnScroll="NO" id="sFO-2G-k0H">
+                                        <rect key="frame" x="1" y="1" width="223" height="133"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textView editable="NO" drawsBackground="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="OB8-ct-zaB">
+                                                <rect key="frame" x="0.0" y="0.0" width="226" height="194"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <size key="minSize" width="97" height="107"/>
+                                                <size key="maxSize" width="463" height="113"/>
+                                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <size key="minSize" width="97" height="107"/>
+                                                <size key="maxSize" width="463" height="113"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </clipView>
+                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="KDz-L6-pim">
+                                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="0EQ-hJ-I6X">
+                                        <rect key="frame" x="224" y="1" width="15" height="133"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </scroller>
+                                </scrollView>
+                            </subviews>
+                        </view>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </box>
                 </subviews>
                 <connections>
                     <outlet property="deviceTextField" destination="6zH-pE-lg9" id="X0t-Dg-Kq2"/>
@@ -637,15 +643,24 @@
                     </textField>
                     <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5D-bK-2gU">
                         <rect key="frame" x="144" y="92" width="28" height="30"/>
-                        <sliderCell key="cell" alignment="left" maxValue="180" doubleValue="90" tickMarkPosition="left" allowsTickMarkValuesOnly="YES" sliderType="circular" id="STx-vt-eRS"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" minValue="-15" maxValue="200" doubleValue="180" tickMarkPosition="above" allowsTickMarkValuesOnly="YES" sliderType="circular" id="STx-vt-eRS"/>
+                        <connections>
+                            <action selector="pitchSliderChange:" target="Voe-Tx-rLC" id="edE-Pv-Jkd"/>
+                        </connections>
                     </slider>
                     <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ePN-O5-fv4">
                         <rect key="frame" x="144" y="56" width="28" height="30"/>
-                        <sliderCell key="cell" alignment="left" maxValue="180" doubleValue="90" tickMarkPosition="left" allowsTickMarkValuesOnly="YES" sliderType="circular" id="7Ie-e3-OAY"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" minValue="-15" maxValue="200" doubleValue="180" tickMarkPosition="above" allowsTickMarkValuesOnly="YES" sliderType="circular" id="7Ie-e3-OAY"/>
+                        <connections>
+                            <action selector="rollSliderChange:" target="Voe-Tx-rLC" id="TQc-z8-bAz"/>
+                        </connections>
                     </slider>
                     <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VyE-nv-QZM">
                         <rect key="frame" x="144" y="20" width="28" height="30"/>
-                        <sliderCell key="cell" alignment="left" maxValue="180" doubleValue="90" tickMarkPosition="left" allowsTickMarkValuesOnly="YES" sliderType="circular" id="oet-S7-pQz"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" minValue="-15" maxValue="200" doubleValue="180" tickMarkPosition="above" allowsTickMarkValuesOnly="YES" sliderType="circular" id="oet-S7-pQz"/>
+                        <connections>
+                            <action selector="yawSliderChange:" target="Voe-Tx-rLC" id="8qg-f0-arr"/>
+                        </connections>
                     </slider>
                     <box autoresizesSubviews="NO" verticalHuggingPriority="750" fixedFrame="YES" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="TQf-zZ-Hpl">
                         <rect key="frame" x="12" y="166" width="326" height="5"/>
