@@ -9,17 +9,11 @@
 
 @implementation StatusView
 
--(void) setDeviceID:(NSString *)deviceID{
-    _deviceID = deviceID;
-    [_deviceTextField setStringValue:_deviceID];
-}
-
 -(void) setDevicesInRange:(NSDictionary *)devicesInRange{
     NSString *string = @"";
     for(NSDictionary *p in devicesInRange){
         string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
     }
-    NSLog(@"STRING: %@",string);
     [_devicesInRangeTextView setString:string];
 }
 

@@ -11,13 +11,11 @@
 
 -(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected;
 
-@property (nonatomic) NSString *deviceID;
-
 @property IBOutlet NSImageView *imageStatus1;
 @property IBOutlet NSImageView *imageStatus2;
 @property IBOutlet NSImageView *imageStatus3;
 
-@property IBOutlet NSTextField *deviceTextField;
+@property IBOutlet NSTextField *statusTextField;
 
 @property IBOutlet NSTextView *devicesInRangeTextView;
 

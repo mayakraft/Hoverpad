@@ -337,7 +337,7 @@
     static float Z_FAR = 100.0f;
     static float _fieldOfView = 30;
     float _aspectRatio = (float)[[NSScreen mainScreen] frame].size.width / (float)[[NSScreen mainScreen] frame].size.height;
-    NSLog(@"REBUILDING PROJECTION %.1f, %.1f, ", _fieldOfView, _aspectRatio);
+//    NSLog(@"REBUILDING PROJECTION %.1f, %.1f, ", _fieldOfView, _aspectRatio);
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

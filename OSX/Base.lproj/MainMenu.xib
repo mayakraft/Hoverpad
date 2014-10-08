@@ -463,77 +463,61 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-311.5" y="215.5"/>
+            <point key="canvasLocation" x="-83.5" y="377.5"/>
         </menu>
         <window title="Status" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="sol-HT-Oha">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="109" y="132" width="480" height="180"/>
+            <rect key="contentRect" x="109" y="132" width="437" height="158"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="bWk-FN-cnD" customClass="StatusView">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="180"/>
+                <rect key="frame" x="0.0" y="0.0" width="437" height="158"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="khW-kF-kuD">
-                        <rect key="frame" x="159" y="138" width="303" height="22"/>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="All devices require Bluetooth low energy (BLE)" id="8uS-OI-PtQ">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qZd-At-Dum">
-                        <rect key="frame" x="186" y="88" width="271" height="34"/>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="This computer has Bluetooth low energy" id="tbn-la-DYH">
+                        <rect key="frame" x="186" y="71" width="271" height="34"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Computer has Bluetooth low energy" id="tbn-la-DYH">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x01-mw-Vgc">
-                        <rect key="frame" x="186" y="58" width="224" height="34"/>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Bluetooth Low Energy is turned on" id="UBS-cC-Z3v">
+                        <rect key="frame" x="186" y="101" width="224" height="34"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Bluetooth is turned on" id="UBS-cC-Z3v">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xWv-Ot-nrr">
-                        <rect key="frame" x="186" y="28" width="224" height="34"/>
-                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="iOS device connected:" id="VL5-o5-gZB">
+                        <rect key="frame" x="186" y="41" width="224" height="34"/>
+                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="iOS device connected" id="VL5-o5-gZB">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U94-Kn-cYN">
-                        <rect key="frame" x="161" y="100" width="24" height="25"/>
+                        <rect key="frame" x="161" y="83" width="24" height="25"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSStatusNone" id="ZEq-wR-nXl"/>
                     </imageView>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Bd-0M-SA8">
-                        <rect key="frame" x="161" y="70" width="24" height="25"/>
+                        <rect key="frame" x="161" y="113" width="24" height="25"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSStatusNone" id="HbV-wg-cjc"/>
                     </imageView>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KvI-vl-Uhw">
-                        <rect key="frame" x="161" y="40" width="24" height="25"/>
+                        <rect key="frame" x="161" y="53" width="24" height="25"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSStatusNone" id="6Ca-R1-6YB"/>
                     </imageView>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zH-pE-lg9">
-                        <rect key="frame" x="336" y="42" width="66" height="20"/>
-                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" placeholderString="device id" drawsBackground="YES" id="2Sh-55-GsX">
-                            <font key="font" metaFont="miniSystem"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <box autoresizesSubviews="NO" fixedFrame="YES" title="Devices in Range" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Xws-9N-azR">
-                        <rect key="frame" x="17" y="16" width="132" height="144"/>
+                        <rect key="frame" x="17" y="16" width="132" height="129"/>
                         <view key="contentView">
-                            <rect key="frame" x="1" y="1" width="130" height="128"/>
+                            <rect key="frame" x="1" y="1" width="130" height="113"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBr-rX-Fef">
-                                    <rect key="frame" x="11" y="14" width="110" height="107"/>
+                                    <rect key="frame" x="11" y="27" width="110" height="79"/>
                                     <clipView key="contentView" autoresizesSubviews="NO" ambiguous="YES" misplaced="YES" drawsBackground="NO" copiesOnScroll="NO" id="sFO-2G-k0H">
                                         <rect key="frame" x="1" y="1" width="223" height="133"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -542,10 +526,10 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="226" height="194"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <size key="minSize" width="97" height="107"/>
+                                                <size key="minSize" width="97" height="79"/>
                                                 <size key="maxSize" width="463" height="113"/>
                                                 <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <size key="minSize" width="97" height="107"/>
+                                                <size key="minSize" width="97" height="79"/>
                                                 <size key="maxSize" width="463" height="113"/>
                                             </textView>
                                         </subviews>
@@ -565,16 +549,24 @@
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zH-pE-lg9">
+                        <rect key="frame" x="172" y="25" width="236" height="18"/>
+                        <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" placeholderString="" drawsBackground="YES" id="2Sh-55-GsX">
+                            <font key="font" metaFont="miniSystem"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <connections>
-                    <outlet property="deviceTextField" destination="6zH-pE-lg9" id="X0t-Dg-Kq2"/>
                     <outlet property="devicesInRangeTextView" destination="OB8-ct-zaB" id="uxp-Eo-mn6"/>
                     <outlet property="imageStatus1" destination="U94-Kn-cYN" id="fq8-th-6u8"/>
                     <outlet property="imageStatus2" destination="4Bd-0M-SA8" id="1y5-6i-vpv"/>
                     <outlet property="imageStatus3" destination="KvI-vl-Uhw" id="Kf4-Na-0XN"/>
+                    <outlet property="statusTextField" destination="6zH-pE-lg9" id="tah-U4-wqd"/>
                 </connections>
             </view>
-            <point key="canvasLocation" x="139" y="602"/>
+            <point key="canvasLocation" x="117.5" y="591"/>
         </window>
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="SF6-Rk-ue3">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>

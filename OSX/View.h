@@ -13,4 +13,6 @@
 
 @property (nonatomic) BOOL screenTouched;
 
+@property (nonatomic) BOOL deviceIsConnected;
+
 @end

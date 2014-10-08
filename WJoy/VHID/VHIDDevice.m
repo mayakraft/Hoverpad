@@ -61,9 +61,6 @@
     }
 
     m_Descriptor = [[self createDescriptor] retain];
-
-    NSLog(@"VHIDDevice init");
-    NSLog(@"%@",m_Descriptor);
     return self;
 }
 

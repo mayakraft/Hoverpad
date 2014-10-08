@@ -40,6 +40,11 @@
     return self;
 }
 
+-(void) setDeviceIsConnected:(BOOL)deviceIsConnected{
+    _deviceIsConnected = deviceIsConnected;
+    [self setNeedsDisplay:YES];
+}
+
 -(void) setupGL{
     for(int i = 0; i < 16; i++)
         a[i] = 0.0f;
@@ -80,36 +85,36 @@
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glPushMatrix();
-    glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -7.0f);
-    glRotatef(90, 0, 1, 0);
-    glRotatef(-90, 1, 0, 0);
-    glMultMatrixf(a);
-    
-    glEnableClientState(GL_VERTEX_ARRAY);
-    
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
-    [self drawBody];
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white10);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white80);
-    [self drawTop];
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
-    if(_screenTouched){
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, white);
-        [self drawScreen];
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+    if(_deviceIsConnected){
+        glPushMatrix();
+        glLoadIdentity();
+        glTranslatef(0.0f, 0.0f, -7.0f);
+        glRotatef(90, 0, 1, 0);
+        glRotatef(-90, 1, 0, 0);
+        glMultMatrixf(a);
+        
+        glEnableClientState(GL_VERTEX_ARRAY);
+        
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
+        [self drawBody];
+        
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white10);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white80);
+        [self drawTop];
+        
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
+        if(_screenTouched){
+            glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, white);
+            [self drawScreen];
+            glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+        }
+        else{
+            [self drawScreen];
+        }
+        glPopMatrix();
     }
-    else{
-        [self drawScreen];
-    }
-
-
-    glPopMatrix();
 
     glFlush();
 }
@@ -133,7 +138,6 @@
     glVertex3f(.5,1,.05);
     glVertex3f(.5,-1,.05);
     glEnd();
-
 }
 
 -(void) drawScreen{
@@ -147,7 +151,6 @@
     glVertex3f(.45,.775,.055);
     glVertex3f(.45,-.775,.055);
     glEnd();
-    
 }
 
 
@@ -217,7 +220,7 @@
     static float Z_FAR = 100.0f;
     static float _fieldOfView = 30;
     float _aspectRatio = (float)[[NSScreen mainScreen] frame].size.width / (float)[[NSScreen mainScreen] frame].size.height;
-    NSLog(@"REBUILDING PROJECTION %.1f, %.1f, ", _fieldOfView, _aspectRatio);
+//    NSLog(@"REBUILDING PROJECTION %.1f, %.1f, ", _fieldOfView, _aspectRatio);
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
