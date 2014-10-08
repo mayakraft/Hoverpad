@@ -22,6 +22,7 @@
                 <outlet property="rollRangeField" destination="bsc-eX-QIB" id="If5-tI-t8W"/>
                 <outlet property="rollSlider" destination="ePN-O5-fv4" id="iMD-zQ-WMP"/>
                 <outlet property="scanOrEjectMenuItem" destination="Y5g-Uw-3iA" id="hNA-tO-m5h"/>
+                <outlet property="smallModelView" destination="17w-Oy-1AW" id="kNf-Co-naW"/>
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
                 <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
                 <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>

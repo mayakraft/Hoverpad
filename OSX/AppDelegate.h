@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <IOBluetooth/IOBluetooth.h>
+#import "SmallModelView.h"
 
 typedef enum : NSUInteger {
     BLEConnectionStateDisconnected,
@@ -42,6 +43,7 @@ typedef enum : NSUInteger {
 @property (assign) IBOutlet NSWindow *preferencesWindow;
 @property BOOL orientationWindowVisible;
 @property BOOL statusWindowVisible;
+@property IBOutlet SmallModelView *smallModelView;
 
 // PREFERENCES WINDOW CONTROLS
 -(IBAction)axisInvert:(id)sender;

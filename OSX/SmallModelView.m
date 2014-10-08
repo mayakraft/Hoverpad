@@ -10,12 +10,13 @@
 #import <OpenGL/gl.h>
 
 #define ANGLE_CURVE_NUM_POINTS 16
+#define R_r 1.1f
 
 @interface SmallModelView (){
     GLfloat a[16];
-    GLfloat pitchPoints[ANGLE_CURVE_NUM_POINTS*3];
-    GLfloat rollPoints[ANGLE_CURVE_NUM_POINTS*3];
-    GLfloat yawPoints[ANGLE_CURVE_NUM_POINTS*3];
+    GLfloat pitchPoints[(1+ANGLE_CURVE_NUM_POINTS)*3];
+    GLfloat rollPoints[(1+ANGLE_CURVE_NUM_POINTS)*3];
+    GLfloat yawPoints[(1+ANGLE_CURVE_NUM_POINTS)*3];
     NSPoint mouseRotation;
     BOOL mouseRotationOn;
 }
@@ -51,7 +52,6 @@
 -(void)mouseMoved:(NSEvent *)theEvent{
     [super mouseMoved:theEvent];
 }
-
 -(void)mouseDragged:(NSEvent *)theEvent{
     [super mouseDragged:theEvent];
     if(mouseRotationOn){
@@ -60,19 +60,14 @@
     }
     [self setNeedsDisplay:YES];
 }
-
 -(void)mouseDown:(NSEvent *)theEvent{
     [super mouseDown:theEvent];
     mouseRotationOn = true;
-    NSLog(@"mousedown");
 }
-
 -(void)mouseUp:(NSEvent *)theEvent{
     [super mouseUp:theEvent];
     mouseRotationOn = false;
 }
-
-
 
 -(void) setupGL{
     for(int i = 0; i < 16; i++)
@@ -124,7 +119,6 @@
     glTranslatef(0.0f, 0.0f, -7.0f);
     glRotatef(90, 0, 1, 0);
     glRotatef(-90, 1, 0, 0);
-//    glMultMatrixf(a);
     
     glRotatef(mouseRotation.y, 0, 1, 0);
     glRotatef(mouseRotation.x, 0, 0, 1);
@@ -150,6 +144,8 @@
         [self drawScreen];
 //    }
 
+    glLineWidth(3);
+
     [self drawRangeLines];
 
     glPopMatrix();
@@ -159,27 +155,36 @@
 
 -(void) setPitchAngle:(float)pitchAngle{
     _pitchAngle = pitchAngle;
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
-        pitchPoints[i*3+0] = -sinf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
+    float increment = pitchAngle / 180.0 * M_PI / ANGLE_CURVE_NUM_POINTS;
+    float startAngle = M_PI*.5 - pitchAngle / 180.0 * M_PI * .5;
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
+        pitchPoints[i*3+0] = R_r * -sinf(startAngle + increment*i);
         pitchPoints[i*3+1] = 0.0f;
-        pitchPoints[i*3+2] = cosf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
+        pitchPoints[i*3+2] = R_r * cosf(startAngle + increment*i);
     }
+    [self setNeedsDisplay:YES];
 }
 -(void) setRollAngle:(float)rollAngle{
     _rollAngle = rollAngle;
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
+    float increment = rollAngle / 180.0 * M_PI / ANGLE_CURVE_NUM_POINTS;
+    float startAngle = M_PI*.5 - rollAngle / 180.0 * M_PI * .5;
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         rollPoints[i*3+0] = 0.0f;
-        rollPoints[i*3+1] = sinf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
-        rollPoints[i*3+2] = cosf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
+        rollPoints[i*3+1] = R_r * sinf(startAngle + increment*i);
+        rollPoints[i*3+2] = R_r * cosf(startAngle + increment*i);
     }
+    [self setNeedsDisplay:YES];
 }
 -(void) setYawAngle:(float)yawAngle{
     _yawAngle = yawAngle;
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
-        yawPoints[i*3+0] = -sinf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
-        yawPoints[i*3+1] = cosf((float)i/ANGLE_CURVE_NUM_POINTS * M_PI);
+    float increment = yawAngle / 180.0 * M_PI / ANGLE_CURVE_NUM_POINTS;
+    float startAngle = M_PI*.5 - yawAngle / 180.0 * M_PI * .5;
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
+        yawPoints[i*3+0] = R_r * -sinf(startAngle + increment*i);
+        yawPoints[i*3+1] = R_r * cosf(startAngle + increment*i);
         yawPoints[i*3+2] = 0.0f;
     }
+    [self setNeedsDisplay:YES];
 }
 
 -(void) setOrientation:(float *)q{
@@ -192,14 +197,14 @@
 
 -(void) drawRangeLines{
     static GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
-    static GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0};
-    static GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
-    static GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
+    static GLfloat red[] = {.8f, 0.0f, 0.0f, 1.0};
+    static GLfloat green[] = {0.0f, .66f, 0.0f, 1.0f};
+    static GLfloat blue[] = {0.0f, 0.0f, .8f, 1.0f};
     
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, red);
     glBegin(GL_LINE_STRIP);
     glNormal3f(0,0,1);
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(pitchPoints[i*3+0],pitchPoints[i*3+1],pitchPoints[i*3+2]);
     }
     glEnd();
@@ -207,7 +212,7 @@
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, green);
     glBegin(GL_LINE_STRIP);
     glNormal3f(0,0,1);
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(rollPoints[i*3+0],rollPoints[i*3+1],rollPoints[i*3+2]);
     }
     glEnd();
@@ -215,7 +220,7 @@
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blue);
     glBegin(GL_LINE_STRIP);
     glNormal3f(0,0,1);
-    for(int i = 0; i < ANGLE_CURVE_NUM_POINTS; i++){
+    for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(yawPoints[i*3+0],yawPoints[i*3+1],yawPoints[i*3+2]);
     }
     glEnd();

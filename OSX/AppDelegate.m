@@ -74,9 +74,10 @@
     [_pitchSlider setIntValue:pitchRange];
     [_rollSlider setIntValue:rollRange];
     [_yawSlider setIntValue:yawRange];
-    
-    [self preferencesDidUpdate];
-    
+    [_pitchRangeField setStringValue:[NSString stringWithFormat:@"%d°",pitchRange]];
+    [_rollRangeField setStringValue:[NSString stringWithFormat:@"%d°",rollRange]];
+    [_yawRangeField setStringValue:[NSString stringWithFormat:@"%d°",yawRange]];
+
     _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
 }
 
@@ -139,7 +140,8 @@
     else if([_pitchSlider integerValue] < MIN_AXIS_RANGE)
         [_pitchSlider setIntValue:MIN_AXIS_RANGE];
     pitchRange = (int)[(NSSlider*)sender integerValue];
-    [self preferencesDidUpdate];
+    [_smallModelView setPitchAngle:pitchRange];
+    [_pitchRangeField setStringValue:[NSString stringWithFormat:@"%d°",pitchRange]];
 }
 -(IBAction)rollSliderChange:(id)sender{
     if([_rollSlider integerValue] > MAX_AXIS_RANGE)
@@ -147,7 +149,8 @@
     else if([_rollSlider integerValue] < MIN_AXIS_RANGE)
         [_rollSlider setIntValue:MIN_AXIS_RANGE];
     rollRange = (int)[(NSSlider*)sender integerValue];
-    [self preferencesDidUpdate];
+    [_smallModelView setRollAngle:rollRange];
+    [_rollRangeField setStringValue:[NSString stringWithFormat:@"%d°",rollRange]];
 }
 -(IBAction)yawSliderChange:(id)sender{
     if([_yawSlider integerValue] > MAX_AXIS_RANGE)
@@ -155,11 +158,7 @@
     else if([_yawSlider integerValue] < MIN_AXIS_RANGE)
         [_yawSlider setIntValue:MIN_AXIS_RANGE];
     yawRange = (int)[(NSSlider*)sender integerValue];
-    [self preferencesDidUpdate];
-}
--(void) preferencesDidUpdate{
-    [_pitchRangeField setStringValue:[NSString stringWithFormat:@"%d°",pitchRange]];
-    [_rollRangeField setStringValue:[NSString stringWithFormat:@"%d°",rollRange]];
+    [_smallModelView setYawAngle:yawRange];
     [_yawRangeField setStringValue:[NSString stringWithFormat:@"%d°",yawRange]];
 }
 -(void) connectionsDidUpdate{
