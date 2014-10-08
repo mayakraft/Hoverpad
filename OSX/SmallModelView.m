@@ -58,6 +58,10 @@
         mouseRotation.x += [theEvent deltaX];
         mouseRotation.y -= [theEvent deltaY];
     }
+    if(mouseRotation.x < 0) mouseRotation.x += 360;
+    else if(mouseRotation.x > 360) mouseRotation.x -= 360;
+    if(mouseRotation.y < 0) mouseRotation.y += 360;
+    else if(mouseRotation.y > 360) mouseRotation.y -= 360;
     [self setNeedsDisplay:YES];
 }
 -(void)mouseDown:(NSEvent *)theEvent{
@@ -125,6 +129,19 @@
 
     glEnableClientState(GL_VERTEX_ARRAY);
     
+    glLineWidth(4);
+    
+    BOOL drawLinesBehind = false;
+    
+    if( ((int)(mouseRotation.x) % 360 > 130 && (int)(mouseRotation.x) % 360 < 320 ) )
+        drawLinesBehind = true;
+    if( ((int)(mouseRotation.y) % 360 > 90  && (int)(mouseRotation.y) % 360 < 270 ) )
+        drawLinesBehind = !drawLinesBehind;
+    
+    
+    if(drawLinesBehind)
+        [self drawRangeLines];
+    
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
     [self drawBody];
@@ -135,18 +152,12 @@
     
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white20);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white50);
-//    if(_screenTouched){
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, white);
-//        [self drawScreen];
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
-//    }
-//    else{
-        [self drawScreen];
-//    }
+    [self drawScreen];
 
-    glLineWidth(3);
+    if(!drawLinesBehind)
+        [self drawRangeLines];
+    
 
-    [self drawRangeLines];
 
     glPopMatrix();
     
@@ -197,13 +208,16 @@
 
 -(void) drawRangeLines{
     static GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
-    static GLfloat red[] = {.8f, 0.0f, 0.0f, 1.0};
-    static GLfloat green[] = {0.0f, .66f, 0.0f, 1.0f};
-    static GLfloat blue[] = {0.0f, 0.0f, .8f, 1.0f};
+    static GLfloat red[] = {.9f, 0.0f, 0.0f, 1.0};
+    static GLfloat green[] = {0.0f, .75f, 0.0f, 1.0f};
+    static GLfloat blue[] = {0.0f, 0.0f, .9f, 1.0f};
     
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, red);
     glBegin(GL_LINE_STRIP);
-    glNormal3f(0,0,1);
+    glNormal3f(-1,0,0);
     for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(pitchPoints[i*3+0],pitchPoints[i*3+1],pitchPoints[i*3+2]);
     }
@@ -211,7 +225,7 @@
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, green);
     glBegin(GL_LINE_STRIP);
-    glNormal3f(0,0,1);
+    glNormal3f(0,1,0);
     for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(rollPoints[i*3+0],rollPoints[i*3+1],rollPoints[i*3+2]);
     }
@@ -219,7 +233,7 @@
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blue);
     glBegin(GL_LINE_STRIP);
-    glNormal3f(0,0,1);
+    glNormal3f(-1,0,0);
     for(int i = 0; i <= ANGLE_CURVE_NUM_POINTS; i++){
         glVertex3f(yawPoints[i*3+0],yawPoints[i*3+1],yawPoints[i*3+2]);
     }
