@@ -9,19 +9,39 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
+#import "ScreenView.h"
 
-@interface ViewController : UIViewController <CBPeripheralManagerDelegate>
-{
+typedef enum : NSUInteger {
+    PeripheralConnectionStateDisconnected,
+    PeripheralConnectionStateBooting,
+    PeripheralConnectionStateScanning,
+    PeripheralConnectionStateConnected,
+    PeripheralConnectionStateDisconnecting
+} PeripheralConnectionState;
+
+bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
+    float dx = center.x - point.x;
+    float dy = center.y - point.y;
+    return (  radius > sqrtf(powf(dx, 2) + powf(dy, 2) )  );
+}
+
+@interface ViewController : GLKViewController <CBPeripheralManagerDelegate>{
     CBPeripheralManager *peripheralManager;
     CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic;
     CMMotionManager *motionManager;
-    BOOL screenTouched;
     GLKQuaternion identity;
     GLKQuaternion lq;
+    ScreenView *screenView;
+    CGPoint screenCenter;
+    NSDate *connectionTime;
 }
 
+@property (nonatomic) BOOL screenTouched;
+@property (nonatomic) BOOL buttonTouched;
+
+@property (nonatomic) PeripheralConnectionState state;
+
 @property (nonatomic) NSData *orientation;
-@property UIButton *theButton;
 
 @property NSString *UUID;
 

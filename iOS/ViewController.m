@@ -17,38 +17,40 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad{
-    [super viewDidLoad];
-    
-    UIButton *screenButton = [[UIButton alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [screenButton setBackgroundColor:[UIColor clearColor]];
-    [screenButton setBackgroundImage:[UIImage imageNamed:@"white.png"] forState:UIControlStateHighlighted];
-    [screenButton addTarget:self action:@selector(screenTouch:) forControlEvents:UIControlEventAllTouchEvents];
-    [self.view addSubview:screenButton];
-
-    self.theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.theButton setFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width*.5-50, [[UIScreen mainScreen] bounds].size.height*.5-25, 100, 50)];
-    [self.theButton setTitle:START forState:UIControlStateNormal];
-    [self.theButton.titleLabel setFont:[UIFont systemFontOfSize:[[UIScreen mainScreen] bounds].size.width*.1]];
-    [self.theButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.theButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.theButton];
+-(id) init{
+    self = [super init];
+    if(self) [self setupContext];
+    return self;
+}
+-(id) initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if(self) [self setupContext];
+    return self;
+}
+-(id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self) [self setupContext];
+    return self;
+}
+-(void) setupContext{
+    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    [EAGLContext setCurrentContext:context];
+    screenView = [[ScreenView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
+    [self setView:screenView];
     
     _UUID = [self random16bit:4];
-    
     identity = GLKQuaternionIdentity;
-    
     if (!motionManager) {
         motionManager = [[CMMotionManager alloc] init];
     }
     if (motionManager && motionManager.isDeviceMotionAvailable){
         motionManager.deviceMotionUpdateInterval = 1.0/30.0;
         [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
-        
+            
             CMQuaternion q = deviceMotion.attitude.quaternion;
             lq.x = q.x;   lq.y = q.y;   lq.z = q.z;   lq.w = q.w;
-            if(screenTouched){
-                identity = GLKQuaternionInvert(lq);//lq;
+            if(_screenTouched){
+                identity = GLKQuaternionInvert(lq);
             }
             NSData *newOrientation = [self encodeQuaternion:GLKQuaternionMultiply(identity, lq)];
             if(![_orientation isEqualToData:newOrientation]){
@@ -57,32 +59,78 @@
         }];
     }
 }
-
--(NSString*)random16bit:(NSUInteger)numberOfDigits{
-    NSString *string = @"";
-    for(int i = 0; i < numberOfDigits; i++){
-        int number = arc4random()%16;
-        if(number > 9){
-            char letter = 'A' + number - 10;
-            string = [string stringByAppendingString:[NSString stringWithFormat:@"%c",letter]];
-        }
-        else
-            string = [string stringByAppendingString:[NSString stringWithFormat:@"%d",number]];
-    }
-    return string;
+-(void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
+    [screenView draw];
 }
+
+#pragma mark- TOUCHES
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [[touches anyObject] locationInView:screenView])){
+        
+        // touches began inside button area
+        if(!_buttonTouched){
+            [self setButtonTouched:YES];
+            [self buttonTapped];
+        }
+    }
+    else if(!_screenTouched){
+        [self setScreenTouched:YES];
+    }
+}
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{ }
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_screenTouched){
+        [self setScreenTouched:NO];
+    }
+    if(_buttonTouched){
+        [self setButtonTouched:NO];
+    }
+}
+-(void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"TOUCHES CANCELLED");
+    if(_screenTouched){
+        [self setScreenTouched:NO];
+    }
+}
+-(void) setScreenTouched:(BOOL)screenTouched{
+    _screenTouched = screenTouched;
+    [screenView setIsScreenTouched:screenTouched];
+    [self updateState];
+}
+-(void) setButtonTouched:(BOOL)buttonTouched{
+    _buttonTouched = buttonTouched;
+    [screenView setIsButtonTouched:buttonTouched];
+}
+-(void) setState:(PeripheralConnectionState)state{
+    _state = state;
+    [screenView setState:state];
+    NSLog(@"STATE CHANGE: %d",state);
+//    if(state == PeripheralConnectionStateDisconnected);
+//    if(state == PeripheralConnectionStateBooting);
+//    if(state == PeripheralConnectionStateScanning);
+//    if(state == PeripheralConnectionStateScanning);
+//    if(state == PeripheralConnectionStateDisconnecting);
+}
+-(void) buttonTapped{
+    
+    if(_state == PeripheralConnectionStateDisconnected){
+        [self setState:PeripheralConnectionStateBooting];
+        [self initPeripheral];
+        connectionTime = [NSDate date];
+        [screenView setConnectionTime:[NSDate date]];
+    }
+    else if(_state == PeripheralConnectionStateConnected){
+        [self setState:PeripheralConnectionStateDisconnecting];
+        [self stopAdvertisements];
+    }
+}
+
+#pragma mark- BLUETOOTH LOW ENERGY
 
 -(void) setOrientation:(NSData *)orientation{
     _orientation = orientation;
     [peripheralManager updateValue:orientation forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
-}
-
--(void) updateTouchIfChanged:(BOOL)isTracking{
-    if (screenTouched != isTracking) {
-        // touch changed
-        screenTouched = isTracking;
-        [self updateState];
-    }
 }
 
 -(void) sendDisconnect{
@@ -91,45 +139,9 @@
 }
 
 -(void) updateState{
-    unsigned char d = (screenTouched ? 1 : 0);
+    unsigned char d = (_screenTouched ? 1 : 0);
     [peripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
-
--(void) screenTouch:(UIButton*)sender{
-    [self updateTouchIfChanged:sender.isTracking];
-}
-
--(NSData*) encodeQuaternion:(GLKQuaternion)q{
-    // encodes (x,y,z)w quaternion floats into signed char
-    // -1.0 to 1.0 into -127 to 127
-    char bytes[4];
-    short temp;
-    temp = q.x * 128.0f;
-    bytes[0] = (char)temp;
-    bytes[1] = (char)(q.y * 128.0f);
-    bytes[2] = (char)(q.z * 128.0f);
-    bytes[3] = (char)(q.w * 128.0f);
-    return [NSData dataWithBytes:bytes length:4];
-}
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)buttonTapped:(id)sender{
-
-    self.theButton.enabled = NO;
-    
-    if ([self.theButton.titleLabel.text isEqualToString:START]) {
-        [self initPeripheral];
-    }
-    if ([self.theButton.titleLabel.text isEqualToString:STOP]) {
-        [self stopAdvertisements];
-    }
-}
-
-/////////////////////////////////////////////////////
 
 - (void)initPeripheral{
     NSLog(@"initPeripheral");
@@ -164,8 +176,7 @@
     peripheralManager = nil;
     
     NSLog(@"Advertisements stopped!");
-    [self.theButton setTitle:START forState:UIControlStateNormal];
-    self.theButton.enabled = YES;
+    [self setState:PeripheralConnectionStateDisconnected];
 }
 
 -(CBMutableService*) constructService:(NSString*)ServiceUUID{
@@ -182,7 +193,7 @@
     return service;
 }
 
-#pragma mark- Peripheral Manager delegates
+#pragma mark- DELEGATES - PERIPHERAL
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
@@ -190,11 +201,9 @@
         
         [peripheralManager addService:[self constructService:SERVICE_UUID]];
 
-#pragma mark- auto start advertisements
-        [self performSelector:@selector(startAdvertisements) withObject:nil afterDelay:1.0];
+#pragma mark auto start advertisements
+        [self startAdvertisements];
         
-        [self.theButton setTitle:START forState:UIControlStateNormal];
-        self.theButton.enabled = YES;
     }
     else{
         NSLog(@"delegate: Peripheral state changed to %d", (int)[peripheralManager state]);
@@ -203,8 +212,7 @@
 
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
     NSLog(@"delegate: Advertisements started!");
-    [self.theButton setTitle:STOP forState:UIControlStateNormal];
-    self.theButton.enabled = YES;
+    [self setState:PeripheralConnectionStateConnected];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
@@ -238,6 +246,35 @@
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central unsubscribed!");
+}
+
+#pragma mark - MATH & DATA
+
+-(NSString*)random16bit:(NSUInteger)numberOfDigits{
+    NSString *string = @"";
+    for(int i = 0; i < numberOfDigits; i++){
+        int number = arc4random()%16;
+        if(number > 9){
+            char letter = 'A' + number - 10;
+            string = [string stringByAppendingString:[NSString stringWithFormat:@"%c",letter]];
+        }
+        else
+            string = [string stringByAppendingString:[NSString stringWithFormat:@"%d",number]];
+    }
+    return string;
+}
+
+-(NSData*) encodeQuaternion:(GLKQuaternion)q{
+    // encodes (x,y,z)w quaternion floats into signed char
+    // -1.0 to 1.0 into -127 to 127
+    char bytes[4];
+    short temp;
+    temp = q.x * 128.0f;
+    bytes[0] = (char)temp;
+    bytes[1] = (char)(q.y * 128.0f);
+    bytes[2] = (char)(q.z * 128.0f);
+    bytes[3] = (char)(q.w * 128.0f);
+    return [NSData dataWithBytes:bytes length:4];
 }
 
 
