@@ -10,7 +10,7 @@
 #import <WirtualJoy/WJoyDevice.h>
 #import <GLKit/GLKit.h>
 
-// NSViews
+// Views
 #import "View.h"
 #import "StatusView.h"
 
@@ -35,6 +35,7 @@
     NSTimer *scanClockLoop;
     BOOL invertPitch, invertRoll, invertYaw;
     int pitchRange, rollRange, yawRange;
+    int axPitch, axRoll, axYaw;
 }
 
 @property CBCentralManager *centralManager;
@@ -68,6 +69,9 @@
     
     peripheralsInRange = [NSMutableArray array];
     
+    axPitch = 0;
+    axRoll = 1;
+    axYaw = 2;
     pitchRange = 90;
     rollRange = 90;
     yawRange = 90;
@@ -161,8 +165,72 @@
     [_smallModelView setYawAngle:yawRange];
     [_yawRangeField setStringValue:[NSString stringWithFormat:@"%d°",yawRange]];
 }
+-(IBAction)pitchSegmentedChanged:(NSSegmentedControl*)sender{
+    if([sender selectedSegment] == [_yawSegmentedControl selectedSegment]){
+        if([_rollSegmentedControl selectedSegment] == ([_yawSegmentedControl selectedSegment]+1)%3)
+            [_yawSegmentedControl setSelectedSegment:([_yawSegmentedControl selectedSegment]+2)%3];
+        else if([_rollSegmentedControl selectedSegment] == ([_yawSegmentedControl selectedSegment]+2)%3)
+            [_yawSegmentedControl setSelectedSegment:([_yawSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #1");
+    }
+    else if([sender selectedSegment] == [_rollSegmentedControl selectedSegment]){
+        if([_yawSegmentedControl selectedSegment] == ([_rollSegmentedControl selectedSegment]+1)%3)
+            [_rollSegmentedControl setSelectedSegment:([_rollSegmentedControl selectedSegment]+2)%3];
+        else if([_yawSegmentedControl selectedSegment] == ([_rollSegmentedControl selectedSegment]+2)%3)
+            [_rollSegmentedControl setSelectedSegment:([_rollSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #2");
+    }
+    [self updateAxisRoutingToPitch:(int)[_pitchSegmentedControl selectedSegment]
+                              Roll:(int)[_rollSegmentedControl selectedSegment]
+                               Yaw:(int)[_yawSegmentedControl selectedSegment]];
+}
+-(IBAction)rollSegmentedChanged:(NSSegmentedControl*)sender{
+    if([sender selectedSegment] == [_pitchSegmentedControl selectedSegment]){
+        if([_yawSegmentedControl selectedSegment] == ([_pitchSegmentedControl selectedSegment]+1)%3)
+            [_pitchSegmentedControl setSelectedSegment:([_pitchSegmentedControl selectedSegment]+2)%3];
+        else if([_yawSegmentedControl selectedSegment] == ([_pitchSegmentedControl selectedSegment]+2)%3)
+            [_pitchSegmentedControl setSelectedSegment:([_pitchSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #1");
+    }
+    else if([sender selectedSegment] == [_yawSegmentedControl selectedSegment]){
+        if([_pitchSegmentedControl selectedSegment] == ([_yawSegmentedControl selectedSegment]+1)%3)
+            [_yawSegmentedControl setSelectedSegment:([_yawSegmentedControl selectedSegment]+2)%3];
+        else if([_pitchSegmentedControl selectedSegment] == ([_yawSegmentedControl selectedSegment]+2)%3)
+            [_yawSegmentedControl setSelectedSegment:([_yawSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #2");
+    }
+    [self updateAxisRoutingToPitch:(int)[_pitchSegmentedControl selectedSegment]
+                              Roll:(int)[_rollSegmentedControl selectedSegment]
+                               Yaw:(int)[_yawSegmentedControl selectedSegment]];
+}
+-(IBAction)yawSegmentedChanged:(NSSegmentedControl*)sender{
+    if([sender selectedSegment] == [_pitchSegmentedControl selectedSegment]){
+        if([_rollSegmentedControl selectedSegment] == ([_pitchSegmentedControl selectedSegment]+1)%3)
+            [_pitchSegmentedControl setSelectedSegment:([_pitchSegmentedControl selectedSegment]+2)%3];
+        else if([_rollSegmentedControl selectedSegment] == ([_pitchSegmentedControl selectedSegment]+2)%3)
+            [_pitchSegmentedControl setSelectedSegment:([_pitchSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #1");
+    }
+    else if([sender selectedSegment] == [_rollSegmentedControl selectedSegment]){
+        if([_pitchSegmentedControl selectedSegment] == ([_rollSegmentedControl selectedSegment]+1)%3)
+            [_rollSegmentedControl setSelectedSegment:([_rollSegmentedControl selectedSegment]+2)%3];
+        else if([_pitchSegmentedControl selectedSegment] == ([_rollSegmentedControl selectedSegment]+2)%3)
+            [_rollSegmentedControl setSelectedSegment:([_rollSegmentedControl selectedSegment]+1)%3];
+        else NSLog(@"fuck up #2");
+    }
+    [self updateAxisRoutingToPitch:(int)[_pitchSegmentedControl selectedSegment]
+                              Roll:(int)[_rollSegmentedControl selectedSegment]
+                               Yaw:(int)[_yawSegmentedControl selectedSegment]];
+}
+-(void) updateAxisRoutingToPitch:(int)p Roll:(int)r Yaw:(int)y{
+    axPitch = p;
+    axRoll = r;
+    axYaw = y;
+}
 - (BOOL) isBLECapableHardware{
     switch ([_centralManager state]){
+        case CBCentralManagerStatePoweredOn:
+            return TRUE;
         case CBCentralManagerStateUnsupported:
             [[statusView statusTextField] setStringValue:@"Your computer doesn't have Bluetooth Low Energy"];
             break;
@@ -172,12 +240,9 @@
         case CBCentralManagerStatePoweredOff:
             [[statusView statusTextField] setStringValue:@"Turn on Bluetooth Low Energy and try again"];
             break;
-        case CBCentralManagerStatePoweredOn:
-            return TRUE;
         case CBCentralManagerStateUnknown:
         default:
             [[statusView statusTextField] setStringValue:@"Bluetooth status unknown"];
-//            return FALSE;
     }
     _centralManager = nil;
     return FALSE;
@@ -446,9 +511,14 @@
         yaw /= halfpi;
         
         [self cropPitch:&pitch Roll:&roll Yaw:&yaw];
+        
+        float axis[3];
+        axis[axPitch] = pitch;
+        axis[axRoll] = roll;
+        axis[axYaw] = yaw;
 
-        [joystickDescription setPointer:0 position:CGPointMake(pitch, roll)];
-        [joystickDescription setPointer:1 position:CGPointMake(yaw, 0)];
+        [joystickDescription setPointer:0 position:CGPointMake(axis[0], axis[1])];
+        [joystickDescription setPointer:1 position:CGPointMake(axis[2], 0)];
 //        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
         
         if(_orientationWindowVisible){

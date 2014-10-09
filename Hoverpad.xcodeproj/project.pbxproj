@@ -10,7 +10,6 @@
 		D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AC19DAF6C500278548 /* VHIDButtonCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D505A3B719DAF9CE00278548 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
@@ -30,6 +29,7 @@
 		D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBC19DBBDED00E5C7A3 /* ViewController.m */; };
 		D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */; };
 		D5959DC919DBBE5A00E5C7A3 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC819DBBE5A00E5C7A3 /* white.png */; };
+		D5E7B43819E5F505005D36E6 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D505A3B719DAF9CE00278548 /* WirtualJoy.framework in Frameworks */,
+				D5E7B43819E5F505005D36E6 /* WirtualJoy.framework in Frameworks */,
 				D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -56,5 +56,11 @@ typedef enum : NSUInteger {
 -(IBAction)pitchSliderChange:(id)sender;
 -(IBAction)rollSliderChange:(id)sender;
 -(IBAction)yawSliderChange:(id)sender;
+@property IBOutlet NSSegmentedControl *pitchSegmentedControl;
+@property IBOutlet NSSegmentedControl *rollSegmentedControl;
+@property IBOutlet NSSegmentedControl *yawSegmentedControl;
+-(IBAction)pitchSegmentedChanged:(NSSegmentedControl*)sender;
+-(IBAction)rollSegmentedChanged:(NSSegmentedControl*)sender;
+-(IBAction)yawSegmentedChanged:(NSSegmentedControl*)sender;
 
 @end

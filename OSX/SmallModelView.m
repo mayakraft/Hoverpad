@@ -83,6 +83,8 @@
     [self setYawAngle:90];
     mouseRotation = NSMakePoint(45.0f, -25.0f);
     
+    [self setWantsBestResolutionOpenGLSurface:YES];
+    
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glEnable(GL_DEPTH_TEST);
