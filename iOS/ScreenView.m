@@ -15,7 +15,8 @@
 #define Z_FAR 100.0f
 
 @interface ScreenView (){
-
+    NSDate *animationStartTime;
+    float y;
 }
 
 @end
@@ -51,24 +52,82 @@
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     glMatrixMode(GL_MODELVIEW);
 }
-
--(void) glDrawPentagon{
-    static const GLfloat pentFan[] = {
+-(void) glDrawPentagonTriangles{
+    static const GLfloat tri1[] = {
         0.0f, 0.0f,
         0.0f, 1.0f,
+        .951f, .309f };
+    static const GLfloat tri2[] = {
+        0.0f, 0.0f,
         .951f, .309f,
+        .5878, -.809 };
+    static const GLfloat tri3[] = {
+        0.0f, 0.0f,
         .5878, -.809,
+        -.5878, -.809
+    };
+    static const GLfloat tri4[] = {
+        0.0f, 0.0f,
         -.5878, -.809,
+        -.951f, .309f
+    };
+    static const GLfloat tri5[] = {
+        0.0f, 0.0f,
         -.951f, .309f,
         0.0f, 1.0f
     };
+    
     glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, pentFan);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    glColor4ub(212, 43, 43, 255);
+    glVertexPointer(2, GL_FLOAT, 0, tri1);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColor4ub(178, 212, 43, 255);
+    glVertexPointer(2, GL_FLOAT, 0, tri2);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColor4ub(43, 212, 111, 255);
+    glVertexPointer(2, GL_FLOAT, 0, tri3);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColor4ub(43, 111, 212, 255);
+    glVertexPointer(2, GL_FLOAT, 0, tri4);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColor4ub(178, 43, 212, 255);
+    glVertexPointer(2, GL_FLOAT, 0, tri5);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    
     glDisableClientState(GL_VERTEX_ARRAY);
 }
-
+//-(void) glDrawPentagon{
+//    static const GLfloat pentFan[] = {
+//        0.0f, 0.0f,
+//        0.0f, 1.0f,
+//        .951f, .309f,
+//        .5878, -.809,
+//        -.5878, -.809,
+//        -.951f, .309f,
+//        0.0f, 1.0f
+//    };
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    glVertexPointer(2, GL_FLOAT, 0, pentFan);
+//    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+//    glDisableClientState(GL_VERTEX_ARRAY);
+//}
+-(void) beginAnimation{
+    animationStartTime = [NSDate date];
+}
+-(void) update{
+    float x = -[animationStartTime timeIntervalSinceNow]*4;
+//    y = 10-(10/((x+.95)^2) * sin(2(x+.95));
+    float s = 1;
+    y = s-(s/powf((x+.95),2)) * sin(2*(x+.95));
+    if(y < 0) y = 0;
+}
 -(void) draw{
+    [self update];
     if(_isScreenTouched){
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -78,23 +137,25 @@
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         glPushMatrix();
         glRotatef(-90, 0, 0, 1);
-        glTranslatef(0, 0, -4);
-        if(_isButtonTouched)
-            glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
-        else if(_state == 3)
-            glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
-        else if(_connectionTime)
-            glColor4f(arc4random()%100/100.0, arc4random()%100/100.0, arc4random()%100/100.0, 1.0f);
-        else
+        glTranslatef(0, 0, -5);
+        if(animationStartTime)
+            glTranslatef(0, 0, y);
+//        if(_isButtonTouched)
+//            glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+//        else if(_state == 3)
+//            glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
+//        else if(animationStartTime)
+//            glColor4f(arc4random()%100/100.0, arc4random()%100/100.0, arc4random()%100/100.0, 1.0f);
+//        else
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        [self glDrawPentagon];
+        [self glDrawPentagonTriangles];
         glPopMatrix();
     }
-    if(_connectionTime){
-        if(-[_connectionTime timeIntervalSinceNow] > 1.5){
-            _connectionTime = nil;
-        }
-    }
+//    if(animationStartTime){
+//        if(-[animationStartTime timeIntervalSinceNow] > 1.5){
+//            animationStartTime = nil;
+//        }
+//    }
 }
 
 @end

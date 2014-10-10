@@ -15,6 +15,8 @@
 #define START @"START"
 #define STOP @"STOP"
 
+#define SENSOR_RATE 1.0f/15.0f
+
 @implementation ViewController
 
 -(id) init{
@@ -44,7 +46,7 @@
         motionManager = [[CMMotionManager alloc] init];
     }
     if (motionManager && motionManager.isDeviceMotionAvailable){
-        motionManager.deviceMotionUpdateInterval = 1.0/30.0;
+        motionManager.deviceMotionUpdateInterval = SENSOR_RATE;
         [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
             
             CMQuaternion q = deviceMotion.attitude.quaternion;
@@ -66,32 +68,37 @@
 #pragma mark- TOUCHES
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [[touches anyObject] locationInView:screenView])){
-        
-        // touches began inside button area
-        if(!_buttonTouched){
-            [self setButtonTouched:YES];
-            [self buttonTapped];
+    for(UITouch *touch in touches){
+        if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
+            
+            // button: touch down
+            if(!_buttonTouched){
+                [self setButtonTouched:YES];
+            }
         }
-    }
-    else if(!_screenTouched){
-        [self setScreenTouched:YES];
+        else if(!_screenTouched){
+            [self setScreenTouched:YES];
+        }
     }
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{ }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_screenTouched){
-        [self setScreenTouched:NO];
-    }
-    if(_buttonTouched){
-        [self setButtonTouched:NO];
+    for(UITouch *touch in touches){
+        if(_screenTouched){
+            [self setScreenTouched:NO];
+        }
+        if(_buttonTouched){
+            if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
+                
+                // button: touch up
+                [self buttonTapped];
+            }
+            [self setButtonTouched:NO];
+        }
     }
 }
 -(void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
     NSLog(@"TOUCHES CANCELLED");
-    if(_screenTouched){
-        [self setScreenTouched:NO];
-    }
 }
 -(void) setScreenTouched:(BOOL)screenTouched{
     _screenTouched = screenTouched;
@@ -105,7 +112,7 @@
 -(void) setState:(PeripheralConnectionState)state{
     _state = state;
     [screenView setState:state];
-    NSLog(@"STATE CHANGE: %d",state);
+    NSLog(@"STATE CHANGE: %u",state);
 //    if(state == PeripheralConnectionStateDisconnected);
 //    if(state == PeripheralConnectionStateBooting);
 //    if(state == PeripheralConnectionStateScanning);
@@ -118,7 +125,7 @@
         [self setState:PeripheralConnectionStateBooting];
         [self initPeripheral];
         connectionTime = [NSDate date];
-        [screenView setConnectionTime:[NSDate date]];
+        [screenView beginAnimation];
     }
     else if(_state == PeripheralConnectionStateConnected){
         [self setState:PeripheralConnectionStateDisconnecting];
@@ -216,7 +223,7 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    NSLog(@"delegate: Received write request!");
+    NSLog(@"delegate: received write request");
     for(CBATTRequest* request in requests) {
 //        if ([request.value bytes]) {
 //            self.receivedText.text = [[NSString alloc ] initWithBytes:[request.value bytes] length:request.value.length encoding:NSASCIIStringEncoding];
@@ -228,7 +235,7 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    NSLog(@"delegate: Received read request!");
+    NSLog(@"delegate: received read request");
     NSString *valueToSend;
     NSDate *currentTime = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

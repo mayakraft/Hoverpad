@@ -14,7 +14,7 @@
 @property BOOL isButtonTouched;
 @property (nonatomic) NSUInteger state;
 
-@property NSDate *connectionTime;
+-(void) beginAnimation;
 
 @property float aspectRatio;
 @property float fieldOfView;
