@@ -20,6 +20,7 @@
 @property float fieldOfView;
 
 @property GLKMatrix4 projectionMatrix;
+@property GLKMatrix4 deviceOrientation;
 
 -(void) draw;
 

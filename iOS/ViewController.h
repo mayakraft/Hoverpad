@@ -19,11 +19,6 @@ typedef enum : NSUInteger {
     PeripheralConnectionStateDisconnecting
 } PeripheralConnectionState;
 
-bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
-    float dx = center.x - point.x;
-    float dy = center.y - point.y;
-    return (  radius > sqrtf(powf(dx, 2) + powf(dy, 2) )  );
-}
 
 @interface ViewController : GLKViewController <CBPeripheralManagerDelegate>{
     CBPeripheralManager *peripheralManager;

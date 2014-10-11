@@ -40,7 +40,8 @@
 
 -(void)initOpenGL{
     _aspectRatio = self.frame.size.width/self.frame.size.height;
-    _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
+//    _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
+    _fieldOfView = 40;
     [self rebuildProjectionMatrix];
 }
 -(void)rebuildProjectionMatrix{
@@ -122,7 +123,7 @@
 -(void) update{
     float x = -[animationStartTime timeIntervalSinceNow]*4;
 //    y = 10-(10/((x+.95)^2) * sin(2(x+.95));
-    float s = 1;
+    float s = .5;
     y = s-(s/powf((x+.95),2)) * sin(2*(x+.95));
     if(y < 0) y = 0;
 }
@@ -136,8 +137,11 @@
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         glPushMatrix();
+        glMultMatrixf(_deviceOrientation.m);
+        
+        glPushMatrix();
         glRotatef(-90, 0, 0, 1);
-        glTranslatef(0, 0, -5);
+//        glTranslatef(0, 0, -5);
         if(animationStartTime)
             glTranslatef(0, 0, y);
 //        if(_isButtonTouched)
@@ -149,6 +153,7 @@
 //        else
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         [self glDrawPentagonTriangles];
+        glPopMatrix();
         glPopMatrix();
     }
 //    if(animationStartTime){

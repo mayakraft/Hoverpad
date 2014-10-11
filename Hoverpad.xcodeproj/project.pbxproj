@@ -101,6 +101,8 @@
 		D5959DC719DBBE4700E5C7A3 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = iOS/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		D5B5EF7619E701AC00FD99AD /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenView.h; path = iOS/ScreenView.h; sourceTree = SOURCE_ROOT; };
 		D5B5EF7719E701AC00FD99AD /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenView.m; path = iOS/ScreenView.m; sourceTree = SOURCE_ROOT; };
+		D5C9F8BA19E8E7EF002D4AC4 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise.c; path = iOS/noise.c; sourceTree = SOURCE_ROOT; };
+		D5C9F8BB19E8E7EF002D4AC4 /* noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise.h; path = iOS/noise.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +238,8 @@
 				D5959DBC19DBBDED00E5C7A3 /* ViewController.m */,
 				D5B5EF7619E701AC00FD99AD /* ScreenView.h */,
 				D5B5EF7719E701AC00FD99AD /* ScreenView.m */,
+				D5C9F8BB19E8E7EF002D4AC4 /* noise.h */,
+				D5C9F8BA19E8E7EF002D4AC4 /* noise.c */,
 				D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */,
 				D568D38318CBFC4D00ED987D /* Supporting Files */,
 			);

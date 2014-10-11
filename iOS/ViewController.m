@@ -7,6 +7,18 @@
 
 #import "ViewController.h"
 
+#ifndef CGRECTRADIAN
+#define CGRECTRADIAN
+
+bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
+    float dx = center.x - point.x;
+    float dy = center.y - point.y;
+    return (  radius > sqrtf(powf(dx, 2) + powf(dy, 2) )  );
+}
+
+#endif
+
+
 #define SERVICE_UUID     @"2166E780-4A62-11E4-817C-0002A5D5DE30"
 #define READ_CHAR_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE31"
 #define WRITE_CHAR_UUID  @"2166E780-4A62-11E4-817C-0002A5D5DE32"
@@ -15,7 +27,7 @@
 #define START @"START"
 #define STOP @"STOP"
 
-#define SENSOR_RATE 1.0f/15.0f
+#define SENSOR_RATE 1.0f/30.0f
 
 @implementation ViewController
 
@@ -49,8 +61,18 @@
         motionManager.deviceMotionUpdateInterval = SENSOR_RATE;
         [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
             
+            static float d = 7;
+            
             CMQuaternion q = deviceMotion.attitude.quaternion;
             lq.x = q.x;   lq.y = q.y;   lq.z = q.z;   lq.w = q.w;
+//            set_position(&camera, _attitude[2]*2, _attitude[6]*2, -_attitude[10]*2);
+//            m.m31, m.m32, m.m33
+//            set_up(&camera, _attitude[1], _attitude[5], -_attitude[9]);
+//            m.m21, m.m22, m.m23
+            CMRotationMatrix m = deviceMotion.attitude.rotationMatrix;
+//            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(0.0f, 0.0f, -4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f)];
+//            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m13*2, m.m23*2, m.m33*2, 0.0f, 0.0f, 0.0f, m.m12, m.m22, m.m32)];
+            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m31*d, m.m32*d, m.m33*d, 0.0f, 0.0f, 0.0f, m.m21, m.m22, m.m23)];
             if(_screenTouched){
                 identity = GLKQuaternionInvert(lq);
             }
@@ -70,7 +92,7 @@
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     for(UITouch *touch in touches){
         if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
-            
+        
             // button: touch down
             if(!_buttonTouched){
                 [self setButtonTouched:YES];
@@ -89,7 +111,7 @@
         }
         if(_buttonTouched){
             if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
-                
+            
                 // button: touch up
                 [self buttonTapped];
             }
@@ -112,7 +134,7 @@
 -(void) setState:(PeripheralConnectionState)state{
     _state = state;
     [screenView setState:state];
-    NSLog(@"STATE CHANGE: %u",state);
+    NSLog(@"STATE CHANGE: %d",(int)state);
 //    if(state == PeripheralConnectionStateDisconnected);
 //    if(state == PeripheralConnectionStateBooting);
 //    if(state == PeripheralConnectionStateScanning);
