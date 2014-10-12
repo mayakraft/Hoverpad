@@ -9,13 +9,13 @@
 
 @implementation StatusView
 
--(void) setDevicesInRange:(NSDictionary *)devicesInRange{
-    NSString *string = @"";
-    for(NSDictionary *p in devicesInRange){
-        string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
-    }
-    [_devicesInRangeTextView setString:string];
-}
+//-(void) setDevicesInRange:(NSDictionary *)devicesInRange{
+//    NSString *string = @"";
+//    for(NSDictionary *p in devicesInRange){
+//        string = [string stringByAppendingString:[NSString stringWithFormat:@"%@ (%@)\n",[p objectForKey:@"name"],[p objectForKey:@"RSSI"]]];
+//    }
+//    [_devicesInRangeTextView setString:string];
+//}
 
 -(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected{
     if(isCapable) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];

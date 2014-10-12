@@ -30,7 +30,7 @@
     WJoyDevice *virtualJoystick;
     View *orientationView;
     StatusView *statusView;
-    NSMutableArray *peripheralsInRange;
+//    NSMutableArray *peripheralsInRange;
     NSUInteger scanClock;
     NSTimer *scanClockLoop;
     BOOL invertPitch, invertRoll, invertYaw;
@@ -67,7 +67,7 @@
     [closeStatus setTarget:self];
     [closeStatus setAction:@selector(toggleStatusWindow:)];
     
-    peripheralsInRange = [NSMutableArray array];
+//    peripheralsInRange = [NSMutableArray array];
     
     axPitch = 0;
     axRoll = 1;
@@ -89,12 +89,13 @@
 
 -(IBAction)scanOrEject:(id)sender{
     if(_connectionState == BLEConnectionStateDisconnected){
-        if(_isBLECapable)
+        if(_isBLEEnabled)
             [self setConnectionState:BLEConnectionStateScanning];
         else{
             // bluetooth wasn't enabled before
             // try again from the beginning
             _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+            [[statusView statusTextField] setStringValue:@"booting up.."];
         }
     }
     else if(_connectionState == BLEConnectionStateScanning){ }
@@ -244,7 +245,6 @@
         default:
             [[statusView statusTextField] setStringValue:@"Bluetooth status unknown"];
     }
-    _centralManager = nil;
     return FALSE;
 }
 
@@ -253,8 +253,14 @@
 -(void) createVirtualJoystick{
     joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:4 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
-    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
-//    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:@{WJoyDeviceProductStringKey : @"iOSVirtualJoystick", WJoyDeviceSerialNumberStringKey : @"556378"}];
+    NSLog(@"%@",[joystickDescription descriptor]);
+//    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
+    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:
+                       @{WJoyDeviceProductStringKey : @"iOSVirtualJoystick",
+                    WJoyDeviceSerialNumberStringKey : @"556378",
+                              WJoyDeviceVendorIDKey : [NSNumber numberWithUnsignedInt:1133],
+                         WJoyDeviceProductIDKey : [NSNumber numberWithUnsignedInt:512]}];
+    
 }
 -(void) destroyVirtualJoystick{
     joystickDescription.delegate = nil;
@@ -317,8 +323,14 @@
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
-        else{
+        else if(!_isBLEEnabled){
+            [[statusView statusTextField] setStringValue:@"bluetooth is off"];
+        }
+        else if (_centralManager){
             [[statusView statusTextField] setStringValue:@"nothing in range"];
+        }
+        else{
+            [[statusView statusTextField] setStringValue:@"else"];
         }
         [self destroyVirtualJoystick];
         [orientationView setDeviceIsConnected:NO];
@@ -348,20 +360,22 @@
     }
     [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_connectionState];
 }
--(BOOL) addPeripheralInRangeIfUnique:(CBPeripheral*)peripheral RSSI:(NSNumber*)RSSI{
-    // returns YES if addition was made
-    BOOL alreadyFound = NO;
-    for(NSDictionary *p in peripheralsInRange){
-        if([[peripheral name] isEqualToString:[p objectForKey:@"name"]])
-            alreadyFound = YES;
-    }
-    if(!alreadyFound){
-        [peripheralsInRange addObject:@{@"name" : [peripheral name],
-                                        @"RSSI" : RSSI,
-                                        @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
-    }
-    return !alreadyFound;
-}
+//-(BOOL) addPeripheralInRangeIfUnique:(CBPeripheral*)peripheral RSSI:(NSNumber*)RSSI{
+//    // returns YES if addition was made
+//    BOOL alreadyFound = NO;
+//    NSString *pName = [peripheral name];
+//    if(!pName) return NO;
+//    for(NSDictionary *p in peripheralsInRange){
+//        if([pName isEqualToString:[p objectForKey:@"name"]])
+//            alreadyFound = YES;
+//    }
+//    if(!alreadyFound){
+//        [peripheralsInRange addObject:@{@"name" : pName,
+//                                        @"RSSI" : RSSI,
+//                                        @"state" : [NSNumber numberWithInt:[peripheral state]]} ];
+//    }
+//    return !alreadyFound;
+//}
 
 #pragma mark - DATA & MATH
 
@@ -384,11 +398,11 @@
     *roll = rD * -atan2f(matrix.m12, sqrtf(powf(matrix.m10,2) + powf(matrix.m11,2) ) );
     *pitch = pD * atan2f(matrix.m02, sqrtf(powf(matrix.m12,2) + powf(matrix.m22,2) ) );
     
-    NSLog(@"1:(%f)  2:(%f)",matrix.m02, sqrtf(powf(matrix.m12,2) + powf(matrix.m22,2) ));
-    NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
-          matrix.m00, matrix.m01, matrix.m02,
-          matrix.m10, matrix.m11, matrix.m12,
-          matrix.m20, matrix.m21, matrix.m22);
+//    NSLog(@"1:(%f)  2:(%f)",matrix.m02, sqrtf(powf(matrix.m12,2) + powf(matrix.m22,2) ));
+//    NSLog(@"\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n%.3f, %.3f, %.3f\n",
+//          matrix.m00, matrix.m01, matrix.m02,
+//          matrix.m10, matrix.m11, matrix.m12,
+//          matrix.m20, matrix.m21, matrix.m22);
 }
 -(void) unpackData:(NSData*)receivedData IntoQuaternionX:(float*)x Y:(float*)y Z:(float*)z W:(float*)w {
     char *data = (char*)[receivedData bytes];
@@ -414,8 +428,8 @@
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
     NSLog(@"central delegate: didDiscoverPeripheral");
 
-    if([self addPeripheralInRangeIfUnique:peripheral RSSI:RSSI])
-        [statusView setDevicesInRange:peripheralsInRange];
+//    if([self addPeripheralInRangeIfUnique:peripheral RSSI:RSSI])
+//        [statusView setDevicesInRange:peripheralsInRange];
     
     //TODO: doesn't clear ghost devices
 
@@ -463,6 +477,7 @@
     if(central.state == CBCentralManagerStatePoweredOff){
         NSLog(@"central delegate: central powered off");
         [self setIsBLEEnabled:NO];
+        _centralManager = nil;
     }
 }
 

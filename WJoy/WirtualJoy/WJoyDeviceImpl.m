@@ -110,9 +110,9 @@
 - (BOOL)setDeviceVendorID:(uint32_t)vendorID productID:(uint32_t)productID
 {
     char data[sizeof(uint32_t) * 2] = { 0 };
-
-    memcpy(data, vendorID, sizeof(uint32_t));
-    memcpy(data + sizeof(uint32_t), productID, sizeof(uint32_t));
+#pragma mark - changed vendorID to &vendorID, and same with productID - Robby
+    memcpy(data, &vendorID, sizeof(uint32_t));
+    memcpy(data + sizeof(uint32_t), &productID, sizeof(uint32_t));
 
     return [self call:WJoyDeviceMethodSelectorSetDeviceVendorAndProductID
                  data:[NSData dataWithBytes:data length:sizeof(data)]];

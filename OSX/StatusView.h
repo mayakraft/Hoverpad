@@ -17,8 +17,4 @@
 
 @property IBOutlet NSTextField *statusTextField;
 
-@property IBOutlet NSTextView *devicesInRangeTextView;
-
-@property (nonatomic) NSArray *devicesInRange;
-
 @end

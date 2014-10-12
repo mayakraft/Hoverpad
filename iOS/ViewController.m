@@ -183,6 +183,9 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
 }
 
 - (NSString*)getName{
+//    NSString *str = @"♩♫ΔΘΣΦΩπφ÷∞√∴±=▲⬛︎○▞♭♮𝄞𝄢𝄐𝄡𝄿𝅝⚡︎☣☢♻︎★✶✧✵❄︎◐";
+//    str = [str substringWithRange:NSMakeRange(arc4random()%[str length]-1, 1)];
+//    return [NSString stringWithFormat:@"Hoverpad (%@)",str];
     return @"Hoverpad";//[NSString stringWithFormat:@"%@",_UUID];
 }
 

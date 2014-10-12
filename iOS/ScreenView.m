@@ -43,6 +43,32 @@
 //    _fieldOfView = 45 + 45 * atanf(_aspectRatio); // hell ya
     _fieldOfView = 40;
     [self rebuildProjectionMatrix];
+    
+    static GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+    static GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
+    static GLfloat white10[] = {0.1f, 0.1f, 0.1f, 1.0};
+    static GLfloat white20[] = {0.2f, 0.2f, 0.2f, 1.0};
+    static GLfloat white50[] = {0.5f, 0.5f, 0.5f, 1.0f};
+    static GLfloat white80[] = {0.8f, 0.8f, 0.8f, 1.0f};
+
+//    GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
+    GLfloat pos1[] = {0.0f, 0.0f, 4.0f, 1.0f};
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, pos1);
+//    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 40);
+//    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, .0005);
+    GLfloat spot_direction[] = { 0.0, 0.0, -1.0 };
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    
+    glShadeModel(GL_SMOOTH);
+//    glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 20);
+
 }
 -(void)rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);
@@ -54,54 +80,194 @@
     glMatrixMode(GL_MODELVIEW);
 }
 -(void) glDrawPentagonTriangles{
-    static const GLfloat tri1[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        .951f, .309f };
-    static const GLfloat tri2[] = {
-        0.0f, 0.0f,
-        .951f, .309f,
-        .5878, -.809 };
+//    static const GLfloat tri1[] = { // red
+//        0.0f, 0.0f, 0.1f,        0.0f, 0.0f, 1.0f,
+//        0.0f, 1.0f, 0.1f,        0.0f, 0.0f, 1.0f,
+//        .951f, .309f, 0.1f,        0.0f, 0.0f, 1.0f,
+//        0.0f, 1.0f, -0.1f,        .587f, .809f, 0.0f,
+//        .951f, .309f, -0.1f,        .587f, .809f, 0.0f,
+//        0.0f, 0.0f, -0.1f,        0.0f, 0.0f, -1.0f
+//    };
+    static const GLfloat tri1[] = { // red
+        0.0f, 0.0f, 0.1f,
+        0.0f, 1.0f, 0.1f,
+        .951f, .309f, 0.1f,
+        0.0f, 1.0f, -0.1f,
+        .951f, .309f, -0.1f,
+        0.0f, 0.0f, -0.1f
+    };
+    static const GLfloat tri2[] = {  // yellow
+        0.0f, 0.0f, 0.1f,
+        .951f, .309f, 0.1f,
+        .5878, -.809, 0.1f,
+        .951f, .309f, -0.1f,
+        .5878, -.809, -0.1f,
+        0.0f, 0.0f, -0.1f
+    };
     static const GLfloat tri3[] = {
-        0.0f, 0.0f,
-        .5878, -.809,
-        -.5878, -.809
+        0.0f, 0.0f, 0.1f,
+        .5878, -.809, 0.1f,
+        -.5878, -.809, 0.1f,
+        .5878, -.809, -0.1f,
+        -.5878, -.809, -0.1f,
+        0.0f, 0.0f, -0.1f
     };
     static const GLfloat tri4[] = {
-        0.0f, 0.0f,
-        -.5878, -.809,
-        -.951f, .309f
+        0.0f, 0.0f, 0.1f,
+        -.5878, -.809, 0.1f,
+        -.951f, .309f, 0.1f,
+        -.5878, -.809, -0.1f,
+        -.951f, .309f, -0.1f,
+        0.0f, 0.0f, -0.1f
     };
     static const GLfloat tri5[] = {
-        0.0f, 0.0f,
-        -.951f, .309f,
-        0.0f, 1.0f
+        0.0f, 0.0f, 0.1f,
+        -.951f, .309f, 0.1f,
+        0.0f, 1.0f, 0.1f,
+        -.951f, .309f, -0.1f,
+        0.0f, 1.0f, -0.1f,
+        0.0f, 0.0f, -0.1f
+    };
+
+    
+    static const GLfloat tri1normal[] = {
+        0.0f, 0.0f, 1.0f,
+        .587f, .809f, 0.5f,
+        .587f, .809f, 0.5f,
+        .587f, .809f, -0.5f,
+        .587f, .809f, -0.5f,
+        0.0f, 0.0f, -1.0f
+    };
+    static const GLfloat tri2normal[] = {
+        0.0f, 0.0f, 1.0f,
+        .951f, -.301f, 0.5f,
+        .951f, -.301f, 0.5f,
+        .951f, -.301f, -0.5f,
+        .951f, -.301f, -0.5f,
+        0.0f, 0.0f, -1.0f
+    };
+    static const GLfloat tri3normal[] = {
+        0.0f, 0.0f, 1.0f,
+        0.0f, -1.0f, 0.5f,
+        0.0f, -1.0f, 0.5f,
+        0.0f, -1.0f, -0.5f,
+        0.0f, -1.0f, -0.5f,
+        0.0f, 0.0f, -1.0f
     };
     
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glColor4ub(212, 43, 43, 255);
-    glVertexPointer(2, GL_FLOAT, 0, tri1);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glColor4ub(178, 212, 43, 255);
-    glVertexPointer(2, GL_FLOAT, 0, tri2);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glColor4ub(43, 212, 111, 255);
-    glVertexPointer(2, GL_FLOAT, 0, tri3);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glColor4ub(43, 111, 212, 255);
-    glVertexPointer(2, GL_FLOAT, 0, tri4);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    glColor4ub(178, 43, 212, 255);
-    glVertexPointer(2, GL_FLOAT, 0, tri5);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-
+    static const GLfloat tri4normal[] = {
+        0.0f, 0.0f, 1.0f,
+        -.951f, -.301f, 0.5f,
+        -.951f, -.301f, 0.5f,
+        -.951f, -.301f, -0.5f,
+        -.951f, -.301f, -0.5f,
+        0.0f, 0.0f, -1.0f
+    };
     
+    static const GLfloat tri5normal[] = {
+        0.0f, 0.0f, 1.0f,
+        -.587f, .809f, 0.5f,
+        -.587f, .809f, 0.5f,
+        -.587f, .809f, -0.5f,
+        -.587f, .809f, -0.5f,
+        0.0f, 0.0f, -1.0f
+    };
+    
+    static const GLfloat color1[] = {0.828, 0.168, 0.168, 1.0};
+    static const GLfloat color2[] = {0.695, 0.828, 0.168, 1.0};
+    static const GLfloat color3[] = {0.168, 0.828, 0.433, 1.0};
+    static const GLfloat color4[] = {0.168, 0.433, 0.828, 1.0};
+    static const GLfloat color5[] = {0.695, 0.168, 0.828, 1.0};
+    static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color1);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color1);
+    glVertexPointer(3, GL_FLOAT, 0, tri1);
+    glNormalPointer(GL_FLOAT, 0, tri1normal);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color2);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color2);
+    glVertexPointer(3, GL_FLOAT, 0, tri2);
+    glNormalPointer(GL_FLOAT, 0, tri2normal);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color3);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color3);
+    glVertexPointer(3, GL_FLOAT, 0, tri3);
+    glNormalPointer(GL_FLOAT, 0, tri3normal);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color4);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color4);
+    glVertexPointer(3, GL_FLOAT, 0, tri4);
+    glNormalPointer(GL_FLOAT, 0, tri4normal);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color5);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, color5);
+    glVertexPointer(3, GL_FLOAT, 0, tri5);
+    glNormalPointer(GL_FLOAT, 0, tri5normal);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+
+    glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
+//-(void) glDrawPentagonTriangles{
+//    static const GLfloat tri1[] = {
+//        0.0f, 0.0f,
+//        0.0f, 1.0f,
+//        .951f, .309f };
+//    static const GLfloat tri2[] = {
+//        0.0f, 0.0f,
+//        .951f, .309f,
+//        .5878, -.809 };
+//    static const GLfloat tri3[] = {
+//        0.0f, 0.0f,
+//        .5878, -.809,
+//        -.5878, -.809
+//    };
+//    static const GLfloat tri4[] = {
+//        0.0f, 0.0f,
+//        -.5878, -.809,
+//        -.951f, .309f
+//    };
+//    static const GLfloat tri5[] = {
+//        0.0f, 0.0f,
+//        -.951f, .309f,
+//        0.0f, 1.0f
+//    };
+//    
+//    glEnableClientState(GL_VERTEX_ARRAY);
+//    
+//    glColor4ub(212, 43, 43, 255);
+//    glVertexPointer(2, GL_FLOAT, 0, tri1);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    
+//    glColor4ub(178, 212, 43, 255);
+//    glVertexPointer(2, GL_FLOAT, 0, tri2);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    
+//    glColor4ub(43, 212, 111, 255);
+//    glVertexPointer(2, GL_FLOAT, 0, tri3);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    
+//    glColor4ub(43, 111, 212, 255);
+//    glVertexPointer(2, GL_FLOAT, 0, tri4);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    
+//    glColor4ub(178, 43, 212, 255);
+//    glVertexPointer(2, GL_FLOAT, 0, tri5);
+//    glDrawArrays(GL_TRIANGLES, 0, 3);
+//    
+//    glDisableClientState(GL_VERTEX_ARRAY);
+//}
+
 //-(void) glDrawPentagon{
 //    static const GLfloat pentFan[] = {
 //        0.0f, 0.0f,
