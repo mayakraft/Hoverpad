@@ -18,6 +18,7 @@
     [self.window setBackgroundColor:[UIColor blackColor]];
     [self.window setRootViewController:vc];
     [self.window makeKeyAndVisible];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     return YES;
 }
 							

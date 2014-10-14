@@ -14,8 +14,6 @@
 @property BOOL isButtonTouched;
 @property (nonatomic) NSUInteger state;
 
--(void) beginAnimation;
-
 @property float aspectRatio;
 @property float fieldOfView;
 

@@ -147,9 +147,8 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
         [self setState:PeripheralConnectionStateBooting];
         [self initPeripheral];
         connectionTime = [NSDate date];
-        [screenView beginAnimation];
     }
-    else if(_state == PeripheralConnectionStateConnected){
+    else if(_state == PeripheralConnectionStateScanning || _state == PeripheralConnectionStateConnected){
         [self setState:PeripheralConnectionStateDisconnecting];
         [self stopAdvertisements];
     }
@@ -244,7 +243,7 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
 
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
     NSLog(@"delegate: Advertisements started!");
-    [self setState:PeripheralConnectionStateConnected];
+    [self setState:PeripheralConnectionStateScanning];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
@@ -274,10 +273,12 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central subscribed!");
+    [self setState:PeripheralConnectionStateConnected];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central unsubscribed!");
+    [self setState:PeripheralConnectionStateScanning];
 }
 
 #pragma mark - MATH & DATA
