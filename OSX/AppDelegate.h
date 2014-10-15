@@ -6,22 +6,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <IOBluetooth/IOBluetooth.h>
 #import "SmallModelView.h"
 
-typedef enum : NSUInteger {
-    BLEConnectionStateDisconnected,
-    BLEConnectionStateScanning,
-    BLEConnectionStateConnected
-} BLEConnectionState;
-
-@interface AppDelegate : NSObject <NSApplicationDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property IBOutlet NSMenu *statusMenu;
-// BLE and DEVICE related
-@property (nonatomic) BOOL isBLECapable;
-@property (nonatomic) BOOL isBLEEnabled;
-@property (nonatomic) BLEConnectionState connectionState;
 
 // STATUS BAR MENU CONTROLS
 -(IBAction)toggleOrientationWindow:(id)sender;

@@ -22,18 +22,20 @@
 //    [_devicesInRangeTextView setString:string];
 //}
 
--(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected{
-    if(isCapable) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
-    else [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
-
-    if(isEnabled) [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+-(void) updateBluetoothEnabled:(NSUInteger)enabled{
+    if(enabled) [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     else [_imageStatus2 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
-
-    if(isConnected == 0)
+}
+-(void) updateBLECapable:(NSUInteger)enabled{
+    if(enabled) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
+    else [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
+}
+-(void) updateDeviceConnected:(NSUInteger)enabled{
+    if(enabled == 0)
         [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
-    else if(isConnected == 1)
+    else if(enabled == 1)
         [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusPartiallyAvailable]];
-    else if(isConnected == 2)
+    else if(enabled == 2)
         [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
 }
 

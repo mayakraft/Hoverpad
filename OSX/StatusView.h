@@ -18,6 +18,10 @@
 @property (nonatomic) NSString *statusMessage;
 
 // update light sequence
--(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected;
+-(void) updateBluetoothEnabled:(NSUInteger)enabled;
+-(void) updateBLECapable:(NSUInteger)enabled;
+-(void) updateDeviceConnected:(NSUInteger)enabled;
+
+//-(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected;
 
 @end

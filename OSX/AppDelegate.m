@@ -9,23 +9,18 @@
 #import "VHIDDevice.h"
 #import <WirtualJoy/WJoyDevice.h>
 #import <GLKit/GLKit.h>
+#import "BLEManager.h"
 
 // Views
 #import "OrientationView.h"
 #import "StatusView.h"
-
-#define SERVICE_UUID     @"2166E780-4A62-11E4-817C-0002A5D5DE30"
-#define READ_CHAR_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE31"
-#define WRITE_CHAR_UUID  @"2166E780-4A62-11E4-817C-0002A5D5DE32"
-#define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
 
 #define MAX_AXIS_RANGE 180
 #define MIN_AXIS_RANGE 5
 
 #define countingCharacters @"⠀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿"
 
-@interface AppDelegate() <VHIDDeviceDelegate> {
-    CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
+@interface AppDelegate() <VHIDDeviceDelegate, BLEDelegate> {
     VHIDDevice *joystickDescription;
     WJoyDevice *virtualJoystick;
     OrientationView *orientationView;
@@ -37,10 +32,9 @@
     int pitchRange, rollRange, yawRange;
     int axPitch, axRoll, axYaw;
     NSStatusItem *statusItem; // must be member variable, must stick around
+    
+    BLEManager *bleManager;
 }
-
-@property CBCentralManager *centralManager;
-@property CBPeripheral *peripheral;
 
 @end
 
@@ -68,8 +62,6 @@
     [closeStatus setTarget:self];
     [closeStatus setAction:@selector(toggleStatusWindow:)];
     
-//    peripheralsInRange = [NSMutableArray array];
-    
     axPitch = 0;
     axRoll = 1;
     axYaw = 2;
@@ -83,25 +75,26 @@
     [_rollRangeField setStringValue:[NSString stringWithFormat:@"%d°",rollRange]];
     [_yawRangeField setStringValue:[NSString stringWithFormat:@"%d°",yawRange]];
 
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    bleManager = [[BLEManager alloc] initWithDelegate:self];
+    [bleManager boot]; // start scanning
 }
 
 #pragma mark- INTERFACE
 
 -(IBAction)scanOrEject:(id)sender{
-    if(_connectionState == BLEConnectionStateDisconnected){
-        if(_isBLEEnabled)
-            [self setConnectionState:BLEConnectionStateScanning];
+    if([bleManager connectionState] == BLEConnectionStateDisconnected){
+        if([bleManager isBluetoothEnabled])
+            [bleManager startScanAndAutoConnect];
         else{
             // bluetooth wasn't enabled before
             // try again from the beginning
-            _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+            [bleManager boot];
             [statusView setStatusMessage:@"booting up.."];
         }
     }
-    else if(_connectionState == BLEConnectionStateScanning){ }
-    else if(_connectionState == BLEConnectionStateConnected){
-        [self setConnectionState:BLEConnectionStateDisconnected];
+    else if([bleManager connectionState] == BLEConnectionStateScanning){ }
+    else if([bleManager connectionState] == BLEConnectionStateConnected){
+        [bleManager disconnect];
     }
 }
 -(IBAction) togglePreferencesWindow:(id)sender{
@@ -229,24 +222,126 @@
     axRoll = r;
     axYaw = y;
 }
-- (BOOL) isBLECapableHardware{
-    switch ([_centralManager state]){
-        case CBCentralManagerStatePoweredOn:
-            return TRUE;
-        case CBCentralManagerStateUnsupported:
-            [statusView setStatusMessage:@"Your computer doesn't have Bluetooth Low Energy"];
-            break;
-        case CBCentralManagerStateUnauthorized:
-            [statusView setStatusMessage:@"The app is asking for permission to use Bluetooth Low Energy"];
-            break;
-        case CBCentralManagerStatePoweredOff:
-            [statusView setStatusMessage:@"Turn on Bluetooth Low Energy and try again"];
-            break;
-        case CBCentralManagerStateUnknown:
-        default:
-            [statusView setStatusMessage:@"Bluetooth status unknown"];
+
+#pragma mark- BLE DELEGATES
+
+-(void) BLEBootedAndReady{
+    [self bootScanIfPossible];
+}
+
+-(void) bluetoothStateDidUpdate:(BOOL)enabled{
+    if(!enabled)
+        [statusView setStatusMessage:@"bluetooth is off"];
+    [statusView updateBluetoothEnabled:enabled];
+}
+
+-(void) hardwareDidUpdate:(BLEHardwareState)state{
+    BOOL capable = false;
+    if(state == BLEHardwareStatePoweredOn){
+        capable = true;
     }
-    return FALSE;
+    else if(state == BLEHardwareStateUnsupported){
+        [statusView setStatusMessage:@"Your computer doesn't have Bluetooth Low Energy"];
+    }
+    else if(state == BLEHardwareStateUnauthorized){
+        [statusView setStatusMessage:@"The app is asking for permission to use Bluetooth Low Energy"];
+    }
+    else if (state == BLEHardwareStatePoweredOff) {
+        [statusView setStatusMessage:@"Turn on Bluetooth Low Energy and try again"];
+    }
+    else {
+        [statusView setStatusMessage:@"Bluetooth status unknown"];
+    }
+    [statusView updateBLECapable:capable];
+}
+
+-(void) connectionDidUpdate:(BLEConnectionState)state{
+    if(state == BLEConnectionStateDisconnected){
+        // if we just disconnected from a device
+        if(scanClockLoop == nil){
+            [statusView setStatusMessage:[NSString stringWithFormat:@"disconnected from hoverpad"]];//%@",[_peripheral name]]];
+        }
+        // if scanning ended unsuccessfully
+        else if(scanClockLoop){
+            [scanClockLoop invalidate];
+            scanClockLoop = nil;
+            [statusView setStatusMessage:@"nothing in range"];
+        }
+        else if(![bleManager isBluetoothEnabled]){
+            [statusView setStatusMessage:@"bluetooth is off"];
+        }
+        else {
+            [statusView setStatusMessage:@"nothing in range"];
+        }
+        [self destroyVirtualJoystick];
+        [orientationView setDeviceIsConnected:NO];
+        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameRefreshTemplate]];
+        [_scanOrEjectMenuItem setTitle:@"Scan"];
+        [_scanOrEjectMenuItem setEnabled:YES];
+        [statusView updateDeviceConnected:0];
+    }
+    else if(state == BLEConnectionStateScanning){
+        [statusView setStatusMessage:@"searching for a connection.."];
+        [_scanOrEjectMenuItem setImage:nil];
+        [_scanOrEjectMenuItem setTitle:[NSString stringWithFormat:@"%@ Scanning",[countingCharacters substringWithRange:NSMakeRange(0, 1)]]];
+        [statusView updateDeviceConnected:1];
+    }
+    else if(state == BLEConnectionStateConnected){
+        if(scanClockLoop){
+            [scanClockLoop invalidate];
+            scanClockLoop = nil;
+        }
+        [self createVirtualJoystick];
+        [orientationView setDeviceIsConnected:YES];
+        [statusView setStatusMessage:[NSString stringWithFormat:@"connected to hoverpad"]];//%@",[_peripheral name]]];
+        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
+        [_scanOrEjectMenuItem setTitle:@"Disconnect"];
+        [_scanOrEjectMenuItem setEnabled:YES];
+        [statusView updateDeviceConnected:2];
+    }
+}
+
+-(void) characteristicDidUpdate:(NSData *)data{
+    static const float halfpi = M_PI*.5;
+    
+    if ([data length] == 4) {  //([characteristic.value bytes]){
+        float q[4];
+        [self unpackData:data IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
+        
+        float pitch, roll, yaw;
+        [self quaternion:q ToPitch:&pitch Roll:&roll Yaw:&yaw];
+        
+        pitch /= halfpi;
+        roll /= halfpi;
+        yaw /= halfpi;
+        
+        [self cropPitch:&pitch Roll:&roll Yaw:&yaw];
+        
+        float axis[3];
+        axis[axPitch] = pitch;
+        axis[axRoll] = roll;
+        axis[axYaw] = yaw;
+        
+        [joystickDescription setPointer:0 position:CGPointMake(axis[0], axis[1])];
+        [joystickDescription setPointer:1 position:CGPointMake(axis[2], 0)];
+        //        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
+        
+        if(_orientationWindowVisible){
+            [orientationView setOrientation:q];
+            [orientationView setNeedsDisplay:true];
+        }
+    }
+    else if ([data length] == 1) {
+        char *touched = (char*)[data bytes];
+        BOOL t = *touched;
+        [orientationView setScreenTouched:t];
+    }
+    else if ([data length] == 2){
+        char *msg = (char*)[data bytes];
+        if (*msg == 0x3b){ // exit code
+            [bleManager disconnect];
+        }
+    }
 }
 
 #pragma mark- VIRTUAL HID
@@ -273,31 +368,16 @@
         [virtualJoystick updateHIDState:state];
 }
 
-#pragma mark- BLUETOOTH MASTER
-
--(void) setIsBLECapable:(BOOL)isBLECapable{
-    _isBLECapable = isBLECapable;
-//    if(isBLECapable) _isBLEEnabled = true;
-//    if(!isBLECapable) _isBLEEnabled = false;
-    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_connectionState];
-}
-
 #pragma mark- BLUETOOTH DEVICE CONNECTION
 
--(void)setIsBLEEnabled:(BOOL)isBLEEnabled{
-    _isBLEEnabled = isBLEEnabled;
-    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_connectionState];
-    if(!_isBLEEnabled){
-        [self setConnectionState:BLEConnectionStateDisconnected];
-    }
-}
+
 -(void)bootScanIfPossible{
-    if(_connectionState == BLEConnectionStateDisconnected)
-        [self setConnectionState:BLEConnectionStateScanning];
+    if([bleManager connectionState] == BLEConnectionStateDisconnected)
+        [self startScan];
 }
 -(void) scanClockLoopFunction{
     if(scanClock >= countingCharacters.length-1){
-        [self setConnectionState:BLEConnectionStateDisconnected];
+        [bleManager stopScan];
         return;
     }
     scanClock++;
@@ -309,58 +389,9 @@
     scanClock = 0;
     scanClockLoop = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(scanClockLoopFunction) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:scanClockLoop forMode:NSRunLoopCommonModes];
-    NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
-    [_centralManager scanForPeripheralsWithServices:services options:nil];
+    [bleManager startScanAndAutoConnect];
 }
--(void) setConnectionState:(BLEConnectionState)connectionState{
-    _connectionState = connectionState;
-    if(connectionState == BLEConnectionStateDisconnected){
-        if(scanClockLoop){
-            [scanClockLoop invalidate];
-            scanClockLoop = nil;
-        }
-        if(_centralManager && _peripheral){
-            [statusView setStatusMessage:[NSString stringWithFormat:@"disconnected from %@",[_peripheral name]]];
-            [_centralManager cancelPeripheralConnection:_peripheral];
-            _peripheral = nil;
-        }
-        else if(!_isBLEEnabled){
-            [statusView setStatusMessage:@"bluetooth is off"];
-        }
-        else if (_centralManager){
-            [statusView setStatusMessage:@"nothing in range"];
-        }
-        else{
-            [statusView setStatusMessage:@"else"];
-        }
-        [self destroyVirtualJoystick];
-        [orientationView setDeviceIsConnected:NO];
-        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameRefreshTemplate]];
-        [_scanOrEjectMenuItem setTitle:@"Scan"];
-        [_scanOrEjectMenuItem setEnabled:YES];
-    }
-    else if(connectionState == BLEConnectionStateScanning){
-        [statusView setStatusMessage:@"searching for a connection.."];
-        [_scanOrEjectMenuItem setImage:nil];
-        [_scanOrEjectMenuItem setTitle:[NSString stringWithFormat:@"%@ Scanning",[countingCharacters substringWithRange:NSMakeRange(0, 1)]]];
-        if(scanClockLoop == nil){
-            [self startScan];
-        }
-    }
-    else if(connectionState == BLEConnectionStateConnected){
-        if(scanClockLoop){
-            [scanClockLoop invalidate];
-            scanClockLoop = nil;
-        }
-        [self createVirtualJoystick];
-        [orientationView setDeviceIsConnected:YES];
-        [statusView setStatusMessage:[NSString stringWithFormat:@"connected to %@",[_peripheral name]]];
-        [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
-        [_scanOrEjectMenuItem setTitle:@"Disconnect"];
-        [_scanOrEjectMenuItem setEnabled:YES];
-    }
-    [statusView updateStateCapable:_isBLECapable Enabled:_isBLEEnabled Connected:_connectionState];
-}
+
 //-(BOOL) addPeripheralInRangeIfUnique:(CBPeripheral*)peripheral RSSI:(NSNumber*)RSSI{
 //    // returns YES if addition was made
 //    BOOL alreadyFound = NO;
@@ -412,151 +443,5 @@
     *z = data[2] / 128.0f;
     *w = data[3] / 128.0f;
 }
-
-#pragma mark- DELEGATES - BLE CENTRAL
-
--(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-    
-    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
-    
-    [self setConnectionState:BLEConnectionStateConnected];
-    
-    // Let's qeury the service
-    NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
-    [peripheral discoverServices:services];
-    NSLog(@"SERVICES: %@",services);
-}
--(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
-    NSLog(@"central delegate: didDiscoverPeripheral");
-
-//    if([self addPeripheralInRangeIfUnique:peripheral RSSI:RSSI])
-//        [statusView setDevicesInRange:peripheralsInRange];
-    
-    //TODO: doesn't clear ghost devices
-
-//    if(_peripheral != nil){
-//        return;
-//    }
-    
-    NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
-    NSLog(@" - with ServiceUUID: %@",[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey]);
-    CBUUID *uuid = [[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey] firstObject];
-    if(uuid == nil) {
-        NSLog(@"ATTN: Skipping over a discovered peripheral because it isn't sharing its Advertisment Data with us");
-        return;
-    }
-    NSString *str = [[[NSUUID alloc] initWithUUIDBytes:uuid.data.bytes] UUIDString];
-    if([str isEqual:SERVICE_UUID]){
-        NSLog(@"Peripheral is in our service!");
-        NSLog(@"Peripheral.name: %@",peripheral.name);
-        NSLog(@"Peripheral.services: %@",peripheral.services);
-        NSLog(@"Peripheral.state: %ld",peripheral.state);
-        NSLog(@"advertisementData: %@",advertisementData);
-        NSLog(@"RSSI: %@",RSSI);
-        
-        [_centralManager stopScan];
-        
-        _peripheral = peripheral;
-//        [self buildReadWriteNotifyStrings:[[advertisementData objectForKey:CBAdvertisementDataLocalNameKey] substringToIndex:4]];
-        [_peripheral setDelegate:self];
-        [_centralManager connectPeripheral:_peripheral options:nil];
-    }
-    else{
-        NSLog(@"ATTN: skipping over peripheral, it appears it isn't in our service");
-    }
-}
--(void) centralManagerDidUpdateState:(CBCentralManager *)central{
-    if(central.state == CBCentralManagerStatePoweredOn){
-        NSLog(@"central delegate: central powered on");
-        [self setIsBLEEnabled:YES];
-        
-        [self setIsBLECapable:[self isBLECapableHardware]]; // will dealloc _centralManager if unsuccessful
-        //TODO: re order this better
-        if(_centralManager && _isBLECapable)
-            [self bootScanIfPossible];
-    }
-    if(central.state == CBCentralManagerStatePoweredOff){
-        NSLog(@"central delegate: central powered off");
-        [self setIsBLEEnabled:NO];
-        _centralManager = nil;
-    }
-}
-
-#pragma mark- DELEGATES - BLE PERIPHERAL
-
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
-    NSLog(@"delegate: didDiscoverServices");
-    for (CBService *service in peripheral.services) {
-        if ([service.UUID isEqual:[CBUUID UUIDWithString:SERVICE_UUID]]) {
-            NSLog(@"Found our service!");
-            [peripheral discoverCharacteristics:nil forService:service];
-        }
-    }
-}
-- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
-    NSLog(@"peripheral delegate: didDiscoverCharacteristicForService");
-    for (CBCharacteristic* characteristic in service.characteristics) {
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:READ_CHAR_UUID]]) {
-            myReadChar = characteristic;
-            NSLog(@"found our read characteristic");
-        }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHAR_UUID]]) {
-            myWriteChar = characteristic;
-            NSLog(@"found our write characteristic");
-        }
-        if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID]]) {
-            myNotifyChar = characteristic;
-            [_peripheral setNotifyValue:YES forCharacteristic:myNotifyChar];
-            NSLog(@"found our notify characteristic");
-        }
-    }
-}
-- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-
-    static const float halfpi = M_PI*.5;
-    
-    if ([characteristic.value length] == 4) {  //([characteristic.value bytes]){
-        float q[4];
-        [self unpackData:[characteristic value] IntoQuaternionX:&q[0] Y:&q[1] Z:&q[2] W:&q[3]];
-
-        float pitch, roll, yaw;
-        [self quaternion:q ToPitch:&pitch Roll:&roll Yaw:&yaw];
-
-        pitch /= halfpi;
-        roll /= halfpi;
-        yaw /= halfpi;
-        
-        [self cropPitch:&pitch Roll:&roll Yaw:&yaw];
-        
-        float axis[3];
-        axis[axPitch] = pitch;
-        axis[axRoll] = roll;
-        axis[axYaw] = yaw;
-
-        [joystickDescription setPointer:0 position:CGPointMake(axis[0], axis[1])];
-        [joystickDescription setPointer:1 position:CGPointMake(axis[2], 0)];
-//        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
-        
-        if(_orientationWindowVisible){
-            [orientationView setOrientation:q];
-            [orientationView setNeedsDisplay:true];
-        }
-    }
-    else if ([characteristic.value length] == 1) {
-        char *touched = (char*)[[characteristic value] bytes];
-        BOOL t = *touched;
-        [orientationView setScreenTouched:t];
-    }
-    else if ([characteristic.value length] == 2){
-        char *data = (char*)[[characteristic value] bytes];
-        if (*data == 0x3b){ // exit code
-            [self setConnectionState:BLEConnectionStateDisconnected];
-        }
-    }
-}
-- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    NSLog(@"delegate: didWriteValueForCharacteristic");
-}
-
 
 @end
