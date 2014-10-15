@@ -11,7 +11,7 @@
 #import <GLKit/GLKit.h>
 
 // Views
-#import "View.h"
+#import "OrientationView.h"
 #import "StatusView.h"
 
 #define SERVICE_UUID     @"2166E780-4A62-11E4-817C-0002A5D5DE30"
@@ -28,7 +28,7 @@
     CBCharacteristic *myReadChar, *myWriteChar, *myNotifyChar;
     VHIDDevice *joystickDescription;
     WJoyDevice *virtualJoystick;
-    View *orientationView;
+    OrientationView *orientationView;
     StatusView *statusView;
 //    NSMutableArray *peripheralsInRange;
     NSUInteger scanClock;
@@ -36,6 +36,7 @@
     BOOL invertPitch, invertRoll, invertYaw;
     int pitchRange, rollRange, yawRange;
     int axPitch, axRoll, axYaw;
+    NSStatusItem *statusItem; // must be member variable, must stick around
 }
 
 @property CBCentralManager *centralManager;
@@ -51,7 +52,7 @@
     NSImage *highlightIcon = [NSImage imageNamed:@"Menu Icon"];
     [statusItem setImage:menuIcon];
     [statusItem setAlternateImage:highlightIcon];
-    [statusItem setMenu:statusMenu];
+    [statusItem setMenu:_statusMenu];
     [statusItem setHighlightMode:YES];
     [statusItem setToolTip:@"Hoverpad"];
 }
@@ -95,7 +96,7 @@
             // bluetooth wasn't enabled before
             // try again from the beginning
             _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
-            [[statusView statusTextField] setStringValue:@"booting up.."];
+            [statusView setStatusMessage:@"booting up.."];
         }
     }
     else if(_connectionState == BLEConnectionStateScanning){ }
@@ -233,17 +234,17 @@
         case CBCentralManagerStatePoweredOn:
             return TRUE;
         case CBCentralManagerStateUnsupported:
-            [[statusView statusTextField] setStringValue:@"Your computer doesn't have Bluetooth Low Energy"];
+            [statusView setStatusMessage:@"Your computer doesn't have Bluetooth Low Energy"];
             break;
         case CBCentralManagerStateUnauthorized:
-            [[statusView statusTextField] setStringValue:@"The app is asking for permission to use Bluetooth Low Energy"];
+            [statusView setStatusMessage:@"The app is asking for permission to use Bluetooth Low Energy"];
             break;
         case CBCentralManagerStatePoweredOff:
-            [[statusView statusTextField] setStringValue:@"Turn on Bluetooth Low Energy and try again"];
+            [statusView setStatusMessage:@"Turn on Bluetooth Low Energy and try again"];
             break;
         case CBCentralManagerStateUnknown:
         default:
-            [[statusView statusTextField] setStringValue:@"Bluetooth status unknown"];
+            [statusView setStatusMessage:@"Bluetooth status unknown"];
     }
     return FALSE;
 }
@@ -319,18 +320,18 @@
             scanClockLoop = nil;
         }
         if(_centralManager && _peripheral){
-            [[statusView statusTextField] setStringValue:[NSString stringWithFormat:@"disconnected from %@",[_peripheral name]]];
+            [statusView setStatusMessage:[NSString stringWithFormat:@"disconnected from %@",[_peripheral name]]];
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
         else if(!_isBLEEnabled){
-            [[statusView statusTextField] setStringValue:@"bluetooth is off"];
+            [statusView setStatusMessage:@"bluetooth is off"];
         }
         else if (_centralManager){
-            [[statusView statusTextField] setStringValue:@"nothing in range"];
+            [statusView setStatusMessage:@"nothing in range"];
         }
         else{
-            [[statusView statusTextField] setStringValue:@"else"];
+            [statusView setStatusMessage:@"else"];
         }
         [self destroyVirtualJoystick];
         [orientationView setDeviceIsConnected:NO];
@@ -339,7 +340,7 @@
         [_scanOrEjectMenuItem setEnabled:YES];
     }
     else if(connectionState == BLEConnectionStateScanning){
-        [[statusView statusTextField] setStringValue:@"searching for a connection.."];
+        [statusView setStatusMessage:@"searching for a connection.."];
         [_scanOrEjectMenuItem setImage:nil];
         [_scanOrEjectMenuItem setTitle:[NSString stringWithFormat:@"%@ Scanning",[countingCharacters substringWithRange:NSMakeRange(0, 1)]]];
         if(scanClockLoop == nil){
@@ -353,7 +354,7 @@
         }
         [self createVirtualJoystick];
         [orientationView setDeviceIsConnected:YES];
-        [[statusView statusTextField] setStringValue:[NSString stringWithFormat:@"connected to %@",[_peripheral name]]];
+        [statusView setStatusMessage:[NSString stringWithFormat:@"connected to %@",[_peripheral name]]];
         [_scanOrEjectMenuItem setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
         [_scanOrEjectMenuItem setTitle:@"Disconnect"];
         [_scanOrEjectMenuItem setEnabled:YES];

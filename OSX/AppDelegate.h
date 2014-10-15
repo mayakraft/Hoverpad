@@ -15,13 +15,9 @@ typedef enum : NSUInteger {
     BLEConnectionStateConnected
 } BLEConnectionState;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>{
-    IBOutlet NSMenu *statusMenu;
-    NSStatusItem *statusItem;
-    NSImage *statusImage;
-    NSImage *statusHighlightImage;
-}
+@interface AppDelegate : NSObject <NSApplicationDelegate, CBCentralManagerDelegate, CBPeripheralDelegate>
 
+@property IBOutlet NSMenu *statusMenu;
 // BLE and DEVICE related
 @property (nonatomic) BOOL isBLECapable;
 @property (nonatomic) BOOL isBLEEnabled;

@@ -9,6 +9,11 @@
 
 @implementation StatusView
 
+-(void) setStatusMessage:(NSString *)statusMessage{
+    _statusMessage = statusMessage;
+    [_statusTextField setStringValue:statusMessage];
+}
+
 //-(void) setDevicesInRange:(NSDictionary *)devicesInRange{
 //    NSString *string = @"";
 //    for(NSDictionary *p in devicesInRange){

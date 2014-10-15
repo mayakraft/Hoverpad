@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface View : NSOpenGLView
+@interface OrientationView : NSOpenGLView
 
 -(void) setOrientation:(float*)quaternion;
 

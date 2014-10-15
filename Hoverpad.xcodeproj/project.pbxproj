@@ -10,6 +10,7 @@
 		D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AC19DAF6C500278548 /* VHIDButtonCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D531A5D719EEC96C00F38A40 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5D619EEC96C00F38A40 /* BLEManager.m */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
@@ -20,7 +21,7 @@
 		D5959DA619DBBCD500E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA519DBBCD500E5C7A3 /* main.m */; };
 		D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */; };
 		D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAA19DBBCE500E5C7A3 /* StatusView.m */; };
-		D5959DAF19DBBCE500E5C7A3 /* View.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAC19DBBCE500E5C7A3 /* View.m */; };
+		D5959DAF19DBBCE500E5C7A3 /* OrientationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAC19DBBCE500E5C7A3 /* OrientationView.m */; };
 		D5959DB219DBBD1500E5C7A3 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */; };
 		D5959DB519DBBD5C00E5C7A3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB319DBBD5C00E5C7A3 /* InfoPlist.strings */; };
 		D5959DB719DBBD7800E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DB619DBBD7800E5C7A3 /* Images.xcassets */; };
@@ -64,6 +65,8 @@
 		D505A3AE19DAF6C500278548 /* VHIDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDDevice.m; path = WJoy/VHID/VHIDDevice.m; sourceTree = SOURCE_ROOT; };
 		D505A3AF19DAF6C500278548 /* VHIDPointerCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHIDPointerCollection.h; path = WJoy/VHID/VHIDPointerCollection.h; sourceTree = SOURCE_ROOT; };
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
+		D531A5D519EEC96C00F38A40 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLEManager.h; path = OSX/BLEManager.h; sourceTree = SOURCE_ROOT; };
+		D531A5D619EEC96C00F38A40 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLEManager.m; path = OSX/BLEManager.m; sourceTree = SOURCE_ROOT; };
 		D552051D19D5C769006CF417 /* HoverpadOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverpadOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -85,8 +88,8 @@
 		D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = OSX/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		D5959DA919DBBCE500E5C7A3 /* StatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatusView.h; path = OSX/StatusView.h; sourceTree = SOURCE_ROOT; };
 		D5959DAA19DBBCE500E5C7A3 /* StatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusView.m; path = OSX/StatusView.m; sourceTree = SOURCE_ROOT; };
-		D5959DAB19DBBCE500E5C7A3 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = View.h; path = OSX/View.h; sourceTree = SOURCE_ROOT; };
-		D5959DAC19DBBCE500E5C7A3 /* View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = View.m; path = OSX/View.m; sourceTree = SOURCE_ROOT; };
+		D5959DAB19DBBCE500E5C7A3 /* OrientationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrientationView.h; path = OSX/OrientationView.h; sourceTree = SOURCE_ROOT; };
+		D5959DAC19DBBCE500E5C7A3 /* OrientationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OrientationView.m; path = OSX/OrientationView.m; sourceTree = SOURCE_ROOT; };
 		D5959DB119DBBD1500E5C7A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = OSX/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		D5959DB419DBBD5C00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = OSX/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		D5959DB619DBBD7800E5C7A3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = OSX/Images.xcassets; sourceTree = SOURCE_ROOT; };
@@ -153,6 +156,19 @@
 			name = VHID;
 			sourceTree = "<group>";
 		};
+		D531A5DB19EEC97200F38A40 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5959DA919DBBCE500E5C7A3 /* StatusView.h */,
+				D5959DAA19DBBCE500E5C7A3 /* StatusView.m */,
+				D5959DAB19DBBCE500E5C7A3 /* OrientationView.h */,
+				D5959DAC19DBBCE500E5C7A3 /* OrientationView.m */,
+				D5722EF319E393FD009C11AB /* SmallModelView.h */,
+				D5722EF419E393FD009C11AB /* SmallModelView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		D552052019D5C769006CF417 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,12 +185,9 @@
 				D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */,
 				D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */,
 				D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */,
-				D5959DA919DBBCE500E5C7A3 /* StatusView.h */,
-				D5959DAA19DBBCE500E5C7A3 /* StatusView.m */,
-				D5959DAB19DBBCE500E5C7A3 /* View.h */,
-				D5959DAC19DBBCE500E5C7A3 /* View.m */,
-				D5722EF319E393FD009C11AB /* SmallModelView.h */,
-				D5722EF419E393FD009C11AB /* SmallModelView.m */,
+				D531A5D519EEC96C00F38A40 /* BLEManager.h */,
+				D531A5D619EEC96C00F38A40 /* BLEManager.m */,
+				D531A5DB19EEC97200F38A40 /* Views */,
 				D5959DB619DBBD7800E5C7A3 /* Images.xcassets */,
 				D505A3B419DAF6C800278548 /* VHID */,
 				D552052519D5C769006CF417 /* Supporting Files */,
@@ -386,7 +399,8 @@
 			files = (
 				D5959DA619DBBCD500E5C7A3 /* main.m in Sources */,
 				D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */,
-				D5959DAF19DBBCE500E5C7A3 /* View.m in Sources */,
+				D531A5D719EEC96C00F38A40 /* BLEManager.m in Sources */,
+				D5959DAF19DBBCE500E5C7A3 /* OrientationView.m in Sources */,
 				D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */,
 				D5722EF519E393FD009C11AB /* SmallModelView.m in Sources */,
 				D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */,

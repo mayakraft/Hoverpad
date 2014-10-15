@@ -5,16 +5,16 @@
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
 //
 
-#import "View.h"
+#import "OrientationView.h"
 #import <OpenGL/gl.h>
 
-@interface View (){
+@interface OrientationView (){
     GLfloat a[16];
 }
 
 @end
 
-@implementation View
+@implementation OrientationView
 
 - (id)initWithFrame:(NSRect)frame
 {
