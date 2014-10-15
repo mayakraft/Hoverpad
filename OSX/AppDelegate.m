@@ -76,21 +76,20 @@
     [_yawRangeField setStringValue:[NSString stringWithFormat:@"%d°",yawRange]];
 
     bleManager = [[BLEManager alloc] initWithDelegate:self];
-    [bleManager boot]; // start scanning
 }
 
 #pragma mark- INTERFACE
 
 -(IBAction)scanOrEject:(id)sender{
     if([bleManager connectionState] == BLEConnectionStateDisconnected){
-        if([bleManager isBluetoothEnabled])
-            [bleManager startScanAndAutoConnect];
-        else{
-            // bluetooth wasn't enabled before
-            // try again from the beginning
-            [bleManager boot];
-            [statusView setStatusMessage:@"booting up.."];
-        }
+//        if([bleManager isBluetoothEnabled])
+            [self startScan];
+//        else{
+//            // bluetooth wasn't enabled before
+//            // try again from the beginning
+//            [bleManager startScanAndAutoConnect];
+//            [statusView setStatusMessage:@"booting up.."];
+//        }
     }
     else if([bleManager connectionState] == BLEConnectionStateScanning){ }
     else if([bleManager connectionState] == BLEConnectionStateConnected){
@@ -228,6 +227,10 @@
 -(void) BLEBootedAndReady{
     [self bootScanIfPossible];
 }
+-(void)bootScanIfPossible{
+    if([bleManager connectionState] == BLEConnectionStateDisconnected)
+        [self startScan];
+}
 
 -(void) bluetoothStateDidUpdate:(BOOL)enabled{
     if(!enabled)
@@ -324,7 +327,7 @@
         
         [joystickDescription setPointer:0 position:CGPointMake(axis[0], axis[1])];
         [joystickDescription setPointer:1 position:CGPointMake(axis[2], 0)];
-        //        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
+//        [joystickDescription setPointer:2 position:CGPointMake(0, 0)];
         
         if(_orientationWindowVisible){
             [orientationView setOrientation:q];
@@ -370,11 +373,6 @@
 
 #pragma mark- BLUETOOTH DEVICE CONNECTION
 
-
--(void)bootScanIfPossible{
-    if([bleManager connectionState] == BLEConnectionStateDisconnected)
-        [self startScan];
-}
 -(void) scanClockLoopFunction{
     if(scanClock >= countingCharacters.length-1){
         [bleManager stopScan];

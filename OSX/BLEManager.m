@@ -22,20 +22,24 @@
 
 @implementation BLEManager
 
--(id) initWithDelegate:(id<BLEDelegate>)delegate{
+-(id) init{
     self = [super init];
     if(self){
-        _delegate = delegate;
+        _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     }
     return self;
 }
 
--(void) boot{
-    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+-(id) initWithDelegate:(id<BLEDelegate>)delegate{
+    self = [super init];
+    if(self){
+        _delegate = delegate;
+        _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+    }
+    return self;
 }
+
 -(void) startScanAndAutoConnect{
-    NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
-    [_centralManager scanForPeripheralsWithServices:services options:nil];
     [self setConnectionState:BLEConnectionStateScanning];
 }
 -(void) stopScan{
@@ -69,6 +73,10 @@
             [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
+    }
+    if(connectionState == BLEConnectionStateScanning){
+        NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
+        [_centralManager scanForPeripheralsWithServices:services options:nil];
     }
     _connectionState = connectionState;
     [_delegate connectionDidUpdate:connectionState];
@@ -150,7 +158,7 @@
         [self setIsBluetoothEnabled:NO];
     }
     NSLog(@"updating state: %ld",[_centralManager state]);
-    [self setHardwareState:[_centralManager state]];
+    [self setHardwareState:(BLEHardwareState)[_centralManager state]];
 }
 
 #pragma mark- DELEGATES - BLE PERIPHERAL
