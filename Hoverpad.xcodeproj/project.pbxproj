@@ -11,6 +11,7 @@
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D531A5D719EEC96C00F38A40 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5D619EEC96C00F38A40 /* BLEManager.m */; };
+		D531A5E119EF2A5D00F38A40 /* AnalogStick.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5E019EF2A5D00F38A40 /* AnalogStick.m */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
@@ -67,6 +68,8 @@
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
 		D531A5D519EEC96C00F38A40 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLEManager.h; path = OSX/BLEManager.h; sourceTree = SOURCE_ROOT; };
 		D531A5D619EEC96C00F38A40 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLEManager.m; path = OSX/BLEManager.m; sourceTree = SOURCE_ROOT; };
+		D531A5DF19EF2A5D00F38A40 /* AnalogStick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnalogStick.h; path = OSX/AnalogStick.h; sourceTree = SOURCE_ROOT; };
+		D531A5E019EF2A5D00F38A40 /* AnalogStick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnalogStick.m; path = OSX/AnalogStick.m; sourceTree = SOURCE_ROOT; };
 		D552051D19D5C769006CF417 /* HoverpadOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverpadOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -185,6 +188,8 @@
 				D5959DB019DBBD1500E5C7A3 /* MainMenu.xib */,
 				D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */,
 				D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */,
+				D531A5DF19EF2A5D00F38A40 /* AnalogStick.h */,
+				D531A5E019EF2A5D00F38A40 /* AnalogStick.m */,
 				D531A5D519EEC96C00F38A40 /* BLEManager.h */,
 				D531A5D619EEC96C00F38A40 /* BLEManager.m */,
 				D531A5DB19EEC97200F38A40 /* Views */,
@@ -403,6 +408,7 @@
 				D5959DAF19DBBCE500E5C7A3 /* OrientationView.m in Sources */,
 				D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */,
 				D5722EF519E393FD009C11AB /* SmallModelView.m in Sources */,
+				D531A5E119EF2A5D00F38A40 /* AnalogStick.m in Sources */,
 				D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */,
 				D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */,
 				D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */,

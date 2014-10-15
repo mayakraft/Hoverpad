@@ -54,6 +54,8 @@ typedef enum : NSUInteger { /* meant to mimic CBCentralManagerState */
 -(void) stopScan;
 -(void) disconnect;
 
+-(void) softReset;  // if bluetooth wasn't enabled, reset to re-discover bluetooth, etc..
+
 @property id <BLEDelegate> delegate;
 
 -(id) initWithDelegate:(id<BLEDelegate>)delegate;

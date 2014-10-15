@@ -51,6 +51,12 @@
     [self setConnectionState:BLEConnectionStateDisconnected];
 }
 
+-(void) softReset{
+    _peripheral = nil;
+    _centralManager = nil;
+    _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+}
+
 -(void) setHardwareState:(BLEHardwareState)hardwareState{
     _hardwareState = hardwareState;
     [_delegate hardwareDidUpdate:hardwareState];
