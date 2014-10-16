@@ -88,6 +88,12 @@
     [_delegate connectionDidUpdate:connectionState];
 }
 
+//-(void) sendDataToPeripheral{
+//    unsigned char exit[2] = {0x3b};  // exit code
+//    NSData *data = [[NSData alloc] initWithBytes:exit length:2];
+//    [_peripheral writeValue:data forCharacteristic:myWriteChar type:CBCharacteristicWriteWithResponse];
+//}
+
 #pragma mark- DELEGATES - BLE CENTRAL
 
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
