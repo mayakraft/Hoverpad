@@ -47,5 +47,8 @@
 -(IBAction)pitchSegmentedChanged:(NSSegmentedControl*)sender;
 -(IBAction)rollSegmentedChanged:(NSSegmentedControl*)sender;
 -(IBAction)yawSegmentedChanged:(NSSegmentedControl*)sender;
+@property IBOutlet NSButton *pitchInvertButton;
+@property IBOutlet NSButton *rollInvertButton;
+@property IBOutlet NSButton *yawInvertButton;
 
 @end

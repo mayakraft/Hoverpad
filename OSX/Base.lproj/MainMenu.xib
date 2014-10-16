@@ -15,11 +15,13 @@
             <connections>
                 <outlet property="orientationMenuItem" destination="AKh-Zv-8Zw" id="dnl-Gr-wfg"/>
                 <outlet property="orientationWindow" destination="QvC-M9-y7g" id="L0f-bz-rUh"/>
+                <outlet property="pitchInvertButton" destination="JaE-Kp-9wc" id="eJM-Ch-XCi"/>
                 <outlet property="pitchRangeField" destination="hmH-tf-fs9" id="0F9-o0-Gy6"/>
                 <outlet property="pitchSegmentedControl" destination="nxp-VE-fMx" id="WUg-qw-waf"/>
                 <outlet property="pitchSlider" destination="Q5D-bK-2gU" id="0UC-0P-nui"/>
                 <outlet property="preferencesMenuItem" destination="vXZ-Pg-BtJ" id="66r-PJ-JW7"/>
                 <outlet property="preferencesWindow" destination="SF6-Rk-ue3" id="gRK-kH-JkL"/>
+                <outlet property="rollInvertButton" destination="dvW-nN-BN9" id="8vd-PS-ZkW"/>
                 <outlet property="rollRangeField" destination="bsc-eX-QIB" id="If5-tI-t8W"/>
                 <outlet property="rollSegmentedControl" destination="8Xq-JT-duS" id="Uio-6R-ik3"/>
                 <outlet property="rollSlider" destination="ePN-O5-fv4" id="iMD-zQ-WMP"/>
@@ -28,6 +30,7 @@
                 <outlet property="statusMenu" destination="7uu-il-wul" id="QJ4-ZE-sdc"/>
                 <outlet property="statusMenuItem" destination="i2e-vr-eoA" id="ilO-Lc-Ub3"/>
                 <outlet property="statusWindow" destination="sol-HT-Oha" id="7p6-zR-WAx"/>
+                <outlet property="yawInvertButton" destination="tMF-qX-ryG" id="Gma-w3-DUQ"/>
                 <outlet property="yawRangeField" destination="4ry-7c-BTD" id="23i-9t-Ss0"/>
                 <outlet property="yawSegmentedControl" destination="fOZ-HY-oh6" id="Gjw-2M-bDx"/>
                 <outlet property="yawSlider" destination="VyE-nv-QZM" id="f1w-4r-wnK"/>

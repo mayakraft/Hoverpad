@@ -50,7 +50,7 @@ typedef enum : NSUInteger { /* meant to mimic CBCentralManagerState */
 @property (nonatomic, readonly) BLEHardwareState hardwareState;
 @property (nonatomic, readonly) BLEConnectionState connectionState;
 
--(void) startScanAndAutoConnect;
+-(void) startScanAndAutoConnect; // don't call immediatelly after alloc. wait until hardwareState==PoweredOn, or use BLEBootedAndReady
 -(void) stopScan;
 -(void) disconnect;
 

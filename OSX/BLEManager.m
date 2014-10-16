@@ -91,11 +91,11 @@
 #pragma mark- DELEGATES - BLE CENTRAL
 
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
+//    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
     [self setConnectionState:BLEConnectionStateConnected];
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
     [peripheral discoverServices:services];
-    NSLog(@"SERVICES: %@",services);
+//    NSLog(@"SERVICES: %@",services);
 }
 -(void) centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"central did fail to connect to peripheral");
@@ -109,19 +109,9 @@
     NSLog(@"did retrieve peripherals:\n%@",peripherals);
 }
 -(void) centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
-    NSLog(@"central delegate: didDiscoverPeripheral");
-    
-//    if([self addPeripheralInRangeIfUnique:peripheral RSSI:RSSI])
-//        [statusView setDevicesInRange:peripheralsInRange];
-    
-    //TODO: doesn't clear ghost devices
-    
-//    if(_peripheral != nil){
-//        return;
-//    }
-    
-    NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
-    NSLog(@" - with ServiceUUID: %@",[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey]);
+//    NSLog(@"central delegate: didDiscoverPeripheral");
+//    NSLog(@"Discovered peripheral: %@",[advertisementData objectForKey:CBAdvertisementDataLocalNameKey]);
+//    NSLog(@" - with ServiceUUID: %@",[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey]);
     CBUUID *uuid = [[advertisementData objectForKey:CBAdvertisementDataServiceUUIDsKey] firstObject];
     if(uuid == nil) {
         NSLog(@"ATTN: Skipping over a discovered peripheral because it isn't sharing its Advertisment Data with us");
@@ -129,12 +119,12 @@
     }
     NSString *str = [[[NSUUID alloc] initWithUUIDBytes:uuid.data.bytes] UUIDString];
     if([str isEqual:SERVICE_UUID]){
-        NSLog(@"Peripheral is in our service!");
-        NSLog(@"Peripheral.name: %@",peripheral.name);
-        NSLog(@"Peripheral.services: %@",peripheral.services);
-        NSLog(@"Peripheral.state: %ld",peripheral.state);
-        NSLog(@"advertisementData: %@",advertisementData);
-        NSLog(@"RSSI: %@",RSSI);
+//        NSLog(@"Peripheral is in our service!");
+//        NSLog(@"Peripheral.name: %@",peripheral.name);
+//        NSLog(@"Peripheral.services: %@",peripheral.services);
+//        NSLog(@"Peripheral.state: %ld",peripheral.state);
+//        NSLog(@"advertisementData: %@",advertisementData);
+//        NSLog(@"RSSI: %@",RSSI);
         
         [self stopScan];
         
@@ -149,7 +139,7 @@
 }
 -(void) centralManagerDidUpdateState:(CBCentralManager *)central{
     if([central state] == CBCentralManagerStatePoweredOn){
-        NSLog(@"central delegate: central powered on");
+//        NSLog(@"central delegate: central powered on");
         [self setIsBluetoothEnabled:YES];
     }
     else if([central state] == CBCentralManagerStateUnsupported ||
@@ -159,40 +149,39 @@
     }
     
     if([central state] == CBCentralManagerStatePoweredOff){
-        NSLog(@"central delegate: central powered off");
-        NSLog(@"probably, bluetooth has been turned off"); // but not certain!
+//        NSLog(@"central delegate: central powered off");
+//        NSLog(@"probably, bluetooth has been turned off"); // but not certain!
         [self setIsBluetoothEnabled:NO];
     }
-    NSLog(@"updating state: %ld",[_centralManager state]);
     [self setHardwareState:(BLEHardwareState)[_centralManager state]];
 }
 
 #pragma mark- DELEGATES - BLE PERIPHERAL
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
-    NSLog(@"delegate: didDiscoverServices");
+//    NSLog(@"delegate: didDiscoverServices");
     for (CBService *service in peripheral.services) {
         if ([service.UUID isEqual:[CBUUID UUIDWithString:SERVICE_UUID]]) {
-            NSLog(@"Found our service!");
+//            NSLog(@"found our service");
             [peripheral discoverCharacteristics:nil forService:service];
         }
     }
 }
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
-    NSLog(@"peripheral delegate: didDiscoverCharacteristicForService");
+//    NSLog(@"peripheral delegate: didDiscoverCharacteristicForService");
     for (CBCharacteristic* characteristic in service.characteristics) {
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:READ_CHAR_UUID]]) {
             myReadChar = characteristic;
-            NSLog(@"found our read characteristic");
+//            NSLog(@"found our read characteristic");
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:WRITE_CHAR_UUID]]) {
             myWriteChar = characteristic;
-            NSLog(@"found our write characteristic");
+//            NSLog(@"found our write characteristic");
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID]]) {
             myNotifyChar = characteristic;
             [_peripheral setNotifyValue:YES forCharacteristic:myNotifyChar];
-            NSLog(@"found our notify characteristic");
+//            NSLog(@"found our notify characteristic");
         }
     }
 }

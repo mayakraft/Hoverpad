@@ -1,5 +1,5 @@
 //
-//  View.m
+//  OrientationView.m
 //
 //  Created by Robby on 4/9/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
@@ -119,10 +119,10 @@
     glFlush();
 }
 
--(void) setOrientation:(float *)q{
-    a[0] = 1 - 2*q[1]*q[1] - 2*q[2]*q[2];   a[4] = 2*q[0]*q[1] - 2*q[2]*q[3];       a[8] = 2*q[0]*q[2] + 2*q[1]*q[3];
-    a[1] = 2*q[0]*q[1] + 2*q[2]*q[3];       a[5] = 1 - 2*q[0]*q[0] - 2*q[2]*q[2];   a[9] = 2*q[1]*q[2] - 2*q[0]*q[3];
-    a[2] = 2*q[0]*q[2] - 2*q[1]*q[3];       a[6] = 2*q[1]*q[2] + 2*q[0]*q[3];       a[10] = 1 - 2*q[0]*q[0] - 2*q[1]*q[1];
+-(void) setOrientationMatrix:(float *)m{
+    a[0] = m[0];   a[4] = m[3];   a[8] = m[6];
+    a[1] = m[1];   a[5] = m[4];   a[9] = m[7];
+    a[2] = m[2];   a[6] = m[5];   a[10] = m[8];
     a[3] = a[7] = a[11] = a[12] = a[13] = a[14] = 0.0f;
     a[15] = 1.0f;
 }

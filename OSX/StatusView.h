@@ -1,5 +1,5 @@
 //
-//  InstructionsView.h
+//  StatusView.h
 //
 //  Created by Robby on 9/30/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
@@ -21,7 +21,5 @@
 -(void) updateBluetoothEnabled:(NSUInteger)enabled;
 -(void) updateBLECapable:(NSUInteger)enabled;
 -(void) updateDeviceConnected:(NSUInteger)enabled;
-
-//-(void) updateStateCapable:(BOOL)isCapable Enabled:(BOOL)isEnabled Connected:(int)isConnected;
 
 @end
