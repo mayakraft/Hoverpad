@@ -231,7 +231,7 @@
     *data = 0xC0; data++; // END_COLLECTION
     *data = 0xC0; data++; // END_COLLECTION
 
-    NSLog(@"HID: %@",result);
+//    NSLog(@"HID: %@",result);
     return result;
 }
 

@@ -9,23 +9,13 @@
 
 #ifndef CGRECTRADIAN
 #define CGRECTRADIAN
-
-bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
+// like CGRectContainsPoint, but with a circle
+bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     float dx = center.x - point.x;
     float dy = center.y - point.y;
     return (  radius > sqrtf(powf(dx, 2) + powf(dy, 2) )  );
 }
-
 #endif
-
-
-#define SERVICE_UUID     @"2166E780-4A62-11E4-817C-0002A5D5DE30"
-#define READ_CHAR_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE31"
-#define WRITE_CHAR_UUID  @"2166E780-4A62-11E4-817C-0002A5D5DE32"
-#define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
-
-#define START @"START"
-#define STOP @"STOP"
 
 #define SENSOR_RATE 1.0f/30.0f
 
@@ -52,27 +42,22 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
     screenView = [[ScreenView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
     [self setView:screenView];
     
+    blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self];
+    
     _UUID = [self random16bit:4];
     identity = GLKQuaternionIdentity;
-    if (!motionManager) {
-        motionManager = [[CMMotionManager alloc] init];
-    }
-    if (motionManager && motionManager.isDeviceMotionAvailable){
+    motionManager = [[CMMotionManager alloc] init];
+    
+    if (motionManager.isDeviceMotionAvailable){
         motionManager.deviceMotionUpdateInterval = SENSOR_RATE;
         [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
             
-            static float d = 7;
-            
+            static const float d = 7;
+            CMRotationMatrix m = deviceMotion.attitude.rotationMatrix;
+            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m31*d, m.m32*d, m.m33*d, 0.0f, 0.0f, 0.0f, m.m21, m.m22, m.m23)];
+
             CMQuaternion q = deviceMotion.attitude.quaternion;
             lq.x = q.x;   lq.y = q.y;   lq.z = q.z;   lq.w = q.w;
-//            set_position(&camera, _attitude[2]*2, _attitude[6]*2, -_attitude[10]*2);
-//            m.m31, m.m32, m.m33
-//            set_up(&camera, _attitude[1], _attitude[5], -_attitude[9]);
-//            m.m21, m.m22, m.m23
-            CMRotationMatrix m = deviceMotion.attitude.rotationMatrix;
-//            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(0.0f, 0.0f, -4.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f)];
-//            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m13*2, m.m23*2, m.m33*2, 0.0f, 0.0f, 0.0f, m.m12, m.m22, m.m32)];
-            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m31*d, m.m32*d, m.m33*d, 0.0f, 0.0f, 0.0f, m.m21, m.m22, m.m23)];
             if(_screenTouched){
                 identity = GLKQuaternionInvert(lq);
             }
@@ -87,12 +72,16 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
     [screenView draw];
 }
 
+-(void) setOrientation:(NSData *)orientation{
+    _orientation = orientation;
+    [blePeripheral broadcastData:orientation];
+}
+
 #pragma mark- TOUCHES
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     for(UITouch *touch in touches){
-        if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
-        
+        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
             // button: touch down
             if(!_buttonTouched){
                 [self setButtonTouched:YES];
@@ -110,7 +99,7 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
             [self setScreenTouched:NO];
         }
         if(_buttonTouched){
-            if(CGRectRadianContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
+            if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
             
                 // button: touch up
                 [self buttonTapped];
@@ -125,160 +114,27 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void) setScreenTouched:(BOOL)screenTouched{
     _screenTouched = screenTouched;
     [screenView setIsScreenTouched:screenTouched];
-    [self updateState];
+    [blePeripheral sendScreenTouched:screenTouched];
 }
 -(void) setButtonTouched:(BOOL)buttonTouched{
     _buttonTouched = buttonTouched;
     [screenView setIsButtonTouched:buttonTouched];
 }
--(void) setState:(PeripheralConnectionState)state{
-    _state = state;
+
+-(void) stateDidUpdate:(PeripheralConnectionState)state{
     [screenView setState:state];
-    NSLog(@"STATE CHANGE: %d",(int)state);
-//    if(state == PeripheralConnectionStateDisconnected);
-//    if(state == PeripheralConnectionStateBooting);
-//    if(state == PeripheralConnectionStateScanning);
-//    if(state == PeripheralConnectionStateScanning);
-//    if(state == PeripheralConnectionStateDisconnecting);
 }
+
 -(void) buttonTapped{
-    
-    if(_state == PeripheralConnectionStateDisconnected){
-        [self setState:PeripheralConnectionStateBooting];
-        [self initPeripheral];
+    if([blePeripheral state] == PeripheralConnectionStateDisconnected){
+        [blePeripheral setState:PeripheralConnectionStateBooting];
+        [blePeripheral initPeripheral];
         connectionTime = [NSDate date];
     }
-    else if(_state == PeripheralConnectionStateScanning || _state == PeripheralConnectionStateConnected){
-        [self setState:PeripheralConnectionStateDisconnecting];
-        [self stopAdvertisements];
+    else if([blePeripheral state] == PeripheralConnectionStateScanning || [blePeripheral state] == PeripheralConnectionStateConnected){
+        [blePeripheral setState:PeripheralConnectionStateDisconnecting];
+        [blePeripheral stopAdvertisements];
     }
-}
-
-#pragma mark- BLUETOOTH LOW ENERGY
-
--(void) setOrientation:(NSData *)orientation{
-    _orientation = orientation;
-    [peripheralManager updateValue:orientation forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
-}
-
--(void) sendDisconnect{
-    unsigned char exit[2] = {0x3b};
-    [peripheralManager updateValue:[NSData dataWithBytes:&exit length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
-}
-
--(void) updateState{
-    unsigned char d = (_screenTouched ? 1 : 0);
-    [peripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
-}
-
-- (void)initPeripheral{
-    NSLog(@"initPeripheral");
-
-    readCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
-    writeCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:WRITE_CHAR_UUID] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
-    notifyCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID] properties:CBCharacteristicPropertyNotify value:nil permissions:0];
-
-    peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
-}
-
-- (NSString*)getName{
-//    NSString *str = @"♩♫ΔΘΣΦΩπφ÷∞√∴±=▲⬛︎○▞♭♮𝄞𝄢𝄐𝄡𝄿𝅝⚡︎☣☢♻︎★✶✧✵❄︎◐";
-//    str = [str substringWithRange:NSMakeRange(arc4random()%[str length]-1, 1)];
-//    return [NSString stringWithFormat:@"Hoverpad (%@)",str];
-    return @"Hoverpad";//[NSString stringWithFormat:@"%@",_UUID];
-}
-
-- (void)startAdvertisements{
-    NSLog(@"Starting advertisements...");
-    
-    NSMutableDictionary *advertisingDict = [NSMutableDictionary dictionary];
-    [advertisingDict setObject:[self getName] forKey:CBAdvertisementDataLocalNameKey];
-    [advertisingDict setObject:@[[CBUUID UUIDWithString:SERVICE_UUID]] forKey:CBAdvertisementDataServiceUUIDsKey];
-    [peripheralManager startAdvertising:advertisingDict];
-}
-
-- (void)stopAdvertisements{
-    NSLog(@"Stopping advertisements...");
-    
-    [self sendDisconnect];
-    
-    [peripheralManager stopAdvertising];
-    [peripheralManager removeAllServices];
-    peripheralManager = nil;
-    
-    NSLog(@"Advertisements stopped!");
-    [self setState:PeripheralConnectionStateDisconnected];
-}
-
--(CBMutableService*) constructService:(NSString*)ServiceUUID{
-    NSLog(@"construct service");
-    
-    CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:SERVICE_UUID] primary:YES];
-    
-    NSMutableArray *characteristics = [NSMutableArray array];
-    [characteristics addObject:readCharacteristic];
-    [characteristics addObject:writeCharacteristic];
-    [characteristics addObject:notifyCharacteristic];
-    service.characteristics = characteristics;
-    
-    return service;
-}
-
-#pragma mark- DELEGATES - PERIPHERAL
-
-- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
-    if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
-        NSLog(@"delegate: peripheral manager powered on");
-        
-        [peripheralManager addService:[self constructService:SERVICE_UUID]];
-
-#pragma mark auto start advertisements
-        [self startAdvertisements];
-        
-    }
-    else{
-        NSLog(@"delegate: Peripheral state changed to %d", (int)[peripheralManager state]);
-    }
-}
-
-- (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
-    NSLog(@"delegate: Advertisements started!");
-    [self setState:PeripheralConnectionStateScanning];
-}
-
-- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    NSLog(@"delegate: received write request");
-    for(CBATTRequest* request in requests) {
-//        if ([request.value bytes]) {
-//            self.receivedText.text = [[NSString alloc ] initWithBytes:[request.value bytes] length:request.value.length encoding:NSASCIIStringEncoding];
-//        } else {
-//            self.receivedText.text = @"";
-//        }
-        [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
-    }
-}
-
-- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    NSLog(@"delegate: received read request");
-    NSString *valueToSend;
-    NSDate *currentTime = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"hh:mm:ss"];
-    valueToSend = [dateFormatter stringFromDate: currentTime];
-    
-    request.value = [valueToSend dataUsingEncoding:NSASCIIStringEncoding];
-    
-    [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
-}
-
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"delegate: Central subscribed!");
-    [self setState:PeripheralConnectionStateConnected];
-}
-
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"delegate: Central unsubscribed!");
-    [self setState:PeripheralConnectionStateScanning];
 }
 
 #pragma mark - MATH & DATA
@@ -309,6 +165,5 @@ bool CGRectRadianContainsPoint(CGPoint center, float radius, CGPoint point){
     bytes[3] = (char)(q.w * 128.0f);
     return [NSData dataWithBytes:bytes length:4];
 }
-
 
 @end

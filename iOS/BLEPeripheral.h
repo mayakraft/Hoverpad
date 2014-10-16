@@ -7,7 +7,36 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface BLEPeripheral : NSObject
+typedef enum : NSUInteger {
+    PeripheralConnectionStateDisconnected,
+    PeripheralConnectionStateBooting,
+    PeripheralConnectionStateScanning,
+    PeripheralConnectionStateConnected,
+    PeripheralConnectionStateDisconnecting
+} PeripheralConnectionState;
+
+@protocol BLEPeripheralDelegate <NSObject>
+@optional
+-(void) stateDidUpdate:(PeripheralConnectionState)state;
+@end
+
+@interface BLEPeripheral : NSObject <CBPeripheralManagerDelegate>{
+    CBPeripheralManager *peripheralManager;
+    CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic;
+}
+
+@property id <BLEPeripheralDelegate> delegate;
+@property (nonatomic) PeripheralConnectionState state;
+
+-(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate;
+
+-(void) broadcastData:(NSData*)data;
+-(void) initPeripheral;
+-(void) startAdvertisements;
+-(void) stopAdvertisements;
+
+-(void) sendScreenTouched:(BOOL)touched;
 
 @end

@@ -38,7 +38,7 @@
 -(void) createVirtualJoystick{
     joystickDescription = [[VHIDDevice alloc] initWithType:VHIDDeviceTypeJoystick pointerCount:4 buttonCount:1 isRelative:NO];
     [joystickDescription setDelegate:self];
-    NSLog(@"%@",[joystickDescription descriptor]);
+//    NSLog(@"%@",[joystickDescription descriptor]);
 //    virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] productString:@"BLE Joystick"];
     virtualJoystick = [[WJoyDevice alloc] initWithHIDDescriptor:[joystickDescription descriptor] properties:
                        @{WJoyDeviceProductStringKey : @"iOSVirtualJoystick",

@@ -6,35 +6,22 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreBluetooth/CoreBluetooth.h>
 #import <CoreMotion/CoreMotion.h>
+#import "BLEPeripheral.h"
 #import <GLKit/GLKit.h>
 #import "ScreenView.h"
 
-typedef enum : NSUInteger {
-    PeripheralConnectionStateDisconnected,
-    PeripheralConnectionStateBooting,
-    PeripheralConnectionStateScanning,
-    PeripheralConnectionStateConnected,
-    PeripheralConnectionStateDisconnecting
-} PeripheralConnectionState;
-
-
-@interface ViewController : GLKViewController <CBPeripheralManagerDelegate>{
-    CBPeripheralManager *peripheralManager;
-    CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic;
+@interface ViewController : GLKViewController <BLEPeripheralDelegate>{
     CMMotionManager *motionManager;
     GLKQuaternion identity;
     GLKQuaternion lq;
     ScreenView *screenView;
-    CGPoint screenCenter;
     NSDate *connectionTime;
+    BLEPeripheral *blePeripheral;
 }
 
 @property (nonatomic) BOOL screenTouched;
 @property (nonatomic) BOOL buttonTouched;
-
-@property (nonatomic) PeripheralConnectionState state;
 
 @property (nonatomic) NSData *orientation;
 

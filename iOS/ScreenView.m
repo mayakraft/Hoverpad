@@ -56,18 +56,12 @@ typedef enum : NSUInteger {
     _fieldOfView = 40;
     [self rebuildProjectionMatrix];
     
-    static GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-    static GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
-    static GLfloat white10[] = {0.1f, 0.1f, 0.1f, 1.0};
-    static GLfloat white20[] = {0.2f, 0.2f, 0.2f, 1.0};
-    static GLfloat white50[] = {0.5f, 0.5f, 0.5f, 1.0f};
-    static GLfloat white80[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
     
     groundColor[0] = groundColor[1] = groundColor[2] = 0.0f;
     groundColor[3] = 1.0f;
     
-//    GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
+//    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
     GLfloat pos1[] = {0.0f, 0.0f, 4.0f, 1.0f};
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
@@ -185,24 +179,24 @@ typedef enum : NSUInteger {
 
 -(void) glDrawTable{
     float s = 1.3;
-    static const GLfloat centerVertices[] = {
-        0.0f, 0.0f, -0.1f,
-        0.0f, 1.0f, -0.1f,
-        .951f, .309f, -0.1f,
-        .5878, -.809, -0.1f,
-        -.5878, -.809, -0.1f,
-        -.951f, .309f, -0.1f,
-        0.0f, 1.0f, -0.1f
-    };
-    static const GLfloat centerNormals[] = {
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f,
-        0.0f, 0.0f, 1.0f
-    };
+//    static const GLfloat centerVertices[] = {
+//        0.0f, 0.0f, -0.1f,
+//        0.0f, 1.0f, -0.1f,
+//        .951f, .309f, -0.1f,
+//        .5878, -.809, -0.1f,
+//        -.5878, -.809, -0.1f,
+//        -.951f, .309f, -0.1f,
+//        0.0f, 1.0f, -0.1f
+//    };
+//    static const GLfloat centerNormals[] = {
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f,
+//        0.0f, 0.0f, 1.0f
+//    };
     GLfloat tableVertices[] = {
         0.0f, 1.0f, -0.1f,
         0.0f, s*1.0f, -0.1f,
@@ -246,7 +240,7 @@ typedef enum : NSUInteger {
         0.0f, 0.0f, 1.0f,
         0.0f, 0.0f, -1.0f
     };
-    static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
+//    static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
     static const GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
     
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -375,7 +369,7 @@ typedef enum : NSUInteger {
     GLfloat color4e[] = {s*0.168, s*0.433, s*0.828, 1.0};
     GLfloat color5e[] = {s*0.695, s*0.168, s*0.828, 1.0};
     static const GLfloat white[] = {1.0, 1.0, 1.0, 1.0};
-    static const GLfloat lightwhite[] = {0.2, 0.2, 0.2, 1.0};
+//    static const GLfloat lightwhite[] = {0.2, 0.2, 0.2, 1.0};
     static const GLfloat black[] = {0.0, 0.0, 0.0, 1.0};
 
     glEnableClientState(GL_VERTEX_ARRAY);
