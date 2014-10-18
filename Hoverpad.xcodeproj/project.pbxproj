@@ -12,6 +12,9 @@
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D531A5D719EEC96C00F38A40 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5D619EEC96C00F38A40 /* BLEManager.m */; };
 		D531A5E119EF2A5D00F38A40 /* AnalogStick.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5E019EF2A5D00F38A40 /* AnalogStick.m */; };
+		D5446FAE19F1BC2800A84A20 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5446FAD19F1BC2800A84A20 /* SettingsView.m */; };
+		D5446FB119F1BC4200A84A20 /* Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5446FB019F1BC4200A84A20 /* Cell.m */; };
+		D5446FB419F1D99F00A84A20 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5446FB319F1D98D00A84A20 /* Lato-Light.ttf */; };
 		D552051F19D5C769006CF417 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D552051E19D5C769006CF417 /* Cocoa.framework */; };
 		D568D37D18CBFC4D00ED987D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37C18CBFC4D00ED987D /* Foundation.framework */; };
 		D568D37F18CBFC4D00ED987D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D37E18CBFC4D00ED987D /* CoreGraphics.framework */; };
@@ -71,6 +74,11 @@
 		D531A5D619EEC96C00F38A40 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLEManager.m; path = OSX/BLEManager.m; sourceTree = SOURCE_ROOT; };
 		D531A5DF19EF2A5D00F38A40 /* AnalogStick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnalogStick.h; path = OSX/AnalogStick.h; sourceTree = SOURCE_ROOT; };
 		D531A5E019EF2A5D00F38A40 /* AnalogStick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnalogStick.m; path = OSX/AnalogStick.m; sourceTree = SOURCE_ROOT; };
+		D5446FAC19F1BC2800A84A20 /* SettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsView.h; path = iOS/SettingsView.h; sourceTree = SOURCE_ROOT; };
+		D5446FAD19F1BC2800A84A20 /* SettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsView.m; path = iOS/SettingsView.m; sourceTree = SOURCE_ROOT; };
+		D5446FAF19F1BC4200A84A20 /* Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cell.h; path = iOS/Cell.h; sourceTree = SOURCE_ROOT; };
+		D5446FB019F1BC4200A84A20 /* Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Cell.m; path = iOS/Cell.m; sourceTree = SOURCE_ROOT; };
+		D5446FB319F1D98D00A84A20 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Lato-Light.ttf"; path = "iOS/Fonts/Lato-Light.ttf"; sourceTree = SOURCE_ROOT; };
 		D552051D19D5C769006CF417 /* HoverpadOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoverpadOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D552051E19D5C769006CF417 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D552052119D5C769006CF417 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -175,6 +183,17 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		D5446FB519F1E96E00A84A20 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D5446FAC19F1BC2800A84A20 /* SettingsView.h */,
+				D5446FAD19F1BC2800A84A20 /* SettingsView.m */,
+				D5446FAF19F1BC4200A84A20 /* Cell.h */,
+				D5446FB019F1BC4200A84A20 /* Cell.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		D552052019D5C769006CF417 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,8 +280,10 @@
 				D5D8B43019EF503900EFBC1F /* BLEPeripheral.m */,
 				D5B5EF7619E701AC00FD99AD /* ScreenView.h */,
 				D5B5EF7719E701AC00FD99AD /* ScreenView.m */,
+				D5446FB519F1E96E00A84A20 /* Settings */,
 				D5C9F8BB19E8E7EF002D4AC4 /* noise.h */,
 				D5C9F8BA19E8E7EF002D4AC4 /* noise.c */,
+				D5446FB319F1D98D00A84A20 /* Lato-Light.ttf */,
 				D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */,
 				D568D38318CBFC4D00ED987D /* Supporting Files */,
 			);
@@ -397,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */,
+				D5446FB419F1D99F00A84A20 /* Lato-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +451,8 @@
 				D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */,
 				D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */,
 				D5959DBD19DBBDED00E5C7A3 /* AppDelegate.m in Sources */,
+				D5446FAE19F1BC2800A84A20 /* SettingsView.m in Sources */,
+				D5446FB119F1BC4200A84A20 /* Cell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,14 +10,16 @@
 #import "BLEPeripheral.h"
 #import <GLKit/GLKit.h>
 #import "ScreenView.h"
+#import "SettingsView.h"
 
-@interface ViewController : GLKViewController <BLEPeripheralDelegate>{
+@interface ViewController : GLKViewController <BLEPeripheralDelegate, UITableViewDelegate>{
     CMMotionManager *motionManager;
     GLKQuaternion identity;
     GLKQuaternion lq;
     ScreenView *screenView;
     NSDate *connectionTime;
     BLEPeripheral *blePeripheral;
+    SettingsView *settingsView;
 }
 
 @property (nonatomic) BOOL screenTouched;

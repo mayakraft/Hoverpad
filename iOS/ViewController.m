@@ -18,6 +18,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 #endif
 
 #define SENSOR_RATE 1.0f/30.0f
+#define BUTTON_RADIUS 70
 
 @implementation ViewController
 
@@ -81,7 +82,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     for(UITouch *touch in touches){
-        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
+        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:screenView])){
             // button: touch down
             if(!_buttonTouched){
                 [self setButtonTouched:YES];
@@ -99,12 +100,15 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
             [self setScreenTouched:NO];
         }
         if(_buttonTouched){
-            if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), 30, [touch locationInView:screenView])){
+            if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:screenView])){
             
                 // button: touch up
                 [self buttonTapped];
             }
             [self setButtonTouched:NO];
+        }
+        if([touch locationInView:screenView].x < 50 && [touch locationInView:screenView].y < 50){
+            [self settingsButtonPress:nil];
         }
     }
 }
@@ -137,6 +141,47 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     }
 }
 
+-(void)settingsButtonPress:(id)sender{
+    settingsView = [[SettingsView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
+    [settingsView setDataSource:settingsView];
+    [settingsView setClipsToBounds:NO];
+    [settingsView setDelegate:self];
+    [settingsView setBackgroundColor:[UIColor clearColor]];
+    [settingsView setBackgroundView:nil];
+    [settingsView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [settingsView setSeparatorInset:UIEdgeInsetsZero];
+    [settingsView setCenter:CGPointMake(settingsView.center.x+settingsView.bounds.size.width, settingsView.center.y)];
+    settingsView.sectionHeaderHeight = 1.0;
+    settingsView.sectionFooterHeight = 1.0;
+    [self.view addSubview:settingsView];
+
+    CGRect oldframe = settingsView.frame;
+    settingsView.transform=CGAffineTransformMakeRotation(M_PI/2);
+    // For some weird reason, the frame of the table also gets rotated, so you must restore the original frame
+    settingsView.frame = oldframe;
+    
+//    [self performSelector:@selector(expandToCollapse:) withObject:@"settings"];
+//    //    [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.1];
+//    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.1];  //.2
+    [self animateSettingsTableIn];
+}
+
+-(void) animateSettingsTableIn
+{
+    [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+    [UIView setAnimationDuration:.33];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [settingsView setCenter:self.view.center];
+    [UIView commitAnimations];
+}
+-(void) animateSettingsTableOut
+{
+    [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+    [UIView setAnimationDuration:.25];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [settingsView setCenter:CGPointMake(self.view.center.x-self.view.bounds.size.height, self.view.center.y)];
+    [UIView commitAnimations];
+}
 #pragma mark - MATH & DATA
 
 -(NSString*)random16bit:(NSUInteger)numberOfDigits{
@@ -164,6 +209,60 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     bytes[2] = (char)(q.z * 128.0f);
     bytes[3] = (char)(q.w * 128.0f);
     return [NSData dataWithBytes:bytes length:4];
+}
+
+#pragma mark- SETTINGS TABLE DELEGATE
+
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section{
+    if(section == 0)
+        return 40.0f;
+    return 1.0f;
+}
+- (CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section{
+    return 1.0;
+}
+
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+}
+- (UIView*)tableView:(UITableView*)tableView viewForFooterInSection:(NSInteger)section{
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+}
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(settingsView.cellExpanded[indexPath.section]){
+        return 200;
+    }
+    return 46;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if(indexPath.section == 0){
+//      [cell.detailTextLabel setText:@"no"];
+    }
+    else if (indexPath.section == 1){
+        settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
+        [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
+        [tableView beginUpdates];
+        [tableView endUpdates];
+    }
+    else if (indexPath.section == 2){
+        settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
+        [tableView beginUpdates];
+        [tableView endUpdates];
+    }
+    else if (indexPath.section == 3){
+//        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
+//        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
+//            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        [self updateColorsProgramWide];
+//        [tableView reloadData];
+    }
+    else if (indexPath.section == 4){
+        [self animateSettingsTableOut];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
