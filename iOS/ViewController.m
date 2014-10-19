@@ -88,6 +88,9 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
                 [self setButtonTouched:YES];
             }
         }
+        else if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:screenView])){
+            [self settingsButtonPress:nil];
+        }
         else if(!_screenTouched){
             [self setScreenTouched:YES];
         }
@@ -107,8 +110,8 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
             }
             [self setButtonTouched:NO];
         }
-        if([touch locationInView:screenView].x < 50 && [touch locationInView:screenView].y < 50){
-            [self settingsButtonPress:nil];
+        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:screenView])){
+//            [self settingsButtonPress:nil];
         }
     }
 }
@@ -177,10 +180,17 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void) animateSettingsTableOut
 {
     [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+    [UIView setAnimationDidStopSelector:@selector(deallocTableView)];
+    [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:.25];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [settingsView setCenter:CGPointMake(self.view.center.x-self.view.bounds.size.height, self.view.center.y)];
     [UIView commitAnimations];
+}
+-(void) deallocTableView{
+    [settingsView removeFromSuperview];
+    [settingsView fakeDealloc];
+    settingsView = nil;
 }
 #pragma mark - MATH & DATA
 
@@ -229,26 +239,38 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(settingsView.cellExpanded[indexPath.section]){
-        return 200;
-    }
-    return 46;
+    if(indexPath.row == 0)
+        return 46;
+    if(indexPath.section == 0)
+        return 100;
+    else if(indexPath.section == 1)
+        return 150;
+    else if (indexPath.section == 2)
+        return 220;
+    return 400;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if(indexPath.section == 0){
+    
+    if(indexPath.section == 4){
+        [self animateSettingsTableOut];
+    }
+    
+    if(indexPath.row == 0){
+        settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
+        if(settingsView.cellExpanded[indexPath.section])
+            [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+        else
+            [tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationTop];
+        [tableView beginUpdates];
+        [tableView endUpdates];
+    }
+    else if(indexPath.section == 0){
 //      [cell.detailTextLabel setText:@"no"];
     }
     else if (indexPath.section == 1){
-        settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
-        [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:1]] withRowAnimation:UITableViewRowAnimationTop];
-        [tableView beginUpdates];
-        [tableView endUpdates];
     }
     else if (indexPath.section == 2){
-        settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
-        [tableView beginUpdates];
-        [tableView endUpdates];
     }
     else if (indexPath.section == 3){
 //        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
@@ -258,9 +280,6 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 //        [[NSUserDefaults standardUserDefaults] synchronize];
 //        [self updateColorsProgramWide];
 //        [tableView reloadData];
-    }
-    else if (indexPath.section == 4){
-        [self animateSettingsTableOut];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

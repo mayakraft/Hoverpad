@@ -24,11 +24,12 @@ typedef enum : NSUInteger {
 } buttonAnimation;
 
 @interface ScreenView (){
-    NSDate *animationStateStart;
+    NSDate *startTime, *animationStateStart;
     float y;
     buttonAnimation animation;
     GLfloat groundColor[4];
     int litFace;
+    GLfloat preferencesColor[4];
 }
 
 @end
@@ -60,6 +61,8 @@ typedef enum : NSUInteger {
     
     groundColor[0] = groundColor[1] = groundColor[2] = 0.0f;
     groundColor[3] = 1.0f;
+    preferencesColor[0] = preferencesColor[1] = preferencesColor[2] = 0.0f;
+    preferencesColor[3] = 1.0f;
     
 //    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
     GLfloat pos1[] = {0.0f, 0.0f, 4.0f, 1.0f};
@@ -77,7 +80,7 @@ typedef enum : NSUInteger {
     
     glShadeModel(GL_SMOOTH);
 //    glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 20);
-
+    startTime = [NSDate date];
 }
 -(void)rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);
@@ -133,6 +136,102 @@ typedef enum : NSUInteger {
     }
 }
 
+void glDrawSquare(){
+    static const GLfloat _unit_square[] = {
+        -0.5f, 0.5f,
+        0.5f, 0.5f,
+        -0.5f, -0.5f,
+        0.5f, -0.5f
+    };
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, _unit_square);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void glDrawRect(CGRect rect){
+    static const GLfloat _unit_square[] = {
+        -0.5f, 0.5f,
+        0.5f, 0.5f,
+        -0.5f, -0.5f,
+        0.5f, -0.5f
+    };
+    glPushMatrix();
+    glTranslatef(rect.origin.x, rect.origin.y, 0.0);
+    glScalef(rect.size.width, rect.size.height, 1.0);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, _unit_square);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopMatrix();
+}
+
+void glDrawRectOutline(CGRect rect){
+    static const GLfloat _unit_square_outline[] = {
+        -0.5f, 0.5f,
+        0.5f, 0.5f,
+        0.5f, -0.5f,
+        -0.5f, -0.5f
+    };
+    glPushMatrix();
+    glTranslatef(rect.origin.x, rect.origin.y, 0.0);
+    glScalef(rect.size.width, rect.size.height, 1.0);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, _unit_square_outline);
+    glDrawArrays(GL_LINE_LOOP, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopMatrix();
+}
+void glDrawPentagon(){
+    static const GLfloat pentFan[] = {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        .951f, .309f,
+        .5878, -.809,
+        -.5878, -.809,
+        -.951f, .309f,
+        0.0f, 1.0f
+    };
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, pentFan);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+-(void) HSLOpenGLColorArray:(float *)array Hue:(float)hue{
+    array[0] = array[1] = array[2] = 0.0f;
+    array[3] = 1.0f;
+    int n = 6;
+    float s = 1.0/n;
+    if(hue < s){
+        array[0] = 1.0;
+        array[2] = 1.0-hue/s;
+    }
+    else if(hue < 2*s){
+        array[0] = 1.0;
+        array[1] = (hue-1.0/n)/s;
+    }
+    else if(hue < 3*s){
+        array[1] = 1.0;
+        array[0] = 1.0-(hue-2.0/n)/s;
+    }
+    else if (hue < 4*s){
+        array[1] = 1.0;
+        array[2] = (hue-3.0/n)/s;
+    }
+    else if (hue < 5*s){
+        array[2] = 1.0;
+        array[1] = 1.0-(hue-4.0/n)/s;
+    }
+    else{// if (hue < 6*s){
+        array[2] = 1.0;
+        array[0] = (hue-5.0/n)/s;
+    }
+//    else{
+//        array[2] = 1.0-(hue-6.0/n)/s;
+//    }
+}
+
 -(void) draw{
     [self update];
 //    if(_isScreenTouched){
@@ -169,6 +268,46 @@ typedef enum : NSUInteger {
         glPopMatrix();
         glPopMatrix();
         glPopMatrix();
+        
+        glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHT0);
+        [self enterOrthographic];
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        if(_isScreenTouched){
+            glLineWidth(4.0);
+            glDrawRectOutline(CGRectMake(self.frame.size.width*.5, self.frame.size.height*.5, self.frame.size.width*.99, .99*self.frame.size.height));
+        }
+        glPushMatrix();
+        glTranslatef(self.frame.size.width*.933, self.frame.size.height*.5, 0.0);
+        glScalef(40.0f, 40.0f, 1.0f);
+//        glRotatef([startTime timeIntervalSinceNow]*8, 0, 0, 1);
+
+//        float clock = -[startTime timeIntervalSinceNow]/16;
+//        float send = (clock - ((int)clock));
+//        [self HSLOpenGLColorArray:preferencesColor Hue:send];
+//        glColor4f(preferencesColor[0], preferencesColor[1], preferencesColor[2], .3);//preferencesColor[3]);
+        glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+        glPushMatrix();
+            glScalef(.15f, 1.0f, 1.0f);
+            glDrawSquare();
+        glPopMatrix();
+        glPushMatrix();
+            glTranslatef(.25f, 0.0f, 0.0f);
+            glScalef(.15f, 1.0f, 1.0f);
+            glDrawSquare();
+        glPopMatrix();
+        
+        glPushMatrix();
+            glTranslatef(-.25f, 0.0f, 0.0f);
+            glScalef(.15f, 1.0f, 1.0f);
+            glDrawSquare();
+        glPopMatrix();
+        
+        glPopMatrix();
+        [self exitOrthographic];
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        
     }
 //    if(animationStartTime){
 //        if(-[animationStartTime timeIntervalSinceNow] > 1.5){
@@ -176,6 +315,7 @@ typedef enum : NSUInteger {
 //        }
 //    }
 }
+
 
 -(void) glDrawTable{
     float s = 1.3;
@@ -258,7 +398,6 @@ typedef enum : NSUInteger {
 //    glNormalPointer(GL_FLOAT, 0, centerNormals);
 //    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
 
-    
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
@@ -443,6 +582,31 @@ typedef enum : NSUInteger {
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
 
 }
+
+-(void)enterOrthographic{
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrthof(0, self.frame.size.width, self.frame.size.height, 0, -5, 1);
+//    glOrthof(0, width, height, 0, -5, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+}
+
+-(void)exitOrthographic{
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 //-(void) glDrawPentagonTriangles{
 //    static const GLfloat tri1[] = {
 //        0.0f, 0.0f,

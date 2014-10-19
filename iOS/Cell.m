@@ -27,8 +27,10 @@
     if (self) {
         // Initialization code
         self.layer.borderWidth = 1.0f;
+
         [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
         [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
+
         if(IS_IPAD())
         {
             self.layer.borderWidth = 2.0f;
@@ -54,17 +56,17 @@
 
     frame.origin.x += PADDING;
     frame.size.width = [[UIScreen mainScreen] bounds].size.height - 2 * PADDING;
-    frame.size.height = PADDING * 2;
+//    frame.size.height = PADDING * 2;
     [super setFrame:frame];
 
-    self.layer.borderWidth = 1.0f;
-    [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
-    [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
-    if(IS_IPAD()) {
-        self.layer.borderWidth = 2.0f;
-        [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:66.0f]];
-        [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:66.0f]];
-    }
+//    self.layer.borderWidth = 1.0f;
+//    [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
+//    [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f]];
+//    if(IS_IPAD()) {
+//        self.layer.borderWidth = 2.0f;
+//        [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:66.0f]];
+//        [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:66.0f]];
+//    }
 //    [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
     [self.textLabel setBackgroundColor:[UIColor clearColor]];
     [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];

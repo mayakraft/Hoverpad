@@ -14,4 +14,6 @@
 
 @property BOOL *cellExpanded;
 
+-(void) fakeDealloc;
+
 @end
