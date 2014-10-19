@@ -106,22 +106,83 @@
     return [UIColor colorWithHue:hue saturation:1.0 brightness:1.0 alpha:1.0];
 }
 
+-(void) setConnectionState:(NSInteger)connectionState{
+    _connectionState = connectionState;
+    [self updateConnectionTitleCell:nil];
+    [self updateConnectionDetailCell:nil];
+}
+
+-(void) updateConnectionTitleCell:(UITableViewCell*) cellIn{
+    UITableViewCell *cell;
+    if(cellIn) cell = cellIn;
+    else cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+
+    if(cell){
+        if(_connectionState == 3){
+            [[cell detailTextLabel] setText:@"✔︎"];
+            [[cell detailTextLabel] setTextColor:[UIColor greenColor]];
+        }
+        else if (_connectionState == 0){
+            [[cell detailTextLabel] setText:@"✘"];
+            [[cell detailTextLabel] setTextColor:[UIColor redColor]];
+        }
+        else{
+            [[cell detailTextLabel] setText:@"..."];
+            [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
+        }
+    }
+}
+
+-(void) updateConnectionDetailCell:(UITableViewCell*) cellIn{
+    UITableViewCell *cell;
+    if(cellIn) cell = cellIn;
+    else cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+    
+    if(cell){
+        if(_connectionState == 3){
+            [[cell textLabel] setText:@"\n\nCOMMUNICATION OPEN"];
+            [[cell detailTextLabel] setText:@"CONNECTED"];
+            [[cell detailTextLabel] setTextColor:[UIColor greenColor]];
+        }
+        else if (_connectionState == 2){
+            [[cell textLabel] setText:@"\n\nMAKE SURE DESKTOP IS SEARCHING TOO"];
+            [[cell detailTextLabel] setText:@"SCANNING"];
+            [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
+        }
+        else if (_connectionState == 0){
+            [[cell textLabel] setText:@"\n\nTAP HERE TO BEGIN SEARCHING\n(OR TAP PENTAGON ON MAIN WINDOW)"];
+            [[cell detailTextLabel] setText:@"DISCONNECTED"];
+            [[cell detailTextLabel] setTextColor:[UIColor redColor]];
+        }
+        else if (_connectionState == 4){
+            [[cell textLabel] setText:@"\n\nCONNECTION IS EXPIRING"];
+            [[cell detailTextLabel] setText:@"DISCONNECTING"];
+            [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
+        }
+        else if (_connectionState == 1){
+            [[cell textLabel] setText:@"\n\nBLUETOOTH IS INITIALIZING"];
+            [[cell detailTextLabel] setText:@"BOOTING"];
+            [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
+        }
+    }
+}
+
 -(void) cycleColor{
     for(int i = 0; i < NUM_CELLS; i++){
         float hue = ((float)(4-i)/NUM_CELLS) + cycle;
         if(hue > 1.0) hue -= 1.0;
         if(hue < 0.0) hue += 1.0;
         UIColor *rainbow = [UIColor colorWithHue:hue saturation:1.0 brightness:1.0 alpha:1.0];
-        Cell *cell = (Cell*)[self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
+        UITableViewCell *cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
         if(cell){
             [[cell textLabel] setTextColor:rainbow];
             [[cell layer] setBorderColor:rainbow.CGColor];
         }
         if(_cellExpanded[i]){
-            Cell *cell = (Cell*)[self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:i]];
-            if(cell){
-//                [[cell textLabel] setTextColor:rainbow];
-                [[cell layer] setBorderColor:rainbow.CGColor];
+            UITableViewCell *cellD = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:i]];
+            if(cellD){
+//                [[cellD textLabel] setTextColor:rainbow];
+                [[cellD layer] setBorderColor:rainbow.CGColor];
             }
         }
     }
@@ -151,10 +212,8 @@
         else{
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
             [[cell textLabel] setText:@"TURNS YOUR PHONE INTO A 3 AXIS\n(PITCH, ROLL, YAW) ANALOG JOYSTICK"];
-//            [[cell textLabel] setTextColor:rainbow];
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell textLabel] setNumberOfLines:2];
             [[cell detailTextLabel] setText:@""];
         }
     }
@@ -162,37 +221,29 @@
         if(indexPath.row == 0){
             [[cell textLabel] setText:@"CONNECTION STATUS"];
             [[cell textLabel] setTextColor:rainbow];
-            [[cell detailTextLabel] setText:@"NONE"];
-            [[cell detailTextLabel] setTextColor:[UIColor redColor]];
+            [self updateConnectionTitleCell:cell];
         }
         else{
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setText:@"NOT CONNECTED OR SEARCHING\nTAP HERE TO BEGIN SEARCHING\n(OR TAP PENTAGON ON MAIN WINDOW)"];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell textLabel] setNumberOfLines:7];
-            [[cell detailTextLabel] setText:@""];
-            [[cell detailTextLabel] setTextColor:[UIColor redColor]];
-            [[cell detailTextLabel] setNumberOfLines:4];
+            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
+            [self updateConnectionDetailCell:cell];
         }
-//        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"noise"] isEqualToString:@"white"])
-//            [[cell detailTextLabel] setText:@""];
-//        else
     }
     else if (indexPath.section == 2){
         if(indexPath.row == 0){
-            [[cell textLabel] setText:@"SETUP TUTORIAL"];
+            [[cell textLabel] setText:@"SETUP HELP"];
             [[cell textLabel] setTextColor:rainbow];
-            [[cell detailTextLabel] setText:@""];
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
+            [[cell detailTextLabel] setText:@""];
         }
         else{
-            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n • iOS APP (✔︎)\n • DESKTOP APP (FREE @ http://hoverpad.wtf)\n\n1. BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n2. WAIT 3-10 SECONDS FOR CONNECTION\n3. CUSTOMIZE PREFERENCES ON DESKTOP APP"];
-            [[cell textLabel] setNumberOfLines:7];
+            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n • iOS APP (✔︎)\n • DESKTOP APP (FREE @ http://hoverpad.wtf)\n\nCONNECTION PROCESS:\n • BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n • WAIT 3-10 SECONDS FOR CONNECTION\n • CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n • IF CONNECTION BREAKS BEFORE PROPER EXIT, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
         }
-//        [[cell textLabel] setText:@"theme"];
-//        [[cell detailTextLabel] setText:[[[[Colors sharedColors] themes] objectForKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"theme"]] objectForKey:@"title"]];
     }
     else if (indexPath.section == 3){
         if(indexPath.row == 0){
@@ -208,24 +259,8 @@
     else if (indexPath.section == 4){
         [[cell textLabel] setText:@"OKAY"];
         [[cell textLabel] setTextColor:rainbow];
-        [[cell detailTextLabel] setText:@""];
         [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
-//        [[cell textLabel] setText:@"themes"];
-//        [[cell detailTextLabel] setText:@"$.99"];
-//        [[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
-    }
-//    else if (indexPath.section == 5){
-//        SKProduct * product = (SKProduct *) _products[0];
-//        [_priceFormatter setLocale:product.priceLocale];
-//        NSLog(@"%@",product);
-//        [[cell textLabel] setText:[_priceFormatter stringFromNumber:product.price]];
-//        [[cell detailTextLabel] setText:@""];
-//        [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
-//    }
-    else{
-        [[cell textLabel] setText:@"expanded cell?"];
         [[cell detailTextLabel] setText:@""];
-        [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
     }
     return cell;
 }

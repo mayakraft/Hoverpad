@@ -242,19 +242,18 @@ void glDrawPentagon(){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
         glPushMatrix();
-        glMultMatrixf(_deviceOrientation.m);
-        
-        glPushMatrix();
-        glRotatef(-90, 0, 0, 1);
-//        glTranslatef(0, 0, -5);
-        if(groundColor[0] != 0.0)
-            [self glDrawTable];
+            glMultMatrixf(_deviceOrientation.m);
         
             glPushMatrix();
-            if(animation == buttonRise)
-                glTranslatef(0, 0, y);
-            if(animation == buttonFall)
-                glTranslatef(0, 0, .5-y);
+                glRotatef(-90, 0, 0, 1);
+                if(groundColor[0] != 0.0)
+                    [self glDrawTable];
+        
+                glPushMatrix();
+                    if(animation == buttonRise)
+                        glTranslatef(0, 0, y);
+                    if(animation == buttonFall)
+                        glTranslatef(0, 0, .5-y);
         
 //        if(_isButtonTouched)
 //            glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
@@ -263,10 +262,11 @@ void glDrawPentagon(){
 //        else if(animationStartTime)
 //            glColor4f(arc4random()%100/100.0, arc4random()%100/100.0, arc4random()%100/100.0, 1.0f);
 //        else
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        [self glDrawPentagonTriangles];
-        glPopMatrix();
-        glPopMatrix();
+        
+                    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                    [self glDrawPentagonTriangles];
+                glPopMatrix();
+            glPopMatrix();
         glPopMatrix();
         
         glDisable(GL_LIGHTING);
@@ -277,33 +277,28 @@ void glDrawPentagon(){
             glLineWidth(4.0);
             glDrawRectOutline(CGRectMake(self.frame.size.width*.5, self.frame.size.height*.5, self.frame.size.width*.99, .99*self.frame.size.height));
         }
-        glPushMatrix();
-        glTranslatef(self.frame.size.width*.933, self.frame.size.height*.5, 0.0);
-        glScalef(40.0f, 40.0f, 1.0f);
-//        glRotatef([startTime timeIntervalSinceNow]*8, 0, 0, 1);
-
-//        float clock = -[startTime timeIntervalSinceNow]/16;
-//        float send = (clock - ((int)clock));
-//        [self HSLOpenGLColorArray:preferencesColor Hue:send];
-//        glColor4f(preferencesColor[0], preferencesColor[1], preferencesColor[2], .3);//preferencesColor[3]);
-        glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
-        glPushMatrix();
-            glScalef(.15f, 1.0f, 1.0f);
-            glDrawSquare();
-        glPopMatrix();
-        glPushMatrix();
-            glTranslatef(.25f, 0.0f, 0.0f);
-            glScalef(.15f, 1.0f, 1.0f);
-            glDrawSquare();
-        glPopMatrix();
-        
-        glPushMatrix();
-            glTranslatef(-.25f, 0.0f, 0.0f);
-            glScalef(.15f, 1.0f, 1.0f);
-            glDrawSquare();
-        glPopMatrix();
-        
-        glPopMatrix();
+        if(!_isScreenTouched){
+            glPushMatrix();
+                glTranslatef(self.frame.size.width*.933, self.frame.size.height*.5, 0.0);
+                glScalef(40.0f, 40.0f, 1.0f);
+                glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
+                glPushMatrix();
+                    glScalef(.15f, 1.0f, 1.0f);
+                    glDrawSquare();
+                glPopMatrix();
+                glPushMatrix();
+                    glTranslatef(.25f, 0.0f, 0.0f);
+                    glScalef(.15f, 1.0f, 1.0f);
+                    glDrawSquare();
+                glPopMatrix();
+            
+                glPushMatrix();
+                    glTranslatef(-.25f, 0.0f, 0.0f);
+                    glScalef(.15f, 1.0f, 1.0f);
+                    glDrawSquare();
+                glPopMatrix();
+            glPopMatrix();
+        }
         [self exitOrthographic];
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);

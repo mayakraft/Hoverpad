@@ -130,6 +130,8 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 -(void) stateDidUpdate:(PeripheralConnectionState)state{
     [screenView setState:state];
+    if(settingsView)
+        [settingsView setConnectionState:state];
 }
 
 -(void) buttonTapped{
@@ -140,7 +142,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     }
     else if([blePeripheral state] == PeripheralConnectionStateScanning || [blePeripheral state] == PeripheralConnectionStateConnected){
         [blePeripheral setState:PeripheralConnectionStateDisconnecting];
-        [blePeripheral stopAdvertisements];
+        [blePeripheral stopAdvertisements:NO];
     }
 }
 
@@ -156,6 +158,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     [settingsView setCenter:CGPointMake(settingsView.center.x+settingsView.bounds.size.width, settingsView.center.y)];
     settingsView.sectionHeaderHeight = 1.0;
     settingsView.sectionFooterHeight = 1.0;
+    [settingsView setConnectionState:[blePeripheral state]];
     [self.view addSubview:settingsView];
 
     CGRect oldframe = settingsView.frame;
@@ -244,9 +247,9 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     if(indexPath.section == 0)
         return 100;
     else if(indexPath.section == 1)
-        return 150;
+        return 120;
     else if (indexPath.section == 2)
-        return 220;
+        return 360;
     return 400;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -255,8 +258,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     if(indexPath.section == 4){
         [self animateSettingsTableOut];
     }
-    
-    if(indexPath.row == 0){
+    else if(indexPath.row == 0){
         settingsView.cellExpanded[indexPath.section] = !settingsView.cellExpanded[indexPath.section];
         if(settingsView.cellExpanded[indexPath.section])
             [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
@@ -269,6 +271,10 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 //      [cell.detailTextLabel setText:@"no"];
     }
     else if (indexPath.section == 1){
+        if([blePeripheral state] == PeripheralConnectionStateDisconnected){
+            [self buttonTapped];
+            [self animateSettingsTableOut];
+        }
     }
     else if (indexPath.section == 2){
     }

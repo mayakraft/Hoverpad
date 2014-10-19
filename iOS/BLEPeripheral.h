@@ -35,7 +35,7 @@ typedef enum : NSUInteger {
 -(void) broadcastData:(NSData*)data;
 -(void) initPeripheral;
 -(void) startAdvertisements;
--(void) stopAdvertisements;
+-(void) stopAdvertisements:(BOOL)serverAlreadyDisconnected;
 
 -(void) sendScreenTouched:(BOOL)touched;
 

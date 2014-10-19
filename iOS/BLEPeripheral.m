@@ -73,10 +73,11 @@
     [peripheralManager startAdvertising:advertisingDict];
 }
 
-- (void)stopAdvertisements{
+- (void)stopAdvertisements:(BOOL)serverAlreadyDisconnected{
 //    NSLog(@"Stopping advertisements...");
     
-    [self sendDisconnect];
+    if(!serverAlreadyDisconnected)
+        [self sendDisconnect];
     
     [peripheralManager stopAdvertising];
     [peripheralManager removeAllServices];
@@ -160,7 +161,7 @@
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
 //    NSLog(@"delegate: Central unsubscribed!");
     [self setState:PeripheralConnectionStateDisconnecting];
-    [self stopAdvertisements];
+    [self stopAdvertisements:YES];
 }
 
 @end
