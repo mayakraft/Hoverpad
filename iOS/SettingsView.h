@@ -18,4 +18,11 @@
 
 -(void) fakeDealloc;
 
+-(void) flashCommunicationLight;
+
+@property (weak) UIImage *info1;
+@property (weak) UIImage *info2;
+@property (weak) UIImage *info3;
+
+
 @end

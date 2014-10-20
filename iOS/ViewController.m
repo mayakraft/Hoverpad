@@ -76,6 +76,9 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void) setOrientation:(NSData *)orientation{
     _orientation = orientation;
     [blePeripheral broadcastData:orientation];
+    if(settingsView && [blePeripheral state] == PeripheralConnectionStateConnected){
+        [settingsView flashCommunicationLight];
+    }
 }
 
 #pragma mark- TOUCHES
@@ -195,6 +198,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     [settingsView fakeDealloc];
     settingsView = nil;
 }
+
 #pragma mark - MATH & DATA
 
 -(NSString*)random16bit:(NSUInteger)numberOfDigits{

@@ -17,6 +17,7 @@
 -(IBAction)toggleStatusWindow:(id)sender;
 -(IBAction)togglePreferencesWindow:(id)sender;
 -(IBAction)scanOrEject:(id)sender;
+-(IBAction)quit:(id)sender;
 @property IBOutlet NSMenuItem *orientationMenuItem;
 @property IBOutlet NSMenuItem *statusMenuItem;
 @property IBOutlet NSMenuItem *preferencesMenuItem;

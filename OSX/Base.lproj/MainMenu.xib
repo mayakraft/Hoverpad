@@ -465,7 +465,7 @@
                 <menuItem title="Quit" id="GYg-3h-Xob">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="terminate:" target="-2" id="zKp-ib-sxu"/>
+                        <action selector="quit:" target="Voe-Tx-rLC" id="Abe-2b-ia2"/>
                     </connections>
                 </menuItem>
             </items>

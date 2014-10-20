@@ -76,7 +76,10 @@
 -(void) setConnectionState:(BLEConnectionState)connectionState{
     if(connectionState == BLEConnectionStateDisconnected){
         if(_peripheral){
-            [_centralManager cancelPeripheralConnection:_peripheral];
+            if(_peripheral)
+                [_peripheral setNotifyValue:NO forCharacteristic:myNotifyChar];
+            if(_centralManager)
+                [_centralManager cancelPeripheralConnection:_peripheral];
             _peripheral = nil;
         }
     }
@@ -96,12 +99,16 @@
 
 #pragma mark- DELEGATES - BLE CENTRAL
 
+-(void) centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    [self disconnect];
+}
+
 -(void) centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-//    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
+    NSLog(@"central delegate: didConnectPeripheral: %@", peripheral.name);
     [self setConnectionState:BLEConnectionStateConnected];
     NSArray *services = [NSArray arrayWithObject:[CBUUID UUIDWithString:SERVICE_UUID]];
     [peripheral discoverServices:services];
-//    NSLog(@"SERVICES: %@",services);
+    NSLog(@"SERVICES: %@",services);
 }
 -(void) centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"central did fail to connect to peripheral");

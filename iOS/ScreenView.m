@@ -14,7 +14,6 @@
 #define Z_NEAR 0.1f
 #define Z_FAR 100.0f
 
-
 typedef enum : NSUInteger {
     noAnimation,
     buttonSearching,
@@ -246,7 +245,7 @@ void glDrawPentagon(){
         
             glPushMatrix();
                 glRotatef(-90, 0, 0, 1);
-                if(groundColor[0] != 0.0)
+                if(groundColor[0] != 0.0 && !_isScreenTouched)
                     [self glDrawTable];
         
                 glPushMatrix();

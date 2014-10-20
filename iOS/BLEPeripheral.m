@@ -26,23 +26,26 @@
 #pragma mark- BLUETOOTH LOW ENERGY
 
 -(void)broadcastData:(NSData *)data{
-    [peripheralManager updateValue:data forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+    if(peripheralManager)
+        [peripheralManager updateValue:data forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) sendDisconnect{
     unsigned char exit[2] = {0x3b};
-    [peripheralManager updateValue:[NSData dataWithBytes:&exit length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+    if(peripheralManager)
+        [peripheralManager updateValue:[NSData dataWithBytes:&exit length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) sendScreenTouched:(BOOL)touched{
     unsigned char d = (touched ? 1 : 0);
-    [peripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+    if(peripheralManager)
+        [peripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) setState:(PeripheralConnectionState)state{
     _state = state;
     [_delegate stateDidUpdate:state];
-//    NSLog(@"STATE CHANGE: %d",(int)state);
+    NSLog(@"STATE CHANGE: %d",(int)state);
 //    if(state == PeripheralConnectionStateDisconnected);
 //    if(state == PeripheralConnectionStateBooting);
 //    if(state == PeripheralConnectionStateScanning);
@@ -50,7 +53,7 @@
 //    if(state == PeripheralConnectionStateDisconnecting);
 }
 - (void)initPeripheral{
-//    NSLog(@"initPeripheral");
+    NSLog(@"init peripheral");
     
     readCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
     writeCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:WRITE_CHAR_UUID] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
@@ -105,7 +108,7 @@
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
-//        NSLog(@"delegate: peripheral manager powered on");
+        NSLog(@"delegate: peripheral manager powered on");
         
         [peripheralManager addService:[self constructService:SERVICE_UUID]];
         
@@ -114,17 +117,17 @@
         
     }
     else{
-//        NSLog(@"delegate: Peripheral state changed to %d", (int)[peripheralManager state]);
+        NSLog(@"delegate: Peripheral state changed to %d", (int)[peripheralManager state]);
     }
 }
 
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
-//    NSLog(@"delegate: Advertisements started!");
+    NSLog(@"delegate: Advertisements started!");
     [self setState:PeripheralConnectionStateScanning];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-//    NSLog(@"delegate: received write request");
+    NSLog(@"delegate: received write request");
     for(CBATTRequest* request in requests) {
         if([request.value bytes]){
             NSLog(@"WE RECEIVED INFO: %@",[request value]);
@@ -141,7 +144,7 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-//    NSLog(@"delegate: received read request");
+    NSLog(@"delegate: received read request");
     NSString *valueToSend;
     NSDate *currentTime = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -154,12 +157,12 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
-//    NSLog(@"delegate: Central subscribed!");
+    NSLog(@"delegate: Central subscribed!");
     [self setState:PeripheralConnectionStateConnected];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
-//    NSLog(@"delegate: Central unsubscribed!");
+    NSLog(@"delegate: Central unsubscribed!");
     [self setState:PeripheralConnectionStateDisconnecting];
     [self stopAdvertisements:YES];
 }

@@ -225,7 +225,19 @@
 }
 
 #pragma mark- INTERFACE
-
+-(void) programExit{
+    [[NSApplication sharedApplication] terminate:self];
+}
+-(IBAction)quit:(id)sender{
+    if([bleManager connectionState] == BLEConnectionStateConnected){
+        [bleManager disconnect];
+        NSLog(@"disconnecting");
+        [self performSelector:@selector(programExit) withObject:nil afterDelay:0.2];
+    }
+    else{
+        [self programExit];
+    }
+}
 -(IBAction)scanOrEject:(id)sender{
     if([bleManager connectionState] == BLEConnectionStateDisconnected){
         if([bleManager isBluetoothEnabled])

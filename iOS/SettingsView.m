@@ -12,11 +12,15 @@
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 #define NUM_CELLS 5
-#define  CYCLE_TIME .1f
+#define CYCLE_TIME .1f
+#define CONNECTION_ON @"\n\n⠐⠀COMMUNICATION⠀⠂"
+#define CONNECTION_OFF @"\n\n⠀⠀COMMUNICATION⠀⠀"
+
 
 @interface SettingsView (){
     NSTimer *colorTimer;
     float cycle;  // color cycle
+    NSTimer *lightTimer;
 }
 
 @end
@@ -110,6 +114,24 @@
     _connectionState = connectionState;
     [self updateConnectionTitleCell:nil];
     [self updateConnectionDetailCell:nil];
+    [self flashCommunicationLight];
+}
+
+-(void) flashCommunicationLight{
+    if(!lightTimer){
+        UITableViewCell * cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+        if(cell)
+            [[cell textLabel] setText:CONNECTION_ON];
+        [self performSelector:@selector(offLightCommunication) withObject:nil afterDelay:1/30.0];
+    }
+}
+
+-(void) offLightCommunication{
+    if(self){
+        UITableViewCell * cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+        if(cell)
+            [[cell textLabel] setText:CONNECTION_OFF];
+    }
 }
 
 -(void) updateConnectionTitleCell:(UITableViewCell*) cellIn{
@@ -140,17 +162,17 @@
     
     if(cell){
         if(_connectionState == 3){
-            [[cell textLabel] setText:@"\n\nCOMMUNICATION OPEN"];
+            [[cell textLabel] setText:CONNECTION_OFF];
             [[cell detailTextLabel] setText:@"CONNECTED"];
             [[cell detailTextLabel] setTextColor:[UIColor greenColor]];
         }
         else if (_connectionState == 2){
-            [[cell textLabel] setText:@"\n\nMAKE SURE DESKTOP IS SEARCHING TOO"];
+            [[cell textLabel] setText:@"\n\nMAKE SURE DESKTOP IS ALSO LOOKING"];
             [[cell detailTextLabel] setText:@"SCANNING"];
             [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
         }
         else if (_connectionState == 0){
-            [[cell textLabel] setText:@"\n\nTAP HERE TO BEGIN SEARCHING\n(OR TAP PENTAGON ON MAIN WINDOW)"];
+            [[cell textLabel] setText:@"\n\nTAP HERE TO BEGIN SEARCHING"];
             [[cell detailTextLabel] setText:@"DISCONNECTED"];
             [[cell detailTextLabel] setTextColor:[UIColor redColor]];
         }
@@ -240,7 +262,7 @@
             [[cell detailTextLabel] setText:@""];
         }
         else{
-            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n • iOS APP (✔︎)\n • DESKTOP APP (FREE @ http://hoverpad.wtf)\n\nCONNECTION PROCESS:\n • BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n • WAIT 3-10 SECONDS FOR CONNECTION\n • CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n • IF CONNECTION BREAKS BEFORE PROPER EXIT, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n • iOS APP (✔︎)\n • DESKTOP APP (://HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n • BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n • WAIT 3-10 SECONDS FOR CONNECTION\n • CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n • IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
         }
@@ -253,7 +275,8 @@
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
         }
         else{
-            
+            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+            [[cell textLabel] setText:@"THERE ARE 3 TOUCH-ZONES ON THE SCREEN:\n • CENTER PENTAGON (CONNECT/DISCONNECT)\n • GRAY BARS (PREFERENCES (THIS WINDOW))\n • ANYWHERE ELSE (RE-BALANCE ALIGNMENT)\n\nBEST PRACTICES:\nHOLD PHONE LIKE A CAFETERIA TRAY\nTHE RE-BALANCE BUTTON IS USED OFTEN. IT'S NOT PRECISELY DETERMINABLE WHERE THE ZERO-AXIS ORIENTATION IS. USER BRINGS CONTROLLER BACK TO AREA OF LEVEL-PRESSES SCREEN TO RE-IMPOSE IDENTITY ALIGNMENT\n\n"];
         }
     }
     else if (indexPath.section == 4){

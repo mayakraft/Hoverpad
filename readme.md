@@ -1,20 +1,16 @@
-#Phone into Joystick
+# virtual reality controller
 
-###turn your smartphone into a Bluetooth LE joystick
+Most games seemingly insist on incorporating keyboard-movement in virtual reality, despite the presence (VR immersion) that the Oculus Rift delivers basically falls apart when keyboard-walking jerks the user out of their place. Analog sticks solve this problem, and since smartphones outnumber joysticks **[citation needed]** nobody needs to get jerked around.
 
-combination iOS app + MacOSX app creates a virtual HID joystick with multiple analog axis mapped to the orientation sensors in the phone
+# not for gaming
+
+gamers are used to being jerked around (hah). (no, seriously) this controller is slow, and you will get fragged.
 
 ![animation](http://robbykraft.com/joystickphone.gif)
 
-#great for Oculus Rift
+creates a virtual HID joystick with 3 analog axis (pitch, roll, yaw) mapped to the orientation sensors in the phone
 
-the presence I experienced in virtual reality was disrupted when keyboard-walking jerked me out of place. analog sticks solve this problem, and since smartphones outnumber joysticks **[citation needed]** nobody needs to get jerked around.
-
-only works in joystick-enabled games
-
-#not for gaming
-
-gamers are used to being jerked around (hah). (no, seriously) this controller is slow, and you will get fragged.
+* only works in joystick-enabled games
 
 #setup
 
