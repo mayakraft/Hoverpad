@@ -28,7 +28,9 @@ typedef enum : NSUInteger {
     buttonAnimation animation;
     GLfloat groundColor[4];
     int litFace;
-    GLfloat preferencesColor[4];
+    
+    NSTimer *screenFadeAnimation;
+    GLfloat screenColor[4];
 }
 
 @end
@@ -60,8 +62,8 @@ typedef enum : NSUInteger {
     
     groundColor[0] = groundColor[1] = groundColor[2] = 0.0f;
     groundColor[3] = 1.0f;
-    preferencesColor[0] = preferencesColor[1] = preferencesColor[2] = 0.0f;
-    preferencesColor[3] = 1.0f;
+    screenColor[0] = screenColor[1] = screenColor[2] = 0.0f;
+    screenColor[3] = 1.0f;
     
 //    GLfloat specular[] = {0.6, 0.6, 0.6, 1.0};
     GLfloat pos1[] = {0.0f, 0.0f, 4.0f, 1.0f};
@@ -91,6 +93,36 @@ typedef enum : NSUInteger {
     glMatrixMode(GL_MODELVIEW);
 }
 
+-(void) setIsScreenTouched:(BOOL)isScreenTouched{
+    _isScreenTouched = isScreenTouched;
+    if(isScreenTouched){
+        screenColor[0] = screenColor[1] = screenColor[2] = 1.0f;
+    }
+    if(!isScreenTouched){
+        if(!screenFadeAnimation){
+            screenColor[0] = screenColor[1] = screenColor[2] = 1.0f;
+            screenFadeAnimation = [NSTimer scheduledTimerWithTimeInterval:1/30.0 target:self selector:@selector(screenFadeLoop) userInfo:nil repeats:YES];
+        }
+        else{
+            screenColor[0] = screenColor[1] = screenColor[2] = 1.0f;
+            [screenFadeAnimation invalidate];
+            screenFadeAnimation = nil;
+            screenFadeAnimation = [NSTimer scheduledTimerWithTimeInterval:1/30.0 target:self selector:@selector(screenFadeLoop) userInfo:nil repeats:YES];
+        }
+    }
+}
+-(void) screenFadeLoop{
+    float brightness = screenColor[0];
+    brightness -= .15;
+    if(brightness <= 0){
+        screenColor[0] = screenColor[1] = screenColor[2] = 0.0f;
+        [screenFadeAnimation invalidate];
+        screenFadeAnimation = nil;
+    }
+    else{
+        screenColor[0] = screenColor[1] = screenColor[2] = brightness;
+    }
+}
 -(void) setState:(NSUInteger)state{
     if(state == 2){
         animation = buttonSearching;
@@ -249,7 +281,7 @@ void glDrawPentagon(){
         
             glPushMatrix();
                 glRotatef(-90, 0, 0, 1);
-                if(groundColor[0] != 0.0 && !_isScreenTouched)
+                if(groundColor[0] != 0.0)// && !_isScreenTouched)
                     [self glDrawTable];
         
                 glPushMatrix();
@@ -275,11 +307,13 @@ void glDrawPentagon(){
         glDisable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
         [self enterOrthographic];
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        if(_isScreenTouched){
+
+//        if(_isScreenTouched){
             glLineWidth(4.0);
+            glColor4f(screenColor[0], screenColor[1], screenColor[2], screenColor[3]);
             glDrawRectOutline(CGRectMake(self.frame.size.width*.5, self.frame.size.height*.5, self.frame.size.width*.99, .99*self.frame.size.height));
-        }
+//        }
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         if(!_isScreenTouched){
             glPushMatrix();
                 glTranslatef(self.frame.size.width*.933, self.frame.size.height*.5, 0.0);
@@ -514,10 +548,7 @@ void glDrawPentagon(){
 
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, white);
     
-    if(_isScreenTouched)
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, white);
-    else
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, black);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, screenColor);
 
     if(_isButtonTouched)
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, color1e);

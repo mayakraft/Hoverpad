@@ -173,6 +173,7 @@
         }
         else if (_connectionState == 0){
             [[cell textLabel] setText:@"\n\nTAP HERE TO BEGIN SEARCHING"];
+            // flash communication lights still happens, and erases "tap here to begin searching"
             [[cell detailTextLabel] setText:@"DISCONNECTED"];
             [[cell detailTextLabel] setTextColor:[UIColor redColor]];
         }
@@ -233,10 +234,10 @@
         }
         else{
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setText:@"TURNS YOUR PHONE INTO A 3 AXIS\n(PITCH, ROLL, YAW) ANALOG JOYSTICK"];
-            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
+            [[cell textLabel] setText:@"A WIRELESS 3-AXIS GYRO TILT CONTROLLER\n\nTILT:\nONCE CONNECTED, TILTING THE DEVICE REGISTERS A MOVEMENT ALONG ONE OR MORE OF THE 3 AXES (PITCH, ROLL, YAW)\n\nVIRTUAL STABILIZING:\nWHATEVER THE ORIENTATION, TOUCH THE SCREEN, AND UPON RELEASE THE AXES ARE RE-STABILIZED TO ZERO ACCORDING TO THE CURRENT ORIENTATION. THIS IS A SUBSTITUTION FOR THE ANALOG STICK RETURN-TO-ZERO-UPON-RELEASE FUNCTION"];
+//            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell detailTextLabel] setText:@""];
+//            [[cell detailTextLabel] setText:@""];
         }
     }
     else if (indexPath.section == 1){
@@ -262,21 +263,21 @@
             [[cell detailTextLabel] setText:@""];
         }
         else{
-            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n • iOS APP (✔︎)\n • DESKTOP APP (://HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n • BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n • WAIT 3-10 SECONDS FOR CONNECTION\n • CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n • IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n ‣ iOS APP (✔︎)\n ‣ DESKTOP APP (://HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
         }
     }
     else if (indexPath.section == 3){
         if(indexPath.row == 0){
-            [[cell textLabel] setText:@"TUTORIAL"];
+            [[cell textLabel] setText:@"BEST PRACTICES"];
             [[cell detailTextLabel] setText:@""];
             [[cell textLabel] setTextColor:rainbow];
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
         }
         else{
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell textLabel] setText:@"THERE ARE 3 TOUCH-ZONES ON THE SCREEN:\n • CENTER PENTAGON (CONNECT/DISCONNECT)\n • GRAY BARS (PREFERENCES (THIS WINDOW))\n • ANYWHERE ELSE (RE-BALANCE ALIGNMENT)\n\nBEST PRACTICES:\nHOLD PHONE LIKE A CAFETERIA TRAY\nTHE RE-BALANCE BUTTON IS USED OFTEN. IT'S NOT PRECISELY DETERMINABLE WHERE THE ZERO-AXIS ORIENTATION IS. USER BRINGS CONTROLLER BACK TO AREA OF LEVEL-PRESSES SCREEN TO RE-IMPOSE IDENTITY ALIGNMENT\n\n"];
+            [[cell textLabel] setText:@"[1] HOLD LIKE A CAFETERIA TRAY WITH YOUR THUMBS OVER THE SCREEN\n ‣ MAP PITCH TO FORWARD/BACK\n ‣ MAP ROLL TO EITHER STRAFE OR TURN DEPENDING ON PREFERENCE\n ‣ WHEN INTENDING TO STOP, RETURN ORIENTATION TO WHAT YOU BELIEVE TO BE THE HOME ORIENTATION, PRESS AND RELEASE THE SCREEN\n\n[2] STRAP TO YOUR LEG, LEAN LIKE YOU'RE ON A SKATEBOARD\n ‣ DECREASE THE ANGLE OF RESPONSE IN THE DESKTOP PREFERENCES\n\n[3] ATTACH TO YOUR DOG\n(NOT LIABLE)\n\n[4] GET CREATIVE"];
         }
     }
     else if (indexPath.section == 4){

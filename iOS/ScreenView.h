@@ -10,7 +10,7 @@
 
 @interface ScreenView : GLKView
 
-@property BOOL isScreenTouched;
+@property (nonatomic) BOOL isScreenTouched;
 @property BOOL isButtonTouched;
 @property (nonatomic) NSUInteger state;
 
