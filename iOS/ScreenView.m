@@ -92,21 +92,25 @@ typedef enum : NSUInteger {
 }
 
 -(void) setState:(NSUInteger)state{
-    if(state == 1){
+    if(state == 2){
         animation = buttonSearching;
         animationStateStart = [NSDate date];
     }
-    if(state == 3){
+    else if(state == 3){
         animation = buttonRise;
         animationStateStart = [NSDate date];
     }
-    if(state == 4){
+    else if(state == 4){
         if(_state == 2)
             animation = noAnimation;
         else{
             animation = buttonFall;
             animationStateStart = [NSDate date];
         }
+    }
+    else if(state == 0 && _state == 3 && animation != buttonFall){
+        animation = buttonFall;
+        animationStateStart = [NSDate date];
     }
     _state = state;
 }

@@ -27,6 +27,4 @@
 
 @property (nonatomic) NSData *orientation;
 
-@property NSString *UUID;
-
 @end

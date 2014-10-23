@@ -12,22 +12,52 @@
 #define READ_CHAR_UUID   @"2166E780-4A62-11E4-817C-0002A5D5DE31"
 #define WRITE_CHAR_UUID  @"2166E780-4A62-11E4-817C-0002A5D5DE32"
 #define NOTIFY_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE33"
+#define ORIENT_CHAR_UUID @"2166E780-4A62-11E4-817C-0002A5D5DE34"
 
 @implementation BLEPeripheral
+
+#pragma mark- INIT
+
+-(id) init{
+    self = [super init];
+    if(self){
+        [self buildService];
+        peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
+        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
+    }
+    return self;
+}
 
 -(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate{
     self = [super init];
     if(self){
         _delegate = delegate;
+        [self buildService];
+        peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
+        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
     }
     return self;
 }
 
-#pragma mark- BLUETOOTH LOW ENERGY
+-(void) buildService{
+    readCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
+    writeCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:WRITE_CHAR_UUID] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
+    notifyCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID] properties:CBCharacteristicPropertyNotify value:nil permissions:0];
+    orientationCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:ORIENT_CHAR_UUID] properties:CBCharacteristicPropertyNotify value:nil permissions:0];
+    
+    service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:SERVICE_UUID] primary:YES];
+    service.characteristics = @[readCharacteristic, writeCharacteristic, notifyCharacteristic, orientationCharacteristic];
+    
+    advertisement = [NSMutableDictionary dictionary];
+    [advertisement setObject:[self getName] forKey:CBAdvertisementDataLocalNameKey];
+    [advertisement setObject:@[[CBUUID UUIDWithString:SERVICE_UUID]] forKey:CBAdvertisementDataServiceUUIDsKey];
+}
+
+#pragma mark- CUSTOM CALLS
 
 -(void)broadcastData:(NSData *)data{
     if(peripheralManager)
-        [peripheralManager updateValue:data forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+        [peripheralManager updateValue:data forCharacteristic:orientationCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) sendDisconnect{
@@ -52,28 +82,17 @@
 //    if(state == PeripheralConnectionStateScanning);
 //    if(state == PeripheralConnectionStateDisconnecting);
 }
-- (void)initPeripheral{
-    NSLog(@"init peripheral");
-    
-    readCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
-    writeCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:WRITE_CHAR_UUID] properties:CBCharacteristicPropertyWrite value:nil permissions:CBAttributePermissionsWriteable];
-    notifyCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:NOTIFY_CHAR_UUID] properties:CBCharacteristicPropertyNotify value:nil permissions:0];
-    
-    peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
-}
 
 - (NSString*)getName{
 //    return [NSString stringWithFormat:@"Hoverpad (%@)",_UUID];
     return @"Hoverpad";
 }
 
+#pragma mark- CORE
+
 - (void)startAdvertisements{
-//    NSLog(@"Starting advertisements...");
-    
-    NSMutableDictionary *advertisingDict = [NSMutableDictionary dictionary];
-    [advertisingDict setObject:[self getName] forKey:CBAdvertisementDataLocalNameKey];
-    [advertisingDict setObject:@[[CBUUID UUIDWithString:SERVICE_UUID]] forKey:CBAdvertisementDataServiceUUIDsKey];
-    [peripheralManager startAdvertising:advertisingDict];
+    [peripheralManager startAdvertising:advertisement];
+    NSLog(@" 3 : PERIPHERAL : 3 - STARTING ADVERTISEMENTS");
 }
 
 - (void)stopAdvertisements:(BOOL)serverAlreadyDisconnected{
@@ -83,46 +102,47 @@
         [self sendDisconnect];
     
     [peripheralManager stopAdvertising];
-    [peripheralManager removeAllServices];
-    peripheralManager = nil;
+//    [peripheralManager removeAllServices];
+//    peripheralManager = nil;
     
 //    NSLog(@"Advertisements stopped!");
     [self setState:PeripheralConnectionStateDisconnected];
 }
 
--(CBMutableService*) constructService:(NSString*)ServiceUUID{
-//    NSLog(@"construct service");
-    
-    CBMutableService *service = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:SERVICE_UUID] primary:YES];
-    
-    NSMutableArray *characteristics = [NSMutableArray array];
-    [characteristics addObject:readCharacteristic];
-    [characteristics addObject:writeCharacteristic];
-    [characteristics addObject:notifyCharacteristic];
-    service.characteristics = characteristics;
-    
-    return service;
-}
-
 #pragma mark- DELEGATES - PERIPHERAL
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
+    NSLog(@" 1b: PERIPHERAL : 1b- INIT DELEGATE RESPONSE");
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
-        NSLog(@"delegate: peripheral manager powered on");
-        
-        [peripheralManager addService:[self constructService:SERVICE_UUID]];
-        
-#pragma mark auto start advertisements
-        [self startAdvertisements];
-        
+        [peripheralManager addService:service];
+        NSLog(@" 2 : PERIPHERAL : 2 - SERVICES ADDED");
     }
-    else{
-        NSLog(@"delegate: Peripheral state changed to %d", (int)[peripheralManager state]);
+    else if ([peripheralManager state] == CBPeripheralManagerStateUnsupported){
+        NSLog(@"WARNING: Bluetooth LE Unsupported");
+    }
+    else if([peripheralManager state] == CBPeripheralManagerStateUnauthorized){
+        NSLog(@"WARNING: Bluetooth LE Unauthorized");
+    }
+    else if([peripheralManager state] == CBPeripheralManagerStateResetting){
+        NSLog(@"WARNING: Bluetooth LE State Resetting");
+    }
+    else if([peripheralManager state] == CBPeripheralManagerStateUnknown){
+        NSLog(@"WARNING: Bluetooth LE State Unknown");
+    }
+    else if([peripheralManager state] == CBPeripheralManagerStatePoweredOff){
+        NSLog(@"WARNING: Bluetooth LE Manager Powered Off");
     }
 }
 
+-(void) peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error{
+    NSLog(@" 2b: PERIPHERAL : 2b- SERVICES ADDED DELEGATE RESPONSE");
+    // TODO HANDLE ERROR
+    [self startAdvertisements];
+}
+
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
-    NSLog(@"delegate: Advertisements started!");
+    NSLog(@" 3b: PERIPHERAL : 3b- STARTING ADVERTISEMENTS DELEGATE RESPONSE");
+    // TODO HANDLE ERROR
     [self setState:PeripheralConnectionStateScanning];
 }
 
@@ -157,14 +177,17 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"delegate: Central subscribed!");
-    [self setState:PeripheralConnectionStateConnected];
+    NSLog(@"delegate: Central subscribed to characteristic:%@",[characteristic UUID]);
+    if(_state != PeripheralConnectionStateConnected)
+        [self setState:PeripheralConnectionStateConnected];
 }
-
+-(void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral{
+    NSLog(@"peripheralManagerIsReadyToUpdateSubscribers");
+}
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central unsubscribed!");
-    [self setState:PeripheralConnectionStateDisconnecting];
-    [self stopAdvertisements:YES];
+    [self setState:PeripheralConnectionStateDisconnected];
+//    [self stopAdvertisements:YES];
 }
 
 @end

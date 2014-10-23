@@ -17,6 +17,15 @@ typedef enum : NSUInteger {
     PeripheralConnectionStateDisconnecting
 } PeripheralConnectionState;
 
+//typedef enum : NSUInteger { /* meant to mimic CBPeripheralManagerState */
+//    BLEHardwareStateUnknown,
+//    BLEHardwareStateResetting,
+//    BLEHardwareStateUnsupported,
+//    BLEHardwareStateUnauthorized,
+//    BLEHardwareStatePoweredOff,
+//    BLEHardwareStatePoweredOn // the only one which should allow code to progress
+//} BLEHardwareState;
+
 @protocol BLEPeripheralDelegate <NSObject>
 @optional
 -(void) stateDidUpdate:(PeripheralConnectionState)state;
@@ -24,7 +33,9 @@ typedef enum : NSUInteger {
 
 @interface BLEPeripheral : NSObject <CBPeripheralManagerDelegate>{
     CBPeripheralManager *peripheralManager;
-    CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic;
+    CBMutableService *service;
+    CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic, *orientationCharacteristic;
+    NSMutableDictionary *advertisement;
 }
 
 @property id <BLEPeripheralDelegate> delegate;
@@ -33,7 +44,7 @@ typedef enum : NSUInteger {
 -(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate;
 
 -(void) broadcastData:(NSData*)data;
--(void) initPeripheral;
+
 -(void) startAdvertisements;
 -(void) stopAdvertisements:(BOOL)serverAlreadyDisconnected;
 

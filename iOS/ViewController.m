@@ -45,7 +45,6 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     
     blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self];
     
-    _UUID = [self random16bit:4];
     identity = GLKQuaternionIdentity;
     motionManager = [[CMMotionManager alloc] init];
     
@@ -79,6 +78,12 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     if(settingsView && [blePeripheral state] == PeripheralConnectionStateConnected){
         [settingsView flashCommunicationLight];
     }
+}
+
+-(void) stateDidUpdate:(PeripheralConnectionState)state{
+    [screenView setState:state];
+    if(settingsView)
+        [settingsView setConnectionState:state];
 }
 
 #pragma mark- TOUCHES
@@ -130,17 +135,10 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     _buttonTouched = buttonTouched;
     [screenView setIsButtonTouched:buttonTouched];
 }
-
--(void) stateDidUpdate:(PeripheralConnectionState)state{
-    [screenView setState:state];
-    if(settingsView)
-        [settingsView setConnectionState:state];
-}
-
 -(void) buttonTapped{
     if([blePeripheral state] == PeripheralConnectionStateDisconnected){
         [blePeripheral setState:PeripheralConnectionStateBooting];
-        [blePeripheral initPeripheral];
+        [blePeripheral startAdvertisements];
         connectionTime = [NSDate date];
     }
     else if([blePeripheral state] == PeripheralConnectionStateScanning || [blePeripheral state] == PeripheralConnectionStateConnected){
@@ -148,6 +146,23 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
         [blePeripheral stopAdvertisements:NO];
     }
 }
+
+#pragma mark - MATH & DATA
+
+-(NSData*) encodeQuaternion:(GLKQuaternion)q{
+    // encodes (x,y,z)w quaternion floats into signed char
+    // -1.0 to 1.0 into -127 to 127
+    char bytes[4];
+    short temp;
+    temp = q.x * 128.0f;
+    bytes[0] = (char)temp;
+    bytes[1] = (char)(q.y * 128.0f);
+    bytes[2] = (char)(q.z * 128.0f);
+    bytes[3] = (char)(q.w * 128.0f);
+    return [NSData dataWithBytes:bytes length:4];
+}
+
+#pragma mark- SETTINGS TABLE
 
 -(void)settingsButtonPress:(id)sender{
     settingsView = [[SettingsView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
@@ -163,15 +178,10 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     settingsView.sectionFooterHeight = 1.0;
     [settingsView setConnectionState:[blePeripheral state]];
     [self.view addSubview:settingsView];
-
     CGRect oldframe = settingsView.frame;
     settingsView.transform=CGAffineTransformMakeRotation(M_PI/2);
     // For some weird reason, the frame of the table also gets rotated, so you must restore the original frame
     settingsView.frame = oldframe;
-    
-//    [self performSelector:@selector(expandToCollapse:) withObject:@"settings"];
-//    //    [self performSelector:@selector(expandToCollapse:) withObject:@"playground" afterDelay:0.1];
-//    [self performSelector:@selector(expandToCollapse:) withObject:@"generator" afterDelay:0.1];  //.2
     [self animateSettingsTableIn];
 }
 
@@ -197,35 +207,6 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     [settingsView removeFromSuperview];
     [settingsView fakeDealloc];
     settingsView = nil;
-}
-
-#pragma mark - MATH & DATA
-
--(NSString*)random16bit:(NSUInteger)numberOfDigits{
-    NSString *string = @"";
-    for(int i = 0; i < numberOfDigits; i++){
-        int number = arc4random()%16;
-        if(number > 9){
-            char letter = 'A' + number - 10;
-            string = [string stringByAppendingString:[NSString stringWithFormat:@"%c",letter]];
-        }
-        else
-            string = [string stringByAppendingString:[NSString stringWithFormat:@"%d",number]];
-    }
-    return string;
-}
-
--(NSData*) encodeQuaternion:(GLKQuaternion)q{
-    // encodes (x,y,z)w quaternion floats into signed char
-    // -1.0 to 1.0 into -127 to 127
-    char bytes[4];
-    short temp;
-    temp = q.x * 128.0f;
-    bytes[0] = (char)temp;
-    bytes[1] = (char)(q.y * 128.0f);
-    bytes[2] = (char)(q.z * 128.0f);
-    bytes[3] = (char)(q.w * 128.0f);
-    return [NSData dataWithBytes:bytes length:4];
 }
 
 #pragma mark- SETTINGS TABLE DELEGATE
