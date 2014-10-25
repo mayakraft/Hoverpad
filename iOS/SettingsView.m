@@ -30,33 +30,42 @@
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        _cellExpanded = calloc(NUM_CELLS, sizeof(BOOL));
+        [self initialize];
     }
     return self;
 }
 -(id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style{
     self = [super initWithFrame:frame style:style];
     if(self) {
-        _cellExpanded = calloc(NUM_CELLS, sizeof(BOOL));
-        colorTimer = [NSTimer scheduledTimerWithTimeInterval:CYCLE_TIME target:self selector:@selector(cycleColor) userInfo:nil repeats:YES];
+        [self initialize];
     }
     return self;
 }
 -(id) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if(self) {
-        _cellExpanded = calloc(NUM_CELLS, sizeof(BOOL));
-        colorTimer = [NSTimer scheduledTimerWithTimeInterval:CYCLE_TIME target:self selector:@selector(cycleColor) userInfo:nil repeats:YES];
+        [self initialize];
     }
     return self;
 }
 -(id)  init{
     self = [super init];
     if(self){
-        _cellExpanded = calloc(NUM_CELLS, sizeof(BOOL));
-        colorTimer = [NSTimer scheduledTimerWithTimeInterval:CYCLE_TIME target:self selector:@selector(cycleColor) userInfo:nil repeats:YES];
+        [self initialize];
     }
     return self;
+}
+-(void) initialize{
+    _cellExpanded = calloc(NUM_CELLS, sizeof(BOOL));
+    colorTimer = [NSTimer scheduledTimerWithTimeInterval:CYCLE_TIME target:self selector:@selector(cycleColor) userInfo:nil repeats:YES];
+    [self setDataSource:self];
+    [self setClipsToBounds:NO];
+    [self setBackgroundColor:[UIColor clearColor]];
+    [self setBackgroundView:nil];
+    [self setSeparatorInset:UIEdgeInsetsZero];
+    [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self setSectionHeaderHeight:1.0];
+    [self setSectionFooterHeight:1.0];
 }
 -(void) fakeDealloc{
     if(colorTimer){
@@ -234,10 +243,11 @@
         }
         else{
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setText:@"A WIRELESS 3-AXIS GYRO TILT CONTROLLER\n\nTILT:\nONCE CONNECTED, TILTING THE DEVICE REGISTERS A MOVEMENT ALONG ONE OR MORE OF THE 3 AXES (PITCH, ROLL, YAW)\n\nVIRTUAL STABILIZING:\nWHATEVER THE ORIENTATION, TOUCH THE SCREEN, AND UPON RELEASE THE AXES ARE RE-STABILIZED TO ZERO ACCORDING TO THE CURRENT ORIENTATION. THIS IS A SUBSTITUTION FOR THE ANALOG STICK RETURN-TO-ZERO-UPON-RELEASE FUNCTION"];
+            [[cell textLabel] setText:@"\n\nHOVERPAD IS A WIRELESS 3-AXIS GYRO TILT GAME CONTROLLER\n\nTILT:\nGET THE COMPANION APP AT WWW.HOVERPAD.WTF\n\nTO GET STARTED, TAP 'CONNECTION STATUS'"];
 //            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-//            [[cell detailTextLabel] setText:@""];
+            [[cell detailTextLabel] setText:@"WELCOME"];
+            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
         }
     }
     else if (indexPath.section == 1){
@@ -263,7 +273,7 @@
             [[cell detailTextLabel] setText:@""];
         }
         else{
-            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n ‣ iOS APP (✔︎)\n ‣ DESKTOP APP (://HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n ‣ iOS APP (✔︎)\n ‣ DESKTOP APP (WWW.HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
         }

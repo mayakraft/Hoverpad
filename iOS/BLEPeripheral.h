@@ -36,15 +36,19 @@ typedef enum : NSUInteger {
     CBMutableService *service;
     CBMutableCharacteristic *readCharacteristic, *writeCharacteristic, *notifyCharacteristic, *orientationCharacteristic;
     NSMutableDictionary *advertisement;
+    BOOL preventInitialAdvertising;
 }
 
 @property id <BLEPeripheralDelegate> delegate;
 @property (nonatomic) PeripheralConnectionState state;
 
 -(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate;
+-(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate WithoutAdvertising:(BOOL)preventAdvertising;
 
 -(void) broadcastData:(NSData*)data;
 
+// advertising
+@property (readonly) BOOL isAdvertising;
 -(void) startAdvertisements;
 -(void) stopAdvertisements:(BOOL)serverAlreadyDisconnected;
 

@@ -38,6 +38,17 @@
     }
     return self;
 }
+-(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate WithoutAdvertising:(BOOL)preventAdvertising{
+    self = [super init];
+    if(self){
+        _delegate = delegate;
+        [self buildService];
+        preventInitialAdvertising = preventAdvertising;
+        peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
+        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
+    }
+    return self;
+}
 
 -(void) buildService{
     readCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:READ_CHAR_UUID] properties:CBCharacteristicPropertyRead value:nil permissions:CBAttributePermissionsReadable];
@@ -92,20 +103,19 @@
 
 - (void)startAdvertisements{
     [peripheralManager startAdvertising:advertisement];
+    _isAdvertising = YES;
     NSLog(@" 3 : PERIPHERAL : 3 - STARTING ADVERTISEMENTS");
 }
 
-- (void)stopAdvertisements:(BOOL)serverAlreadyDisconnected{
-//    NSLog(@"Stopping advertisements...");
+- (void)stopAdvertisements:(BOOL)disconnectServer{
     
-    if(!serverAlreadyDisconnected)
+    if(disconnectServer)
         [self sendDisconnect];
     
     [peripheralManager stopAdvertising];
-//    [peripheralManager removeAllServices];
-//    peripheralManager = nil;
+    _isAdvertising = NO;
     
-//    NSLog(@"Advertisements stopped!");
+    //TODO: don't think this stateDisconnected should be here
     [self setState:PeripheralConnectionStateDisconnected];
 }
 
@@ -137,7 +147,8 @@
 -(void) peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error{
     NSLog(@" 2b: PERIPHERAL : 2b- SERVICES ADDED DELEGATE RESPONSE");
     // TODO HANDLE ERROR
-    [self startAdvertisements];
+    if(!preventInitialAdvertising)
+        [self startAdvertisements];
 }
 
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
@@ -151,14 +162,8 @@
     for(CBATTRequest* request in requests) {
         if([request.value bytes]){
             NSLog(@"WE RECEIVED INFO: %@",[request value]);
-            
 //            unsigned char exit[2] = {0x3b};
         }
-//        if ([request.value bytes]) {
-//            self.receivedText.text = [[NSString alloc ] initWithBytes:[request.value bytes] length:request.value.length encoding:NSASCIIStringEncoding];
-//        } else {
-//            self.receivedText.text = @"";
-//        }
         [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
     }
 }
@@ -186,8 +191,10 @@
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central unsubscribed!");
-    [self setState:PeripheralConnectionStateDisconnected];
-//    [self stopAdvertisements:YES];
+    if([self state] != PeripheralConnectionStateDisconnected){
+        [self setState:PeripheralConnectionStateDisconnected];
+        [self stopAdvertisements:NO];
+    }
 }
 
 @end

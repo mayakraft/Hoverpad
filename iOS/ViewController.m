@@ -40,48 +40,60 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void) setupContext{
     EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
-    screenView = [[ScreenView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
-    [self setView:screenView];
-    
-    blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self];
+    _screenView = [[ScreenView alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
+    [self setView:_screenView];
     
     identity = GLKQuaternionIdentity;
     motionManager = [[CMMotionManager alloc] init];
     
     if (motionManager.isDeviceMotionAvailable){
         motionManager.deviceMotionUpdateInterval = SENSOR_RATE;
-        [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
-            
+        [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
+                                           withHandler:^(CMDeviceMotion *deviceMotion, NSError *error){
             static const float d = 7;
+            GLKQuaternion q;
+//            static GLKQuaternion identity = GLKQuaternionIdentity;
             CMRotationMatrix m = deviceMotion.attitude.rotationMatrix;
-            [screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m31*d, m.m32*d, m.m33*d, 0.0f, 0.0f, 0.0f, m.m21, m.m22, m.m23)];
-
-            CMQuaternion q = deviceMotion.attitude.quaternion;
-            lq.x = q.x;   lq.y = q.y;   lq.z = q.z;   lq.w = q.w;
+            [_screenView setDeviceOrientation:GLKMatrix4MakeLookAt(m.m31*d, m.m32*d, m.m33*d, 0.0f, 0.0f, 0.0f, m.m21, m.m22, m.m23)];
+            // typecasting double to float
+            q.x = deviceMotion.attitude.quaternion.x;
+            q.y = deviceMotion.attitude.quaternion.y;
+            q.z = deviceMotion.attitude.quaternion.z;
+            q.w = deviceMotion.attitude.quaternion.w;
             if(_screenTouched){
-                identity = GLKQuaternionInvert(lq);
+                identity = GLKQuaternionInvert(q);
             }
-            NSData *newOrientation = [self encodeQuaternion:GLKQuaternionMultiply(identity, lq)];
+            NSData *newOrientation = [self encodeQuaternion:GLKQuaternionMultiply(identity, q)];
             if(![_orientation isEqualToData:newOrientation]){
                 [self setOrientation:newOrientation];
             }
         }];
     }
+
+    // first run-time instruction assistance
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"FIRSTBOOT"]){
+        [self performSelector:@selector(settingsButtonPress:) withObject:@YES afterDelay:1.0];
+        [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"FIRSTBOOT"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self WithoutAdvertising:YES];
+    }
+    else
+        blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self];
 }
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
-    [screenView draw];
+    [_screenView draw];
 }
 
 -(void) setOrientation:(NSData *)orientation{
     _orientation = orientation;
-    [blePeripheral broadcastData:orientation];
-    if(settingsView && [blePeripheral state] == PeripheralConnectionStateConnected){
+    if([blePeripheral isAdvertising])
+        [blePeripheral broadcastData:_orientation];
+    if(settingsView && [blePeripheral state] == PeripheralConnectionStateConnected)
         [settingsView flashCommunicationLight];
-    }
 }
 
 -(void) stateDidUpdate:(PeripheralConnectionState)state{
-    [screenView setState:state];
+    [_screenView setState:state];
     if(settingsView)
         [settingsView setConnectionState:state];
 }
@@ -90,13 +102,13 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     for(UITouch *touch in touches){
-        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:screenView])){
+        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:self.view])){
             // button: touch down
             if(!_buttonTouched){
                 [self setButtonTouched:YES];
             }
         }
-        else if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:screenView])){
+        else if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:self.view])){
             [self settingsButtonPress:nil];
         }
         else if(!_screenTouched){
@@ -111,14 +123,14 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
             [self setScreenTouched:NO];
         }
         if(_buttonTouched){
-            if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:screenView])){
+            if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.5, [[UIScreen mainScreen] bounds].size.height*.5), BUTTON_RADIUS, [touch locationInView:self.view])){
             
                 // button: touch up
                 [self buttonTapped];
             }
             [self setButtonTouched:NO];
         }
-        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:screenView])){
+        if(CGRectCircleContainsPoint(CGPointMake([[UIScreen mainScreen] bounds].size.width*.9, [[UIScreen mainScreen] bounds].size.height*.5), 40, [touch locationInView:self.view])){
 //            [self settingsButtonPress:nil];
         }
     }
@@ -128,22 +140,21 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 }
 -(void) setScreenTouched:(BOOL)screenTouched{
     _screenTouched = screenTouched;
-    [screenView setIsScreenTouched:screenTouched];
+    [_screenView setIsScreenTouched:screenTouched];
     [blePeripheral sendScreenTouched:screenTouched];
 }
 -(void) setButtonTouched:(BOOL)buttonTouched{
     _buttonTouched = buttonTouched;
-    [screenView setIsButtonTouched:buttonTouched];
+    [_screenView setIsButtonTouched:buttonTouched];
 }
 -(void) buttonTapped{
     if([blePeripheral state] == PeripheralConnectionStateDisconnected){
         [blePeripheral setState:PeripheralConnectionStateBooting];
         [blePeripheral startAdvertisements];
-        connectionTime = [NSDate date];
     }
     else if([blePeripheral state] == PeripheralConnectionStateScanning || [blePeripheral state] == PeripheralConnectionStateConnected){
         [blePeripheral setState:PeripheralConnectionStateDisconnecting];
-        [blePeripheral stopAdvertisements:NO];
+        [blePeripheral stopAdvertisements:YES];
     }
 }
 
@@ -164,38 +175,36 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 #pragma mark- SETTINGS TABLE
 
--(void)settingsButtonPress:(id)sender{
+-(void)settingsButtonPress:(NSNumber*)openWelcomeScreen{
     settingsView = [[SettingsView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
-    [settingsView setDataSource:settingsView];
-    [settingsView setClipsToBounds:NO];
-    [settingsView setDelegate:self];
-    [settingsView setBackgroundColor:[UIColor clearColor]];
-    [settingsView setBackgroundView:nil];
-    [settingsView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [settingsView setSeparatorInset:UIEdgeInsetsZero];
     [settingsView setCenter:CGPointMake(settingsView.center.x+settingsView.bounds.size.width, settingsView.center.y)];
-    settingsView.sectionHeaderHeight = 1.0;
-    settingsView.sectionFooterHeight = 1.0;
     [settingsView setConnectionState:[blePeripheral state]];
+    [settingsView setDelegate:self];
     [self.view addSubview:settingsView];
     CGRect oldframe = settingsView.frame;
     settingsView.transform=CGAffineTransformMakeRotation(M_PI/2);
     // For some weird reason, the frame of the table also gets rotated, so you must restore the original frame
     settingsView.frame = oldframe;
-    [self animateSettingsTableIn];
+    [self animateSettingsTableIn:openWelcomeScreen];
 }
 
--(void) animateSettingsTableIn
-{
+-(void) animateSettingsTableIn:(NSNumber*)openWelcomeScreen{
     [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
     [UIView setAnimationDuration:.33];
+    [UIView setAnimationDelegate:self];
+    if(openWelcomeScreen && [openWelcomeScreen boolValue])
+        [UIView setAnimationDidStopSelector:@selector(triggerWelcomeScreen)];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     [settingsView setCenter:self.view.center];
     [UIView commitAnimations];
 }
--(void) animateSettingsTableOut
-{
-    [UIView beginAnimations:@"animateSettingsTableIn" context:nil];
+-(void) triggerWelcomeScreen{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [settingsView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [settingsView.delegate tableView:settingsView didSelectRowAtIndexPath:indexPath];
+}
+-(void) animateSettingsTableOut{
+    [UIView beginAnimations:@"animateSettingsTableOut" context:nil];
     [UIView setAnimationDidStopSelector:@selector(deallocTableView)];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:.25];
@@ -254,27 +263,16 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
         [tableView beginUpdates];
         [tableView endUpdates];
     }
-    else if(indexPath.section == 0){
-//      [cell.detailTextLabel setText:@"no"];
-    }
     else if (indexPath.section == 1){
         if([blePeripheral state] == PeripheralConnectionStateDisconnected){
             [self buttonTapped];
             [self animateSettingsTableOut];
         }
     }
-    else if (indexPath.section == 2){
-    }
-    else if (indexPath.section == 3){
-//        if([cell.detailTextLabel.text isEqualToString:@"b&w"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"clay" forKey:@"theme"];
-//        else if([cell.detailTextLabel.text isEqualToString:@"clay"])
-//            [[NSUserDefaults standardUserDefaults] setObject:@"ice" forKey:@"theme"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//        [self updateColorsProgramWide];
-//        [tableView reloadData];
-    }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(indexPath.row == 1 && (indexPath.section == 0 || indexPath.section == 2 || indexPath.section == 3) )
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    else
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

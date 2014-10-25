@@ -15,9 +15,6 @@
 @interface ViewController : GLKViewController <BLEPeripheralDelegate, UITableViewDelegate>{
     CMMotionManager *motionManager;
     GLKQuaternion identity;
-    GLKQuaternion lq;
-    ScreenView *screenView;
-    NSDate *connectionTime;
     BLEPeripheral *blePeripheral;
     SettingsView *settingsView;
 }
@@ -26,5 +23,7 @@
 @property (nonatomic) BOOL buttonTouched;
 
 @property (nonatomic) NSData *orientation;
+
+@property ScreenView *screenView;
 
 @end
