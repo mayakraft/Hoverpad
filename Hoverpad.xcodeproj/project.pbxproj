@@ -10,6 +10,7 @@
 		D505A3B119DAF6C500278548 /* VHIDButtonCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AC19DAF6C500278548 /* VHIDButtonCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B219DAF6C500278548 /* VHIDDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3AE19DAF6C500278548 /* VHIDDevice.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D505A3B319DAF6C500278548 /* VHIDPointerCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D5292A0019FDB3E300F44EFA /* InstructionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D52929FF19FDB3E300F44EFA /* InstructionsCell.m */; };
 		D531A5D719EEC96C00F38A40 /* BLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5D619EEC96C00F38A40 /* BLEManager.m */; };
 		D531A5E119EF2A5D00F38A40 /* AnalogStick.m in Sources */ = {isa = PBXBuildFile; fileRef = D531A5E019EF2A5D00F38A40 /* AnalogStick.m */; };
 		D5446FAE19F1BC2800A84A20 /* SettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5446FAD19F1BC2800A84A20 /* SettingsView.m */; };
@@ -22,6 +23,11 @@
 		D568D3B818CC012300ED987D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B718CC012300ED987D /* CoreBluetooth.framework */; };
 		D568D3BA18CC014F00ED987D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D568D3B918CC014F00ED987D /* CoreMotion.framework */; };
 		D5722EF519E393FD009C11AB /* SmallModelView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5722EF419E393FD009C11AB /* SmallModelView.m */; };
+		D58833B219FD7456009C196A /* grip.png in Resources */ = {isa = PBXBuildFile; fileRef = D58833B119FD7456009C196A /* grip.png */; };
+		D58833B519FD7A01009C196A /* WelcomeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D58833B419FD7A01009C196A /* WelcomeCell.m */; };
+		D58833B819FDA46C009C196A /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = D58833B619FDA46C009C196A /* apple.png */; };
+		D58833B919FDA46C009C196A /* iphone5white.png in Resources */ = {isa = PBXBuildFile; fileRef = D58833B719FDA46C009C196A /* iphone5white.png */; };
+		D58833BB19FDA516009C196A /* devices.png in Resources */ = {isa = PBXBuildFile; fileRef = D58833BA19FDA516009C196A /* devices.png */; };
 		D5959DA619DBBCD500E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA519DBBCD500E5C7A3 /* main.m */; };
 		D5959DAD19DBBCE500E5C7A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */; };
 		D5959DAE19DBBCE500E5C7A3 /* StatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DAA19DBBCE500E5C7A3 /* StatusView.m */; };
@@ -70,6 +76,8 @@
 		D505A3AE19DAF6C500278548 /* VHIDDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDDevice.m; path = WJoy/VHID/VHIDDevice.m; sourceTree = SOURCE_ROOT; };
 		D505A3AF19DAF6C500278548 /* VHIDPointerCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHIDPointerCollection.h; path = WJoy/VHID/VHIDPointerCollection.h; sourceTree = SOURCE_ROOT; };
 		D505A3B019DAF6C500278548 /* VHIDPointerCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHIDPointerCollection.m; path = WJoy/VHID/VHIDPointerCollection.m; sourceTree = SOURCE_ROOT; };
+		D52929FE19FDB3E300F44EFA /* InstructionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstructionsCell.h; path = iOS/InstructionsCell.h; sourceTree = SOURCE_ROOT; };
+		D52929FF19FDB3E300F44EFA /* InstructionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InstructionsCell.m; path = iOS/InstructionsCell.m; sourceTree = SOURCE_ROOT; };
 		D531A5D519EEC96C00F38A40 /* BLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLEManager.h; path = OSX/BLEManager.h; sourceTree = SOURCE_ROOT; };
 		D531A5D619EEC96C00F38A40 /* BLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLEManager.m; path = OSX/BLEManager.m; sourceTree = SOURCE_ROOT; };
 		D531A5DF19EF2A5D00F38A40 /* AnalogStick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnalogStick.h; path = OSX/AnalogStick.h; sourceTree = SOURCE_ROOT; };
@@ -95,6 +103,12 @@
 		D568D3B918CC014F00ED987D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		D5722EF319E393FD009C11AB /* SmallModelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmallModelView.h; path = OSX/SmallModelView.h; sourceTree = SOURCE_ROOT; };
 		D5722EF419E393FD009C11AB /* SmallModelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmallModelView.m; path = OSX/SmallModelView.m; sourceTree = SOURCE_ROOT; };
+		D58833B119FD7456009C196A /* grip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grip.png; path = iOS/Images.xcassets/grip.png; sourceTree = SOURCE_ROOT; };
+		D58833B319FD7A01009C196A /* WelcomeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WelcomeCell.h; path = iOS/WelcomeCell.h; sourceTree = SOURCE_ROOT; };
+		D58833B419FD7A01009C196A /* WelcomeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WelcomeCell.m; path = iOS/WelcomeCell.m; sourceTree = SOURCE_ROOT; };
+		D58833B619FDA46C009C196A /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = apple.png; path = iOS/Images.xcassets/apple.png; sourceTree = SOURCE_ROOT; };
+		D58833B719FDA46C009C196A /* iphone5white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone5white.png; path = iOS/Images.xcassets/iphone5white.png; sourceTree = SOURCE_ROOT; };
+		D58833BA19FDA516009C196A /* devices.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = devices.png; path = iOS/Images.xcassets/devices.png; sourceTree = SOURCE_ROOT; };
 		D5959DA519DBBCD500E5C7A3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = OSX/main.m; sourceTree = SOURCE_ROOT; };
 		D5959DA719DBBCE500E5C7A3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = OSX/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		D5959DA819DBBCE500E5C7A3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = OSX/AppDelegate.m; sourceTree = SOURCE_ROOT; };
@@ -188,8 +202,16 @@
 			children = (
 				D5446FAC19F1BC2800A84A20 /* SettingsView.h */,
 				D5446FAD19F1BC2800A84A20 /* SettingsView.m */,
+				D58833B319FD7A01009C196A /* WelcomeCell.h */,
+				D58833B419FD7A01009C196A /* WelcomeCell.m */,
+				D52929FE19FDB3E300F44EFA /* InstructionsCell.h */,
+				D52929FF19FDB3E300F44EFA /* InstructionsCell.m */,
 				D5446FAF19F1BC4200A84A20 /* Cell.h */,
 				D5446FB019F1BC4200A84A20 /* Cell.m */,
+				D58833B619FDA46C009C196A /* apple.png */,
+				D58833BA19FDA516009C196A /* devices.png */,
+				D58833B719FDA46C009C196A /* iphone5white.png */,
+				D58833B119FD7456009C196A /* grip.png */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -419,6 +441,10 @@
 			files = (
 				D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */,
 				D5446FB419F1D99F00A84A20 /* Lato-Light.ttf in Resources */,
+				D58833B819FDA46C009C196A /* apple.png in Resources */,
+				D58833BB19FDA516009C196A /* devices.png in Resources */,
+				D58833B219FD7456009C196A /* grip.png in Resources */,
+				D58833B919FDA46C009C196A /* iphone5white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,7 +477,9 @@
 				D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */,
 				D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */,
 				D5959DBD19DBBDED00E5C7A3 /* AppDelegate.m in Sources */,
+				D5292A0019FDB3E300F44EFA /* InstructionsCell.m in Sources */,
 				D5446FAE19F1BC2800A84A20 /* SettingsView.m in Sources */,
+				D58833B519FD7A01009C196A /* WelcomeCell.m in Sources */,
 				D5446FB119F1BC4200A84A20 /* Cell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

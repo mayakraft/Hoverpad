@@ -8,6 +8,8 @@
 
 #import "SettingsView.h"
 #import "Cell.h"
+#import "WelcomeCell.h"
+#import "InstructionsCell.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -222,17 +224,29 @@
     if(cycle > 1.0) cycle -= 1.0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     //Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    Cell *cell = [[Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-
-//    UIColor *rainbow = [UIColor colorWithHue:((float)(4-indexPath.section)/NUM_CELLS) saturation:1.0 brightness:1.0 alpha:1.0];
     UIColor *rainbow = [self getColorForSection:indexPath.section];
-    [[cell layer] setBorderColor:rainbow.CGColor];
     
+    // special cells
+    if(indexPath.row == 1 && indexPath.section == 3){
+        InstructionsCell *cell = [[InstructionsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+//        [[cell imageView2] setImage:[UIImage imageNamed:@"grip.png"]];
+        [[cell layer] setBorderColor:rainbow.CGColor];
+        return cell;
+    }
+    if(indexPath.row == 1 && indexPath.section == 0){
+        WelcomeCell *cell = [[WelcomeCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        [[cell layer] setBorderColor:rainbow.CGColor];
+        return cell;
+    }
+    
+    Cell *cell = [[Cell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    [[cell layer] setBorderColor:rainbow.CGColor];
     cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y-indexPath.row*10, cell.frame.size.width, cell.frame.size.height);
+
+    float smFont = 20.0 + 30 * IS_IPAD();
     
     if(indexPath.section == 0){
         if(indexPath.row == 0){
@@ -242,12 +256,6 @@
             [[cell detailTextLabel] setText:@""];
         }
         else{
-            [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setText:@"\n\nHOVERPAD IS A WIRELESS 3-AXIS GYRO TILT GAME CONTROLLER\n\nTILT:\nGET THE COMPANION APP AT WWW.HOVERPAD.WTF\n\nTO GET STARTED, TAP 'CONNECTION STATUS'"];
-//            [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell detailTextLabel] setText:@"WELCOME"];
-            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
         }
     }
     else if (indexPath.section == 1){
@@ -257,11 +265,10 @@
             [self updateConnectionTitleCell:cell];
         }
         else{
-            [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
+//            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
+//            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
             [self updateConnectionDetailCell:cell];
         }
     }
@@ -273,9 +280,9 @@
             [[cell detailTextLabel] setText:@""];
         }
         else{
-            [[cell textLabel] setText:@"HOVERPAD REQUIRES 2 PARTS\n ‣ iOS APP (✔︎)\n ‣ DESKTOP APP (WWW.HOVERPAD.WTF)\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
-            [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+            [[cell textLabel] setText:@"MAKE SURE YOU HAVE THE DESKTOP APP\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+//            [cell setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, 180)];
+            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
         }
     }
     else if (indexPath.section == 3){
@@ -286,7 +293,7 @@
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
         }
         else{
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
             [[cell textLabel] setText:@"[1] HOLD LIKE A CAFETERIA TRAY WITH YOUR THUMBS OVER THE SCREEN\n ‣ MAP PITCH TO FORWARD/BACK\n ‣ MAP ROLL TO EITHER STRAFE OR TURN DEPENDING ON PREFERENCE\n ‣ WHEN INTENDING TO STOP, RETURN ORIENTATION TO WHAT YOU BELIEVE TO BE THE HOME ORIENTATION, PRESS AND RELEASE THE SCREEN\n\n[2] STRAP TO YOUR LEG, LEAN LIKE YOU'RE ON A SKATEBOARD\n ‣ DECREASE THE ANGLE OF RESPONSE IN THE DESKTOP PREFERENCES\n\n[3] ATTACH TO YOUR DOG\n(NOT LIABLE)\n\n[4] GET CREATIVE"];
         }
     }

@@ -72,7 +72,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
     // first run-time instruction assistance
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"FIRSTBOOT"]){
-        [self performSelector:@selector(settingsButtonPress:) withObject:@YES afterDelay:1.0];
+        [self settingsButtonPress:@YES];
         [[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"FIRSTBOOT"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         blePeripheral = [[BLEPeripheral alloc] initWithDelegate:self WithoutAdvertising:YES];
@@ -220,13 +220,14 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 #pragma mark- SETTINGS TABLE DELEGATE
 
+#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 - (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section{
     if(section == 0)
-        return 40.0f;
+        return 40.0f + 36*IS_IPAD();
     return 1.0f;
 }
 - (CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section{
-    return 1.0;
+    return 1.0 + 2*IS_IPAD();
 }
 
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section{
@@ -237,16 +238,16 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == 0)
-        return 46;
+        return 46 + 76*IS_IPAD();
     if(indexPath.section == 0)
-        return 360;
+        return 360 + 360*1.7*IS_IPAD();
     else if(indexPath.section == 1)
-        return 120;
+        return 120 + 120*1.7*IS_IPAD();
     else if (indexPath.section == 2)
-        return 400;
+        return 400 + 400*1.7*IS_IPAD();
     else if (indexPath.section == 3)
-        return 500;
-    return 100;
+        return 500 + 500*1.7*IS_IPAD();
+    return 100 + 100*1.7*IS_IPAD();
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

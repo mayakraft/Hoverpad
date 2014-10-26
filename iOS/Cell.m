@@ -27,14 +27,14 @@
     if (self) {
         self.layer.borderWidth = 1.0f + IS_IPAD();
         if([self textLabel]){
-            [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 33.0f*IS_IPAD()]];
+            [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 43.0f*IS_IPAD()]];
             [self.textLabel setBackgroundColor:[UIColor clearColor]];
             [self.textLabel setTextColor:[UIColor lightGrayColor]];
             [self.textLabel setNumberOfLines:0];
             [self.textLabel sizeToFit];
         }
         if([self detailTextLabel]){
-            [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 33.0f*IS_IPAD()]];
+            [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 43.0f*IS_IPAD()]];
             [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
             [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
             [self.detailTextLabel setNumberOfLines:0];
@@ -51,7 +51,7 @@
         self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, self.textLabel.frame.origin.y, self.bounds.size.width-PADDING, self.textLabel.frame.size.height);
     }
     if([self detailTextLabel]){
-        self.detailTextLabel.frame = CGRectMake(PADDING, self.detailTextLabel.frame.origin.y, self.bounds.size.width-PADDING*2, self.detailTextLabel.frame.size.height);
+        self.detailTextLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, 30.0f + 43.0f*IS_IPAD());//self.detailTextLabel.frame.size.height);
         [self.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     }
 }
