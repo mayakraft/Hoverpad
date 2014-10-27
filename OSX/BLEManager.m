@@ -101,6 +101,13 @@
     [_delegate connectionDidUpdate:connectionState];
 }
 
+-(void) broadcastVersion{
+    unsigned char version[2] = {0x8F,0x01};  // release version 1
+    NSData *data = [[NSData alloc] initWithBytes:version length:2];
+    if(_peripheral)
+        [_peripheral writeValue:data forCharacteristic:myWriteChar type:CBCharacteristicWriteWithResponse];
+}
+
 //-(void) sendDataToPeripheral{
 //    unsigned char exit[2] = {0x3b};  // exit code
 //    NSData *data = [[NSData alloc] initWithBytes:exit length:2];
@@ -226,10 +233,12 @@
     //first, check if there is an error. do not proceed
     //TODO: ask what characteristic this is
 //    if([characteristic.UUID.UUIDString isEqualToString:ORIENT_CHAR_UUID])
-        [_delegate characteristicDidUpdate:characteristic.value];
+    NSLog(@"raw(%lu):%@",(unsigned long)characteristic.value.length,characteristic.value);
+    [_delegate characteristicDidUpdate:characteristic.value];
 }
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     NSLog(@"  6b: CENTRAL MANAGER SETUP :6b: DELEGATE RESPONSE %@",characteristic.UUID);
+    [self performSelector:@selector(broadcastVersion) withObject:nil afterDelay:1.0];
     // if there's an error, do something
 }
 - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {

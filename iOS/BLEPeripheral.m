@@ -72,15 +72,16 @@
 }
 
 -(void) sendDisconnect{
-    unsigned char exit[2] = {0x3b};
+    unsigned char exit[1] = {0x3b};
     if(peripheralManager)
-        [peripheralManager updateValue:[NSData dataWithBytes:&exit length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+        [peripheralManager updateValue:[NSData dataWithBytes:&exit length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) sendScreenTouched:(BOOL)touched{
-    unsigned char d = (touched ? 1 : 0);
+    unsigned char d[2] = {0x88,0x00};
+    d[1] = (touched ? 1 : 0);
     if(peripheralManager)
-        [peripheralManager updateValue:[NSData dataWithBytes:&d length:1] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
+        [peripheralManager updateValue:[NSData dataWithBytes:&d length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
 -(void) setState:(PeripheralConnectionState)state{
@@ -115,7 +116,7 @@
     [peripheralManager stopAdvertising];
     _isAdvertising = NO;
     
-    //TODO: don't think this stateDisconnected should be here
+    //TODO: this is happening repeatedly
     [self setState:PeripheralConnectionStateDisconnected];
 }
 
@@ -162,7 +163,17 @@
     for(CBATTRequest* request in requests) {
         if([request.value bytes]){
             NSLog(@"WE RECEIVED INFO: %@",[request value]);
+            if([[request value] length] == 2){
+                unsigned char *msg = (unsigned char*)[[request value] bytes];
+                if (msg[0] == 0x8F){ // version code
+                    if(msg[1] == 0x01){  // release version 1
+                        NSLog(@"VERSION 1 SUCCESSFULLY RECEIVED");
+                    }
+                }
+            }
+            if([[request value] length] == 1){
 //            unsigned char exit[2] = {0x3b};
+            }
         }
         [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
     }
@@ -192,8 +203,8 @@
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
     NSLog(@"delegate: Central unsubscribed!");
     if([self state] != PeripheralConnectionStateDisconnected){
-        [self setState:PeripheralConnectionStateDisconnected];
-        [self stopAdvertisements:NO];
+//        [self setState:PeripheralConnectionStateDisconnected];
+        [self stopAdvertisements:NO]; // this sets the disconnected state
     }
 }
 

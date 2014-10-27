@@ -10,5 +10,8 @@
 
 @interface InstructionsCell : UITableViewCell
 @property UILabel *textLabel2;
+@property UILabel *textLabel3;
+@property UILabel *textLabel4;
 @property UIImageView *imageView2;
+@property UIImageView *imageView3;
 @end

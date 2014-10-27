@@ -240,13 +240,13 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     if(indexPath.row == 0)
         return 46 + 76*IS_IPAD();
     if(indexPath.section == 0)
-        return 360 + 360*1.7*IS_IPAD();
+        return 450 + 450*1.7*IS_IPAD();
     else if(indexPath.section == 1)
         return 120 + 120*1.7*IS_IPAD();
     else if (indexPath.section == 2)
         return 400 + 400*1.7*IS_IPAD();
     else if (indexPath.section == 3)
-        return 500 + 500*1.7*IS_IPAD();
+        return 1100 + 1100*1.7*IS_IPAD();
     return 100 + 100*1.7*IS_IPAD();
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

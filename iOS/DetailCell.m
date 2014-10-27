@@ -1,13 +1,12 @@
 //
-//  Cell.m
-//  Autonaut
+//  DetailCell.m
+//  Hoverpad
 //
-//  Created by Robby on 6/3/13.
-//  Copyright (c) 2013 robbykraft. All rights reserved.
+//  Created by Robby on 10/27/14.
+//  Copyright (c) 2014 Robby Kraft. All rights reserved.
 //
 
-#import "Cell.h"
-#import <QuartzCore/QuartzCore.h>
+#import "DetailCell.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -20,7 +19,7 @@
 #define CUSTOM_FONT @"Lato-Light"
 #define GRAY [UIColor colorWithWhite:.75 alpha:1.0]
 
-@implementation Cell
+@implementation DetailCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -39,7 +38,7 @@
             [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
             [self.detailTextLabel setTextColor:GRAY];
             [self.detailTextLabel setNumberOfLines:0];
-//            [self.detailTextLabel sizeToFit];
+            [self.detailTextLabel sizeToFit];
         }
         [self layoutSubviews];
     }
@@ -52,8 +51,8 @@
         self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, self.textLabel.frame.origin.y, self.bounds.size.width-PADDING, self.textLabel.frame.size.height);
     }
     if([self detailTextLabel]){
-//        self.detailTextLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, self.detailTextLabel.frame.size.height);
-//        [self.detailTextLabel setTextAlignment:NSTextAlignmentRight];
+        self.detailTextLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, 30.0f + 43.0f*IS_IPAD());//self.detailTextLabel.frame.size.height);
+        [self.detailTextLabel setTextAlignment:NSTextAlignmentRight];
     }
 }
 
@@ -62,11 +61,5 @@
     frame.size.width = [[UIScreen mainScreen] bounds].size.height - 2 * PADDING;
     [super setFrame:frame];
 }
-
-//- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-//{
-//    [super setSelected:selected animated:animated];
-//    // Configure the view for the selected state
-//}
 
 @end

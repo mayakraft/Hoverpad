@@ -17,6 +17,7 @@
 #endif
 
 #define CUSTOM_FONT @"Lato-Light"
+#define GRAY [UIColor colorWithWhite:.75 alpha:1.0]
 
 @implementation WelcomeCell
 
@@ -26,29 +27,29 @@
     if (self) {
         self.layer.borderWidth = 1.0f + IS_IPAD();
         if([self textLabel]){
+            [[self textLabel] setText:@"HOVERPAD IS A WIRELESS GAME CONTROLLER\n\nIT REQUIRES 2 APPS"];
             [self.textLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:20.0f + 20.0f*IS_IPAD()]];
             [self.textLabel setBackgroundColor:[UIColor clearColor]];
-            [self.textLabel setTextColor:[UIColor lightGrayColor]];
+            [self.textLabel setTextColor:GRAY];
             [self.textLabel setNumberOfLines:0];
             [self.textLabel sizeToFit];
         }
         if([self detailTextLabel]){
-            [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 30.0f*IS_IPAD()]];
-            [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
-            [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
-            [self.detailTextLabel setNumberOfLines:0];
-            [self.detailTextLabel sizeToFit];
+            [[self detailTextLabel] setText:@""];
         }
         _textLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, 300+300*IS_IPAD(), self.frame.size.width-2*PADDING, 200+200*IS_IPAD())];
+        [[self textLabel2] setText:@"MAC OSX                           iOS\n\nGET THE OSX APP AT HTTP://HOVERPAD.WTF\n\nPROCEED TO 'CONNECTION STATUS'"];
         [_textLabel2 setFont:[UIFont fontWithName:CUSTOM_FONT size:20.0f + 20.0f*IS_IPAD()]];
         [_textLabel2 setBackgroundColor:[UIColor clearColor]];
-        [_textLabel2 setTextColor:[UIColor lightGrayColor]];
+        [_textLabel2 setTextColor:GRAY];
         [_textLabel2 setNumberOfLines:0];
+        [_textLabel2 sizeToFit];
+        [_textLabel2 setFrame:CGRectMake(_textLabel2.frame.origin.x, _textLabel2.frame.origin.y, self.frame.size.width-2*PADDING, _textLabel2.frame.size.height)];
         [_textLabel2 setTextAlignment:NSTextAlignmentCenter];
-//        [_textLabel2 sizeToFit];
         [self addSubview:_textLabel2];
 
-        _imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(PADDING, 175+175*IS_IPAD(), self.frame.size.width-2*PADDING, (self.frame.size.width-2*PADDING)/3.5)];
+        _imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(PADDING, 150+150*IS_IPAD(), self.frame.size.width-2*PADDING, (self.frame.size.width-2*PADDING)/3.5)];
+        [[self imageView2] setImage:[UIImage imageNamed:@"devices.png"]];
         [self addSubview:_imageView2];
 
         [self layoutSubviews];
@@ -59,21 +60,8 @@
     [super layoutSubviews];
     [self setBackgroundColor:[UIColor blackColor]];
     if([self textLabel]){
-        self.textLabel.frame = CGRectMake(PADDING, 40+60*IS_IPAD(), self.bounds.size.width-PADDING*2, 100+100*IS_IPAD());
+        self.textLabel.frame = CGRectMake(PADDING, PADDING*2, self.bounds.size.width-PADDING*2, self.textLabel.frame.size.height);
         [[self textLabel] setTextAlignment:NSTextAlignmentCenter];
-        [[self textLabel] setText:@"HOVERPAD IS A WIRELESS GAME CONTROLLER\n\nIT'S COMPRISED OF 2 APPS"];
-    }
-    if([self detailTextLabel]){
-        self.detailTextLabel.frame = CGRectMake(PADDING, self.detailTextLabel.frame.origin.y, self.bounds.size.width-PADDING*2, self.detailTextLabel.frame.size.height);
-        [[self detailTextLabel] setText:@"WELCOME"];
-        [[self detailTextLabel] setFrame:CGRectMake(PADDING, 0, self.frame.size.width-PADDING*2, 40 + 60*IS_IPAD())];
-//        [[self detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
-    }
-    if([self textLabel2]){
-        [[self textLabel2] setText:@"Mac OSX                            iOS\n\nGET THE OSX APP AT WWW.HOVERPAD.WTF\nAND PROCEED TO 'CONNECTION STATUS'"];
-    }
-    if([self imageView2]){
-        [[self imageView2] setImage:[UIImage imageNamed:@"devices.png"]];
     }
 }
 

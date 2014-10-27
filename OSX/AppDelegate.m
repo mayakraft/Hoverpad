@@ -211,15 +211,20 @@
             [orientationView setNeedsDisplay:true];
         }
     }
-    else if ([data length] == 1) {
-        char *touched = (char*)[data bytes];
-        BOOL t = *touched;
-        [orientationView setScreenTouched:t];
-    }
-    else if ([data length] == 2){
-        char *msg = (char*)[data bytes];
+    else if ([data length] == 1){
+        unsigned char *msg = (unsigned char*)[data bytes];
         if (*msg == 0x3b){ // exit code
+            NSLog(@"received exit code");
             [bleManager disconnect];
+        }
+    }
+    else if ([data length] == 2) {
+        unsigned char *msg = (unsigned char*)[data bytes];
+        if(msg[0] == 0x88){ // button update code
+            // the only button we have so far: screen touch
+            BOOL t = msg[1];
+            NSLog(@"RECEIVED BUTTON UPDATE: %d",t);
+            [orientationView setScreenTouched:t];
         }
     }
 }

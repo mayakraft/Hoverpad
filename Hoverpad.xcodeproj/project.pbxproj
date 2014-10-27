@@ -39,9 +39,11 @@
 		D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBA19DBBDED00E5C7A3 /* main.m */; };
 		D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBC19DBBDED00E5C7A3 /* ViewController.m */; };
 		D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */; };
+		D59EF65A19FEE4F40045EB1C /* leg.png in Resources */ = {isa = PBXBuildFile; fileRef = D59EF65919FEE4F40045EB1C /* leg.png */; };
 		D5B5EF7819E701AC00FD99AD /* ScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B5EF7719E701AC00FD99AD /* ScreenView.m */; };
 		D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D8B43019EF503900EFBC1F /* BLEPeripheral.m */; };
 		D5E7B43819E5F505005D36E6 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
+		D5F2FF3F19FE9D480037F4C7 /* DetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D5F2FF3E19FE9D480037F4C7 /* DetailCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,12 +130,15 @@
 		D5959DC219DBBE2600E5C7A3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iOS/Info.plist; sourceTree = SOURCE_ROOT; };
 		D5959DC519DBBE3A00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = iOS/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		D5959DC719DBBE4700E5C7A3 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = iOS/Prefix.pch; sourceTree = SOURCE_ROOT; };
+		D59EF65919FEE4F40045EB1C /* leg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leg.png; path = iOS/Images.xcassets/leg.png; sourceTree = SOURCE_ROOT; };
 		D5B5EF7619E701AC00FD99AD /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenView.h; path = iOS/ScreenView.h; sourceTree = SOURCE_ROOT; };
 		D5B5EF7719E701AC00FD99AD /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenView.m; path = iOS/ScreenView.m; sourceTree = SOURCE_ROOT; };
 		D5C9F8BA19E8E7EF002D4AC4 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise.c; path = iOS/noise.c; sourceTree = SOURCE_ROOT; };
 		D5C9F8BB19E8E7EF002D4AC4 /* noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise.h; path = iOS/noise.h; sourceTree = SOURCE_ROOT; };
 		D5D8B42F19EF503900EFBC1F /* BLEPeripheral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BLEPeripheral.h; path = iOS/BLEPeripheral.h; sourceTree = SOURCE_ROOT; };
 		D5D8B43019EF503900EFBC1F /* BLEPeripheral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BLEPeripheral.m; path = iOS/BLEPeripheral.m; sourceTree = SOURCE_ROOT; };
+		D5F2FF3D19FE9D480037F4C7 /* DetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailCell.h; path = iOS/DetailCell.h; sourceTree = SOURCE_ROOT; };
+		D5F2FF3E19FE9D480037F4C7 /* DetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailCell.m; path = iOS/DetailCell.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,13 +207,9 @@
 			children = (
 				D5446FAC19F1BC2800A84A20 /* SettingsView.h */,
 				D5446FAD19F1BC2800A84A20 /* SettingsView.m */,
-				D58833B319FD7A01009C196A /* WelcomeCell.h */,
-				D58833B419FD7A01009C196A /* WelcomeCell.m */,
-				D52929FE19FDB3E300F44EFA /* InstructionsCell.h */,
-				D52929FF19FDB3E300F44EFA /* InstructionsCell.m */,
-				D5446FAF19F1BC4200A84A20 /* Cell.h */,
-				D5446FB019F1BC4200A84A20 /* Cell.m */,
+				D5F2FF4319FE9D4E0037F4C7 /* TableCells */,
 				D58833B619FDA46C009C196A /* apple.png */,
+				D59EF65919FEE4F40045EB1C /* leg.png */,
 				D58833BA19FDA516009C196A /* devices.png */,
 				D58833B719FDA46C009C196A /* iphone5white.png */,
 				D58833B119FD7456009C196A /* grip.png */,
@@ -322,6 +323,21 @@
 				D5959DC219DBBE2600E5C7A3 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D5F2FF4319FE9D4E0037F4C7 /* TableCells */ = {
+			isa = PBXGroup;
+			children = (
+				D5446FAF19F1BC4200A84A20 /* Cell.h */,
+				D5446FB019F1BC4200A84A20 /* Cell.m */,
+				D5F2FF3D19FE9D480037F4C7 /* DetailCell.h */,
+				D5F2FF3E19FE9D480037F4C7 /* DetailCell.m */,
+				D58833B319FD7A01009C196A /* WelcomeCell.h */,
+				D58833B419FD7A01009C196A /* WelcomeCell.m */,
+				D52929FE19FDB3E300F44EFA /* InstructionsCell.h */,
+				D52929FF19FDB3E300F44EFA /* InstructionsCell.m */,
+			);
+			name = TableCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -443,6 +459,7 @@
 				D5446FB419F1D99F00A84A20 /* Lato-Light.ttf in Resources */,
 				D58833B819FDA46C009C196A /* apple.png in Resources */,
 				D58833BB19FDA516009C196A /* devices.png in Resources */,
+				D59EF65A19FEE4F40045EB1C /* leg.png in Resources */,
 				D58833B219FD7456009C196A /* grip.png in Resources */,
 				D58833B919FDA46C009C196A /* iphone5white.png in Resources */,
 			);
@@ -478,6 +495,7 @@
 				D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */,
 				D5959DBD19DBBDED00E5C7A3 /* AppDelegate.m in Sources */,
 				D5292A0019FDB3E300F44EFA /* InstructionsCell.m in Sources */,
+				D5F2FF3F19FE9D480037F4C7 /* DetailCell.m in Sources */,
 				D5446FAE19F1BC2800A84A20 /* SettingsView.m in Sources */,
 				D58833B519FD7A01009C196A /* WelcomeCell.m in Sources */,
 				D5446FB119F1BC4200A84A20 /* Cell.m in Sources */,
