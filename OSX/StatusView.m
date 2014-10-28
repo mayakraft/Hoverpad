@@ -22,6 +22,7 @@
     if(enabled) [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusAvailable]];
     else [_imageStatus1 setImage:[NSImage imageNamed:NSImageNameStatusNone]];
 }
+//TODO: Text should change too: Bluetooth is connecting.. / connected / turned off, etc...
 -(void) updateDeviceConnected:(NSUInteger)enabled{
     if(enabled == 0)
         [_imageStatus3 setImage:[NSImage imageNamed:NSImageNameStatusNone]];

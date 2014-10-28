@@ -15,6 +15,7 @@
 @property BOOL *cellExpanded;
 
 @property (nonatomic) NSInteger connectionState;
+@property (nonatomic) NSInteger hardwareState;
 
 -(void) fakeDealloc;
 

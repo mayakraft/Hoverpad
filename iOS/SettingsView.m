@@ -9,6 +9,7 @@
 #import "SettingsView.h"
 #import "Cell.h"
 #import "DetailCell.h"
+#import "ConnectionCell.h"
 #import "WelcomeCell.h"
 #import "InstructionsCell.h"
 
@@ -173,6 +174,13 @@
     else cell = [self cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     
     if(cell){
+        // BLUETOOTH LOW ENERGY NOT AVAILABLE
+        if(_hardwareState == 2){//|| _hardwareState == 1 || _hardwareState == 3){
+            [[cell textLabel] setText:@"\n\nDEVICE CAN'T FUNCTION"];
+            [[cell detailTextLabel] setText:@"NO BLUETOOTH 4.0"];
+            [[cell detailTextLabel] setTextColor:[UIColor redColor]];
+            return;
+        }
         if(_connectionState == 3){
             [[cell textLabel] setText:CONNECTION_OFF];
             [[cell detailTextLabel] setText:@"CONNECTED"];
@@ -224,12 +232,16 @@
     if(cycle > 1.0) cycle -= 1.0;
 }
 
+//TODO: PADDING NOT DYNAMIC
+#define PADDING 20
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     //Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     UIColor *rainbow = [self getColorForSection:indexPath.section];
 
-    float smFont = 20.0 + 30 * IS_IPAD();
+    float smFont = 20.0 + 20 * IS_IPAD();
     
 // ALL ROW 1 CELLS (DETAIL CELLS)
     if(indexPath.row == 1){
@@ -243,15 +255,18 @@
             [[cell layer] setBorderColor:rainbow.CGColor];
             return cell;
         }
-        DetailCell *cell = [[DetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        [[cell layer] setBorderColor:rainbow.CGColor];
         if(indexPath.section == 1){
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
+            ConnectionCell *cell = [[ConnectionCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            [[cell layer] setBorderColor:rainbow.CGColor];
+//            [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
             [[cell textLabel] setTextAlignment:NSTextAlignmentCenter];
             [self updateConnectionDetailCell:cell];
+            return cell;
         }
+        DetailCell *cell = [[DetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        [[cell layer] setBorderColor:rainbow.CGColor];
         if(indexPath.section == 2){
-            [[cell textLabel] setText:@"MAKE SURE YOU HAVE THE DESKTOP APP\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ WAIT 3-10 SECONDS FOR CONNECTION\n ‣ CUSTOMIZE ANY PREFERENCES ON DESKTOP\n\nTROUBLESHOOTING\n ‣ IF CONNECTION BREAKS WITHOUT PROPER EXIT, FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+            [[cell textLabel] setText:@"MAKE SURE YOU HAVE THE DESKTOP APP\n\nCONNECTION PROCESS:\nTAP THE PENTAGON TO BEING SEARCHING\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ CONNECTION REQUIRES 3-7 SECONDS\n\nTROUBLESHOOTING:\nIF CONNECTION BREAKS WITHOUT PROPER EXIT\n ‣ FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
         }
         return cell;

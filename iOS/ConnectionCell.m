@@ -1,12 +1,12 @@
 //
-//  DetailCell.m
+//  ConnectionCell.m
 //  Hoverpad
 //
-//  Created by Robby on 10/27/14.
+//  Created by Robby on 10/28/14.
 //  Copyright (c) 2014 Robby Kraft. All rights reserved.
 //
 
-#import "DetailCell.h"
+#import "ConnectionCell.h"
 
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -19,7 +19,7 @@
 #define CUSTOM_FONT @"Lato-Light"
 #define GRAY [UIColor colorWithWhite:.75 alpha:1.0]
 
-@implementation DetailCell
+@implementation ConnectionCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -49,7 +49,8 @@
     [super layoutSubviews];
     [self setBackgroundColor:[UIColor blackColor]];
     if([self textLabel]){
-        self.textLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, self.textLabel.frame.size.height);
+//        self.textLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, self.textLabel.frame.size.height);
+        [[self textLabel] setFrame:CGRectMake(PADDING, self.frame.size.height-PADDING-[[self textLabel] frame].size.height, self.frame.size.width-PADDING*2, [[self textLabel] frame].size.height)];
     }
     if([self detailTextLabel]){
         self.detailTextLabel.frame = CGRectMake(PADDING, PADDING, self.bounds.size.width-PADDING*2, 30.0f + 43.0f*IS_IPAD());//self.detailTextLabel.frame.size.height);

@@ -93,7 +93,7 @@
     if([self textLabel]){
         self.textLabel.frame = CGRectMake(PADDING, PADDING*2, self.bounds.size.width-PADDING*2, 200+200*IS_IPAD());
 //        [[self textLabel] setTextAlignment:NSTextAlignmentCenter];
-        [[self textLabel] setText:@"\nFLASH THE SCREEN (TAP THE BLACK PART):\nDEVICE BECOMES RE-ALIGNED\n\nDO THIS OFTEN!\n ‣ WHENEVER YOU BRING ALIGNMENT TO ZERO (IT USUALLY ISN'T BY A LITTLE BIT)"];
+        [[self textLabel] setText:@"\nFLASH THE SCREEN (TAP THE BLACK PART):\nDEVICE BECOMES RE-ALIGNED\n\nDO THIS OFTEN!\n ‣ WHENEVER YOU BRING ALIGNMENT TO ZERO, IT USUALLY IS OFF BY A LITTLE BIT"];
     }
     if([self detailTextLabel]){
         self.detailTextLabel.frame = CGRectMake(PADDING, self.detailTextLabel.frame.origin.y, self.bounds.size.width-PADDING*2, self.detailTextLabel.frame.size.height);
@@ -102,10 +102,10 @@
 //        [[self detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
     }
     if([self textLabel2]){
-        [[self textLabel2] setText:@"GAMEPAD\n\n‣ PITCH=FORWARD/BACK\nTRY OUT EITHER:\n‣ ROLL=STRAFE  &  YAW=TURN\n‣ ROLL=TURN  &  YAW=STRAFE"];
+        [[self textLabel2] setText:@"GAMEPAD\n\n‣ PITCH=FORWARD/BACK\nAND EITHER:\n‣ ROLL=STRAFE  &  YAW=TURN\n‣ ROLL=TURN  &  YAW=STRAFE"];
     }
     if([self textLabel3]){
-        [[self textLabel3] setText:@"SKATEBOARD SIMULATOR\n(PANTS CUFF)\n\n‣ YAW=FORWARD/BACK\n‣ PITCH=TURN"];
+        [[self textLabel3] setText:@"SKATEBOARD/SKIING\n(ROLLED UP PANTS CUFFS)\n\n‣ YAW=FORWARD/BACK\n‣ PITCH=TURN"];
     }
     if([self textLabel4]){
         [[self textLabel4] setText:@"MORE IDEAS:\nFAKE STEERING WHEEL, BIKE HANDLEBARS, STRAP IT TO YOUR DOG (NOT LIABLE), BE CREATIVE!"];

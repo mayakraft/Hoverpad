@@ -38,7 +38,7 @@
             [[self detailTextLabel] setText:@""];
         }
         _textLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, 300+300*IS_IPAD(), self.frame.size.width-2*PADDING, 200+200*IS_IPAD())];
-        [[self textLabel2] setText:@"MAC OSX                           iOS\n\nGET THE OSX APP AT HTTP://HOVERPAD.WTF\n\nPROCEED TO 'CONNECTION STATUS'"];
+        [[self textLabel2] setText:@"\nGET THE OSX APP AT HTTP://HOVERPAD.WTF\n\nPROCEED TO 'CONNECTION STATUS'"];
         [_textLabel2 setFont:[UIFont fontWithName:CUSTOM_FONT size:20.0f + 20.0f*IS_IPAD()]];
         [_textLabel2 setBackgroundColor:[UIColor clearColor]];
         [_textLabel2 setTextColor:GRAY];

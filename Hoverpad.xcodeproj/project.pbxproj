@@ -40,6 +40,7 @@
 		D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5959DBC19DBBDED00E5C7A3 /* ViewController.m */; };
 		D5959DC119DBBE0D00E5C7A3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5959DC019DBBE0D00E5C7A3 /* Images.xcassets */; };
 		D59EF65A19FEE4F40045EB1C /* leg.png in Resources */ = {isa = PBXBuildFile; fileRef = D59EF65919FEE4F40045EB1C /* leg.png */; };
+		D59EF66019FF59A20045EB1C /* ConnectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D59EF65F19FF59A20045EB1C /* ConnectionCell.m */; };
 		D5B5EF7819E701AC00FD99AD /* ScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B5EF7719E701AC00FD99AD /* ScreenView.m */; };
 		D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D8B43019EF503900EFBC1F /* BLEPeripheral.m */; };
 		D5E7B43819E5F505005D36E6 /* WirtualJoy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D505A3A819DAF62C00278548 /* WirtualJoy.framework */; };
@@ -131,6 +132,8 @@
 		D5959DC519DBBE3A00E5C7A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = iOS/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		D5959DC719DBBE4700E5C7A3 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = iOS/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		D59EF65919FEE4F40045EB1C /* leg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leg.png; path = iOS/Images.xcassets/leg.png; sourceTree = SOURCE_ROOT; };
+		D59EF65E19FF59A20045EB1C /* ConnectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionCell.h; path = iOS/ConnectionCell.h; sourceTree = SOURCE_ROOT; };
+		D59EF65F19FF59A20045EB1C /* ConnectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectionCell.m; path = iOS/ConnectionCell.m; sourceTree = SOURCE_ROOT; };
 		D5B5EF7619E701AC00FD99AD /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScreenView.h; path = iOS/ScreenView.h; sourceTree = SOURCE_ROOT; };
 		D5B5EF7719E701AC00FD99AD /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScreenView.m; path = iOS/ScreenView.m; sourceTree = SOURCE_ROOT; };
 		D5C9F8BA19E8E7EF002D4AC4 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise.c; path = iOS/noise.c; sourceTree = SOURCE_ROOT; };
@@ -330,6 +333,8 @@
 			children = (
 				D5446FAF19F1BC4200A84A20 /* Cell.h */,
 				D5446FB019F1BC4200A84A20 /* Cell.m */,
+				D59EF65E19FF59A20045EB1C /* ConnectionCell.h */,
+				D59EF65F19FF59A20045EB1C /* ConnectionCell.m */,
 				D5F2FF3D19FE9D480037F4C7 /* DetailCell.h */,
 				D5F2FF3E19FE9D480037F4C7 /* DetailCell.m */,
 				D58833B319FD7A01009C196A /* WelcomeCell.h */,
@@ -490,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5B5EF7819E701AC00FD99AD /* ScreenView.m in Sources */,
+				D59EF66019FF59A20045EB1C /* ConnectionCell.m in Sources */,
 				D5959DBF19DBBDED00E5C7A3 /* ViewController.m in Sources */,
 				D5959DBE19DBBDED00E5C7A3 /* main.m in Sources */,
 				D5D8B43119EF503900EFBC1F /* BLEPeripheral.m in Sources */,

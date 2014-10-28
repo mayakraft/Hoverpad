@@ -17,18 +17,10 @@ typedef enum : NSUInteger {
     PeripheralConnectionStateDisconnecting
 } PeripheralConnectionState;
 
-//typedef enum : NSUInteger { /* meant to mimic CBPeripheralManagerState */
-//    BLEHardwareStateUnknown,
-//    BLEHardwareStateResetting,
-//    BLEHardwareStateUnsupported,
-//    BLEHardwareStateUnauthorized,
-//    BLEHardwareStatePoweredOff,
-//    BLEHardwareStatePoweredOn // the only one which should allow code to progress
-//} BLEHardwareState;
-
 @protocol BLEPeripheralDelegate <NSObject>
 @optional
 -(void) stateDidUpdate:(PeripheralConnectionState)state;
+-(void) hardwareStateDidUpdate:(NSInteger)hardwareState;
 @end
 
 @interface BLEPeripheral : NSObject <CBPeripheralManagerDelegate>{
@@ -46,6 +38,17 @@ typedef enum : NSUInteger {
 -(id) initWithDelegate:(id<BLEPeripheralDelegate>)delegate WithoutAdvertising:(BOOL)preventAdvertising;
 
 -(void) broadcastData:(NSData*)data;
+
+/*
+ * 0 BLEHardwareStateUnknown,
+ * 1 BLEHardwareStateResetting,
+ * 2 BLEHardwareStateUnsupported,
+ * 3 BLEHardwareStateUnauthorized,
+ * 4 BLEHardwareStatePoweredOff,
+ * 5 BLEHardwareStatePoweredOn // the only one which should allow code to progress
+ */
+-(NSInteger) hardwareState;
+
 
 // advertising
 @property (readonly) BOOL isAdvertising;

@@ -94,8 +94,21 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 
 -(void) stateDidUpdate:(PeripheralConnectionState)state{
     [_screenView setState:state];
-    if(settingsView)
+    if(settingsView){
+        [settingsView setHardwareState:[blePeripheral hardwareState]];
         [settingsView setConnectionState:state];
+    }
+}
+
+-(void) hardwareStateDidUpdate:(NSInteger)hardwareState{
+    if(hardwareState == 2){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"NO BLUETOOTH 4.0" message:@"DANG, YOU PROB GOT ALL EXCITED ABOUT THIS APP, AND NOW I HAVE TO TELL YOU IT CAN'T WORK, YOUR DEVICE IS TOO OLD. I'M SORRY" delegate:self cancelButtonTitle:@"OKAY :(" otherButtonTitles: nil];
+        [alert show];
+    }
+    if(settingsView){
+        [settingsView setHardwareState:[blePeripheral hardwareState]];
+    }
 }
 
 #pragma mark- TOUCHES
@@ -178,7 +191,9 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void)settingsButtonPress:(NSNumber*)openWelcomeScreen{
     settingsView = [[SettingsView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     [settingsView setCenter:CGPointMake(settingsView.center.x+settingsView.bounds.size.width, settingsView.center.y)];
+// BLE specific SettingsTableView tie-ins
     [settingsView setConnectionState:[blePeripheral state]];
+    [settingsView setHardwareState:[blePeripheral hardwareState]];
     [settingsView setDelegate:self];
     [self.view addSubview:settingsView];
     CGRect oldframe = settingsView.frame;
@@ -240,14 +255,14 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     if(indexPath.row == 0)
         return 46 + 76*IS_IPAD();
     if(indexPath.section == 0)
-        return 450 + 450*1.7*IS_IPAD();
+        return 450 + 450*IS_IPAD();
     else if(indexPath.section == 1)
-        return 120 + 120*1.7*IS_IPAD();
+        return 120 + 120*IS_IPAD();
     else if (indexPath.section == 2)
-        return 400 + 400*1.7*IS_IPAD();
+        return 400 + 400*IS_IPAD();
     else if (indexPath.section == 3)
-        return 1100 + 1100*1.7*IS_IPAD();
-    return 100 + 100*1.7*IS_IPAD();
+        return 1100 + 1100*IS_IPAD();
+    return 100 + 100*IS_IPAD();
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 //    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

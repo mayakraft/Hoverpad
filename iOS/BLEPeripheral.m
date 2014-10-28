@@ -84,6 +84,10 @@
         [peripheralManager updateValue:[NSData dataWithBytes:&d length:2] forCharacteristic:notifyCharacteristic onSubscribedCentrals:nil];
 }
 
+-(NSInteger) hardwareState{
+    return [peripheralManager state];
+}
+
 -(void) setState:(PeripheralConnectionState)state{
     _state = state;
     [_delegate stateDidUpdate:state];
@@ -124,6 +128,7 @@
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
     NSLog(@" 1b: PERIPHERAL : 1b- INIT DELEGATE RESPONSE");
+    [_delegate hardwareStateDidUpdate:[peripheralManager state]];
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
         [peripheralManager addService:service];
         NSLog(@" 2 : PERIPHERAL : 2 - SERVICES ADDED");
