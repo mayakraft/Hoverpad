@@ -23,7 +23,7 @@
     if(self){
         [self buildService];
         peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
-        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
+//        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
     }
     return self;
 }
@@ -34,7 +34,7 @@
         _delegate = delegate;
         [self buildService];
         peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
-        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
+//        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
     }
     return self;
 }
@@ -45,7 +45,7 @@
         [self buildService];
         preventInitialAdvertising = preventAdvertising;
         peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:nil];
-        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
+//        NSLog(@" 1 : PERIPHERAL : 1 - INIT");
     }
     return self;
 }
@@ -91,7 +91,7 @@
 -(void) setState:(PeripheralConnectionState)state{
     _state = state;
     [_delegate stateDidUpdate:state];
-    NSLog(@"STATE CHANGE: %d",(int)state);
+//    NSLog(@"STATE CHANGE: %d",(int)state);
 //    if(state == PeripheralConnectionStateDisconnected);
 //    if(state == PeripheralConnectionStateBooting);
 //    if(state == PeripheralConnectionStateScanning);
@@ -109,7 +109,7 @@
 - (void)startAdvertisements{
     [peripheralManager startAdvertising:advertisement];
     _isAdvertising = YES;
-    NSLog(@" 3 : PERIPHERAL : 3 - STARTING ADVERTISEMENTS");
+//    NSLog(@" 3 : PERIPHERAL : 3 - STARTING ADVERTISEMENTS");
 }
 
 - (void)stopAdvertisements:(BOOL)disconnectServer{
@@ -127,52 +127,52 @@
 #pragma mark- DELEGATES - PERIPHERAL
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral{
-    NSLog(@" 1b: PERIPHERAL : 1b- INIT DELEGATE RESPONSE");
+//    NSLog(@" 1b: PERIPHERAL : 1b- INIT DELEGATE RESPONSE");
     [_delegate hardwareStateDidUpdate:[peripheralManager state]];
     if([peripheralManager state] == CBPeripheralManagerStatePoweredOn){
         [peripheralManager addService:service];
-        NSLog(@" 2 : PERIPHERAL : 2 - SERVICES ADDED");
+//        NSLog(@" 2 : PERIPHERAL : 2 - SERVICES ADDED");
     }
     else if ([peripheralManager state] == CBPeripheralManagerStateUnsupported){
-        NSLog(@"WARNING: Bluetooth LE Unsupported");
+//        NSLog(@"WARNING: Bluetooth LE Unsupported");
     }
     else if([peripheralManager state] == CBPeripheralManagerStateUnauthorized){
-        NSLog(@"WARNING: Bluetooth LE Unauthorized");
+//        NSLog(@"WARNING: Bluetooth LE Unauthorized");
     }
     else if([peripheralManager state] == CBPeripheralManagerStateResetting){
-        NSLog(@"WARNING: Bluetooth LE State Resetting");
+//        NSLog(@"WARNING: Bluetooth LE State Resetting");
     }
     else if([peripheralManager state] == CBPeripheralManagerStateUnknown){
-        NSLog(@"WARNING: Bluetooth LE State Unknown");
+//        NSLog(@"WARNING: Bluetooth LE State Unknown");
     }
     else if([peripheralManager state] == CBPeripheralManagerStatePoweredOff){
-        NSLog(@"WARNING: Bluetooth LE Manager Powered Off");
+//        NSLog(@"WARNING: Bluetooth LE Manager Powered Off");
     }
 }
 
 -(void) peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error{
-    NSLog(@" 2b: PERIPHERAL : 2b- SERVICES ADDED DELEGATE RESPONSE");
+//    NSLog(@" 2b: PERIPHERAL : 2b- SERVICES ADDED DELEGATE RESPONSE");
     // TODO HANDLE ERROR
     if(!preventInitialAdvertising)
         [self startAdvertisements];
 }
 
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error{
-    NSLog(@" 3b: PERIPHERAL : 3b- STARTING ADVERTISEMENTS DELEGATE RESPONSE");
+//    NSLog(@" 3b: PERIPHERAL : 3b- STARTING ADVERTISEMENTS DELEGATE RESPONSE");
     // TODO HANDLE ERROR
     [self setState:PeripheralConnectionStateScanning];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    NSLog(@"delegate: received write request");
+//    NSLog(@"delegate: received write request");
     for(CBATTRequest* request in requests) {
         if([request.value bytes]){
-            NSLog(@"WE RECEIVED INFO: %@",[request value]);
+//            NSLog(@"WE RECEIVED INFO: %@",[request value]);
             if([[request value] length] == 2){
                 unsigned char *msg = (unsigned char*)[[request value] bytes];
                 if (msg[0] == 0x8F){ // version code
                     if(msg[1] == 0x01){  // release version 1
-                        NSLog(@"VERSION 1 SUCCESSFULLY RECEIVED");
+//                        NSLog(@"VERSION 1 SUCCESSFULLY RECEIVED");
                     }
                 }
             }
@@ -185,28 +185,28 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    NSLog(@"delegate: received read request");
-    NSString *valueToSend;
-    NSDate *currentTime = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"hh:mm:ss"];
-    valueToSend = [dateFormatter stringFromDate: currentTime];
-    
-    request.value = [valueToSend dataUsingEncoding:NSASCIIStringEncoding];
-    
-    [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
+//    NSLog(@"delegate: received read request");
+//    NSString *valueToSend;
+//    NSDate *currentTime = [NSDate date];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"hh:mm:ss"];
+//    valueToSend = [dateFormatter stringFromDate: currentTime];
+//    
+//    request.value = [valueToSend dataUsingEncoding:NSASCIIStringEncoding];
+//    
+//    [peripheralManager respondToRequest:request withResult:CBATTErrorSuccess];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"delegate: Central subscribed to characteristic:%@",[characteristic UUID]);
+//    NSLog(@"delegate: Central subscribed to characteristic:%@",[characteristic UUID]);
     if(_state != PeripheralConnectionStateConnected)
         [self setState:PeripheralConnectionStateConnected];
 }
 -(void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral{
-    NSLog(@"peripheralManagerIsReadyToUpdateSubscribers");
+//    NSLog(@"peripheralManagerIsReadyToUpdateSubscribers");
 }
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic{
-    NSLog(@"delegate: Central unsubscribed!");
+//    NSLog(@"delegate: Central unsubscribed!");
     if([self state] != PeripheralConnectionStateDisconnected){
 //        [self setState:PeripheralConnectionStateDisconnected];
         [self stopAdvertisements:NO]; // this sets the disconnected state

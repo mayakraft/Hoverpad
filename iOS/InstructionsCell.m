@@ -102,13 +102,13 @@
 //        [[self detailTextLabel] setTextAlignment:NSTextAlignmentCenter];
     }
     if([self textLabel2]){
-        [[self textLabel2] setText:@"GAMEPAD\n\n‣ PITCH=FORWARD/BACK\nAND EITHER:\n‣ ROLL=STRAFE  &  YAW=TURN\n‣ ROLL=TURN  &  YAW=STRAFE"];
+        [[self textLabel2] setText:@"GAMEPAD\n\n‣ ROLL=FORWARD/BACK\nAND EITHER:\n‣ PITCH=STRAFE  &  YAW=TURN\n‣ PITCH=TURN  &  YAW=STRAFE"];
     }
     if([self textLabel3]){
         [[self textLabel3] setText:@"SKATEBOARD/SKIING\n(ROLLED UP PANTS CUFFS)\n\n‣ YAW=FORWARD/BACK\n‣ PITCH=TURN"];
     }
     if([self textLabel4]){
-        [[self textLabel4] setText:@"MORE IDEAS:\nFAKE STEERING WHEEL, BIKE HANDLEBARS, STRAP IT TO YOUR DOG (NOT LIABLE), BE CREATIVE!"];
+        [[self textLabel4] setText:@"MORE IDEAS:\nVIRTUAL STEERING WHEEL, BIKE HANDLEBARS, STRAP IT TO YOUR DOG, BE CREATIVE!"];
     }
     if([self imageView2]){
     }

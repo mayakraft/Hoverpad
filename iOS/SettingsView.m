@@ -154,11 +154,11 @@
 
     if(cell){
         if(_connectionState == 3){
-            [[cell detailTextLabel] setText:@"✔︎"];
+            [[cell detailTextLabel] setText:@"√"];
             [[cell detailTextLabel] setTextColor:[UIColor greenColor]];
         }
         else if (_connectionState == 0){
-            [[cell detailTextLabel] setText:@"✘"];
+            [[cell detailTextLabel] setText:@"×"];
             [[cell detailTextLabel] setTextColor:[UIColor redColor]];
         }
         else{
@@ -187,7 +187,7 @@
             [[cell detailTextLabel] setTextColor:[UIColor greenColor]];
         }
         else if (_connectionState == 2){
-            [[cell textLabel] setText:@"\n\nMAKE SURE DESKTOP IS ALSO LOOKING"];
+            [[cell textLabel] setText:@"\n\nMAKE SURE DESKTOP IS ALSO SEARCHING"];
             [[cell detailTextLabel] setText:@"SCANNING"];
             [[cell detailTextLabel] setTextColor:[UIColor yellowColor]];
         }
@@ -239,7 +239,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     //Cell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    UIColor *rainbow = [self getColorForSection:indexPath.section];
+    UIColor *rainbow = [self getColorForSection:(int)indexPath.section];
 
     float smFont = 20.0 + 20 * IS_IPAD();
     
@@ -266,7 +266,7 @@
         DetailCell *cell = [[DetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         [[cell layer] setBorderColor:rainbow.CGColor];
         if(indexPath.section == 2){
-            [[cell textLabel] setText:@"MAKE SURE YOU HAVE THE DESKTOP APP\n\nCONNECTION PROCESS:\nTAP THE PENTAGON TO BEING SEARCHING\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ CONNECTION REQUIRES 3-7 SECONDS\n\nTROUBLESHOOTING:\nIF CONNECTION BREAKS WITHOUT PROPER EXIT\n ‣ FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
+            [[cell textLabel] setText:@"MAKE SURE YOU HAVE THE DESKTOP APP\n\nPENTAGON INTERFACE:\n‣ SPINNING LIGHT: SEARCHING FOR A CONNECTION\n‣ HOVERING: CONNECTED\nTAP TO START/STOP SEARCHING\n\nCONNECTION PROCESS:\n ‣ BEGIN SCAN ON BOTH iOS & DESKTOP APPS\n ‣ DEVICES WILL AUTO-CONNECT (3-7 SECONDS)\n\nTROUBLESHOOTING:\nIF CONNECTION BREAKS WITHOUT PROPER EXIT\n ‣ FORCE QUIT THE APP. IF STILL UNSUCCESSFUL, GO TO PHONE'S SETTINGS, TURN BLUETOOTH OFF & ON, WAITING A FEW SECONDS"];
             [[cell textLabel] setFont:[UIFont fontWithName:@"Lato-Light" size:smFont]];
         }
         return cell;

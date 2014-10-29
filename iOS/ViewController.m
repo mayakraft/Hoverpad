@@ -69,6 +69,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
             }
         }];
     }
+    [_screenView setDeviceOrientation:GLKMatrix4MakeLookAt(0.0f, 0.0f, 7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f)];
 
     // first run-time instruction assistance
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"FIRSTBOOT"]){
@@ -103,7 +104,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
 -(void) hardwareStateDidUpdate:(NSInteger)hardwareState{
     if(hardwareState == 2){
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"NO BLUETOOTH 4.0" message:@"DANG, YOU PROB GOT ALL EXCITED ABOUT THIS APP, AND NOW I HAVE TO TELL YOU IT CAN'T WORK, YOUR DEVICE IS TOO OLD. I'M SORRY" delegate:self cancelButtonTitle:@"OKAY :(" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"NO BLUETOOTH 4.0" message:@"THIS IS A BUMMER, I'M SORRY- YOUR DEVICE IS TOO OLD TO RUN THIS" delegate:self cancelButtonTitle:@"OKAY :(" otherButtonTitles: nil];
         [alert show];
     }
     if(settingsView){
@@ -149,7 +150,7 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     }
 }
 -(void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"TOUCHES CANCELLED");
+//    NSLog(@"TOUCHES CANCELLED");
 }
 -(void) setScreenTouched:(BOOL)screenTouched{
     _screenTouched = screenTouched;
@@ -259,9 +260,9 @@ bool CGRectCircleContainsPoint(CGPoint center, float radius, CGPoint point){
     else if(indexPath.section == 1)
         return 120 + 120*IS_IPAD();
     else if (indexPath.section == 2)
-        return 400 + 400*IS_IPAD();
+        return 440 + 440*IS_IPAD();
     else if (indexPath.section == 3)
-        return 1100 + 1100*IS_IPAD();
+        return 1140 + 1140*IS_IPAD();
     return 100 + 100*IS_IPAD();
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

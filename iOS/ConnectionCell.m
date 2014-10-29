@@ -35,7 +35,7 @@
             [self.textLabel sizeToFit];
         }
         if([self detailTextLabel]){
-            [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:30.0f + 43.0f*IS_IPAD()]];
+            [self.detailTextLabel setFont:[UIFont fontWithName:CUSTOM_FONT size:smFont]];
             [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
             [self.detailTextLabel setTextColor:GRAY];
             [self.detailTextLabel setNumberOfLines:0];

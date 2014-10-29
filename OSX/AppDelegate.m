@@ -203,7 +203,6 @@
     }
 }
 -(void) characteristicDidUpdate:(NSData *)data{
-    //TODO: Clarify packet language
     if ([data length] == 4) {  //([characteristic.value bytes]){
         [analogStick updateOrientation:data];
         if(_orientationWindowVisible){

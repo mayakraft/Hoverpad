@@ -233,7 +233,7 @@
     //first, check if there is an error. do not proceed
     //TODO: ask what characteristic this is
 //    if([characteristic.UUID.UUIDString isEqualToString:ORIENT_CHAR_UUID])
-    NSLog(@"raw(%lu):%@",(unsigned long)characteristic.value.length,characteristic.value);
+//    NSLog(@"raw(%lu):%@",(unsigned long)characteristic.value.length,characteristic.value);
     [_delegate characteristicDidUpdate:characteristic.value];
 }
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
